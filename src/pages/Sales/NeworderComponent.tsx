@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import SofaForm from './orderForm/Sofaform';
+import SofaForm from './orderForm/SofaForm';
 import BlindsForm from './orderForm/BlindsForm';
 import CarpetForm from './orderForm/CarpetForm';
 import CurtainsForm from './orderForm/CurtainsForm';
