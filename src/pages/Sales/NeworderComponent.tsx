@@ -23,7 +23,7 @@ const CustomerTable = () => {
   const [customers, setCustomers] = useState([]);
 
   // Define the getHeaders function for Basic Authentication
-  axios.defaults.baseURL = 'http://54.252.241.140:8080';
+  axios.defaults.baseURL = 'https://cors-h05i.onrender.com';
   const getHeaders = () => {
     const username = 'abinesh';
     const password = 'abi';
