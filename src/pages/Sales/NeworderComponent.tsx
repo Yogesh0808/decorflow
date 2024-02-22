@@ -1,33 +1,34 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import SofaForm from "./orderForm/SofaForm";
-import BlindsForm from "./orderForm/BlindsForm";
-import CarpetForm from "./orderForm/CarpetForm";
-import CurtainsForm from "./orderForm/CurtainsForm";
-import FlooringForm from "./orderForm/FlooringForm";
-import WallpaperForm from "./orderForm/WallpaperForm";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import SofaForm from './orderForm/SofaForm';
+import BlindsForm from './orderForm/BlindsForm';
+import CarpetForm from './orderForm/CarpetForm';
+import CurtainsForm from './orderForm/CurtainsForm';
+import FlooringForm from './orderForm/FlooringForm';
+import WallpaperForm from './orderForm/WallpaperForm';
+
+axios.defaults.baseURL = 'https://cors-h05i.onrender.com';
 
 const CustomerTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [notification, setNotification] = useState("");
+  const [notification, setNotification] = useState('');
   const [formData, setFormData] = useState({
     // Initialize form data here for each product
-    Curtains: "",
-    Sofas: "",
-    Blinds: "",
-    Carpets: "",
-    Floorings: "",
+    Curtains: '',
+    Sofas: '',
+    Blinds: '',
+    Carpets: '',
+    Floorings: '',
   });
   const [customers, setCustomers] = useState([]);
 
   // Define the getHeaders function for Basic Authentication
-  axios.defaults.baseURL = "http://localhost:8080";
   const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
+    const username = 'abinesh';
+    const password = 'abi';
+    const basicAuth = 'Basic ' + btoa(username + ':' + password);
     return {
       headers: {
         Authorization: basicAuth,
@@ -38,10 +39,10 @@ const CustomerTable = () => {
   // Function to fetch customers from the API
   const fetchCustomers = async () => {
     try {
-      const response = await axios.get("/api/clients/names", getHeaders());
+      const response = await axios.get('/api/clients/names', getHeaders());
       setCustomers(response.data);
     } catch (error) {
-      console.error("Error fetching customers:", error.message);
+      console.error('Error fetching customers:', error.message);
     }
   };
 
@@ -53,12 +54,12 @@ const CustomerTable = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Your logic for form submission goes here
-    setNotification("Form submitted successfully");
+    setNotification('Form submitted successfully');
     setShowModal(false); // Close modal after submission
     // Reset form or do any other necessary actions
     setFormData({
       ...formData,
-      [selectedProduct]: "",
+      [selectedProduct]: '',
     });
   };
 
@@ -67,19 +68,19 @@ const CustomerTable = () => {
     setShowModal(false);
     setFormData({
       ...formData,
-      [selectedProduct]: "",
+      [selectedProduct]: '',
     });
   };
 
   const productImages = {
     Curtains:
-      "https://static.vecteezy.com/system/resources/previews/012/723/093/original/curtain-icon-free-vector.jpg",
-    Sofas: "https://cdn-icons-png.flaticon.com/512/5781/5781883.png",
-    Blinds: "https://cdn-icons-png.flaticon.com/512/1606/1606190.png",
+      'https://static.vecteezy.com/system/resources/previews/012/723/093/original/curtain-icon-free-vector.jpg',
+    Sofas: 'https://cdn-icons-png.flaticon.com/512/5781/5781883.png',
+    Blinds: 'https://cdn-icons-png.flaticon.com/512/1606/1606190.png',
     Carpets:
-      "https://cdn.iconscout.com/icon/premium/png-256-thumb/carpet-1469898-1243937.png?f=webp",
-    Floorings: "https://www.svgrepo.com/download/208462/parquet-floor.svg",
-    Wallpaper: "https://cdn-icons-png.flaticon.com/512/253/253002.png",
+      'https://cdn.iconscout.com/icon/premium/png-256-thumb/carpet-1469898-1243937.png?f=webp',
+    Floorings: 'https://www.svgrepo.com/download/208462/parquet-floor.svg',
+    Wallpaper: 'https://cdn-icons-png.flaticon.com/512/253/253002.png',
   };
 
   // Function to handle form field changes
@@ -99,28 +100,28 @@ const CustomerTable = () => {
 
   const renderProductForm = () => {
     switch (selectedProduct) {
-      case "Curtains":
+      case 'Curtains':
         return (
           <CurtainsForm
             onCloseModal={handleCloseModal}
             onSubmit={handleSubmit}
           />
         );
-      case "Sofas":
+      case 'Sofas':
         return (
           <SofaForm onCloseModal={handleCloseModal} onSubmit={handleSubmit} />
         );
-      case "Blinds":
+      case 'Blinds':
         return (
           <BlindsForm onCloseModal={handleCloseModal} onSubmit={handleSubmit} />
         );
 
-      case "Carpets":
+      case 'Carpets':
         return (
           <CarpetForm onCloseModal={handleCloseModal} onSubmit={handleSubmit} />
         );
 
-      case "Wallpaper":
+      case 'Wallpaper':
         return (
           <WallpaperForm
             onCloseModal={handleCloseModal}
@@ -128,7 +129,7 @@ const CustomerTable = () => {
           />
         );
 
-      case "Floorings":
+      case 'Floorings':
         return (
           <FlooringForm
             onCloseModal={handleCloseModal}
@@ -179,12 +180,12 @@ const CustomerTable = () => {
           <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100">
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
               {[
-                "Curtains",
-                "Sofas",
-                "Blinds",
-                "Carpets",
-                "Floorings",
-                "Wallpaper",
+                'Curtains',
+                'Sofas',
+                'Blinds',
+                'Carpets',
+                'Floorings',
+                'Wallpaper',
               ].map((product, index) => (
                 <div
                   key={index}
