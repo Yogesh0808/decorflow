@@ -1,14 +1,14 @@
-import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "../../layout/DefaultLayout";
-import axios from "axios";
-import React, { useState, useEffect } from "react";
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../layout/DefaultLayout';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
-axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL = 'http://3.106.227.95:8080';
 
 const getHeaders = () => {
-  const username = "abinesh";
-  const password = "abi";
-  const basicAuth = "Basic " + btoa(username + ":" + password);
+  const username = 'abinesh';
+  const password = 'abi';
+  const basicAuth = 'Basic ' + btoa(username + ':' + password);
   return {
     headers: {
       Authorization: basicAuth,
@@ -18,27 +18,27 @@ const getHeaders = () => {
 
 const AddCustomer = () => {
   const [formData, setFormData] = useState({
-    salutation: "Mr",
-    clientName: "",
-    clientType: "individual",
-    purpose: "",
-    phone: "",
-    emailAddress: "",
-    address: "",
+    salutation: 'Mr',
+    clientName: '',
+    clientType: 'individual',
+    purpose: '',
+    phone: '',
+    emailAddress: '',
+    address: '',
   });
 
   const [showToast, setShowToast] = useState(false);
 
   const saveClient = () => {
     axios
-      .post("/api/clients", formData, getHeaders())
+      .post('/api/clients', formData, getHeaders())
       .then((response) => {
-        console.log("Client saved:", response.data);
+        console.log('Client saved:', response.data);
         setShowToast(true); // Show the toast
         clearForm(); // Clear the form fields
       })
       .catch((error) => {
-        console.error("Error saving client:", error);
+        console.error('Error saving client:', error);
       });
   };
 
@@ -66,13 +66,13 @@ const AddCustomer = () => {
 
   const clearForm = () => {
     setFormData({
-      salutation: "Mr",
-      clientName: "",
-      clientType: "individual",
-      purpose: "",
-      phone: "",
-      emailAddress: "",
-      address: "",
+      salutation: 'Mr',
+      clientName: '',
+      clientType: 'individual',
+      purpose: '',
+      phone: '',
+      emailAddress: '',
+      address: '',
     });
   };
 
@@ -84,18 +84,18 @@ const AddCustomer = () => {
     <DefaultLayout>
       <Breadcrumb pageName="NewCustomer" />
 
-      <div className="max-w-lg mx-auto p-6 space-y-6 text-neutral-700">
-        <h1 className="text-2xl font-semibold mb-4">New Customer Form</h1>
+      <div className="max-w-lg mx-auto p-6 space-y-6 text-neutral-700 dark:text-neutral-100">
+        <h1 className="text-3xl font-normal mb-4">New Customer Form</h1>
         <form onSubmit={handleFormSubmit} className="space-y-4">
           <div className="flex space-x-4">
             <div className="flex flex-col w-1/3">
-              <label htmlFor="salutation" className="text-sm font-medium">
+              <label htmlFor="salutation" className="text-sm font-medium ">
                 Salutation
               </label>
               <select
                 id="salutation"
                 name="salutation"
-                className="border rounded-md py-2 px-3"
+                className="border rounded-md py-2 px-3 dark:border-neutral-500 dark:bg-slate-700"
                 onChange={handleInputChange}
                 value={formData.salutation}
                 required
@@ -112,7 +112,7 @@ const AddCustomer = () => {
                 type="text"
                 name="clientName"
                 id="client-name"
-                className="border rounded-md py-2 px-3 focus:border-red-500"
+                className="border rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
                 onChange={handleInputChange}
                 value={formData.clientName}
                 required
@@ -127,7 +127,7 @@ const AddCustomer = () => {
               type="text"
               name="purpose"
               id="purpose-of-order"
-              className="border focus:border-red-600 rounded-md py-2 px-3 focus:outline-none"
+              className="border rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
               onChange={handleInputChange}
               value={formData.purpose}
               required
@@ -142,7 +142,7 @@ const AddCustomer = () => {
                 name="clientType"
                 value="Interior Designer"
                 onChange={handleInputChange}
-                checked={formData.clientType === "Interior Designer"}
+                checked={formData.clientType === 'Interior Designer'}
                 required
               />
               <label
@@ -157,7 +157,7 @@ const AddCustomer = () => {
                 name="clientType"
                 value="Architect"
                 onChange={handleInputChange}
-                checked={formData.clientType === "Architect"}
+                checked={formData.clientType === 'Architect'}
                 required
               />
               <label
@@ -177,7 +177,7 @@ const AddCustomer = () => {
             <input
               name="phone"
               id="phone"
-              className="border focus:border-red-700 rounded-md py-2 px-3 focus:outline-none"
+              className="border rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
               onChange={handleInputChange}
               value={formData.phone}
               pattern="[0-9]{10}"
@@ -192,7 +192,7 @@ const AddCustomer = () => {
               type="email"
               name="emailAddress"
               id="email"
-              className="border focus:border-red-700 rounded-md py-2 px-3 focus:outline-none"
+              className="border rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
               onChange={handleInputChange}
               value={formData.emailAddress}
               required
@@ -206,7 +206,7 @@ const AddCustomer = () => {
               name="address"
               id="address"
               rows="3"
-              className="border focus:border-red-700 rounded-md py-2 px-3 focus:outline-none"
+              className="border rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
               onChange={handleInputChange}
               value={formData.address}
               required
