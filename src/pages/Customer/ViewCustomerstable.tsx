@@ -112,6 +112,9 @@ function ViewCustomers() {
             <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
               <tr>
                 <th scope="col" className="px-3 py-4">
+                  ID
+                </th>
+                <th scope="col" className="px-3 py-4">
                   Salutation
                 </th>
                 <th scope="col" className="px-4 py-4">
@@ -144,6 +147,9 @@ function ViewCustomers() {
                   className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
                 >
                   <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
+                    {client.id}
+                  </td>
+                  <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                     {client.salutation}
                   </td>
                   <td className="px-4 py-2">{client.clientName}</td>
@@ -173,8 +179,8 @@ function ViewCustomers() {
         </div>
         {showModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-            <div className="bg-slate-200 w-full max-w-md rounded-lg">
-              <h2 className="text-3xl text-center my-1">Edit Client</h2>
+            <div className="bg-slate-200 w-full lg:max-w-md sm:max-w-64 rounded-xl p-6 dark:bg-slate-900">
+              {/*<h2 className="text-3xl text-center my-1">Edit Client</h2>*/}
               <EditClientModal
                 client={editedClient}
                 saveEditedClient={saveEditedClient}
@@ -266,125 +272,128 @@ function EditClientModal({
   };
 
   return (
-    <div className="p-2 sm:p-12 bg-slate-200 dark:bg-slate-900  rounded-lg">
-      <div className="mb-2 sm:mb-4 dark:text-slate-50">
-        <label
-          htmlFor="salutation"
-          className="block text-sm font-medium text-slate-800 dark:text-slate-300"
-        >
-          Salutation
-        </label>
-        <input
-          type="text"
-          id="salutation"
-          value={editedSalutation}
-          onChange={(e) => setEditedSalutation(e.target.value)}
-          className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-        />
-      </div>
-      <div className="mb-2 sm:mb-4">
-        <label
-          htmlFor="clientName"
-          className="block text-sm font-medium text-slate-800 dark:text-slate-50"
-        >
-          Client Name
-        </label>
-        <input
-          type="text"
-          id="clientName"
-          value={editedClientName}
-          onChange={(e) => setEditedClientName(e.target.value)}
-          className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-        />
-      </div>
-      <div className="mb-2 sm:mb-4">
-        <label
-          htmlFor="clientType"
-          className="block text-sm font-medium text-slate-800 dark:text-slate-50"
-        >
-          Client Type
-        </label>
-        <input
-          type="text"
-          id="clientType"
-          value={editedClientType}
-          onChange={(e) => setEditedClientType(e.target.value)}
-          className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-        />
-      </div>
-      <div className="mb-2 sm:mb-4">
-        <label
-          htmlFor="purpose"
-          className="block text-sm font-medium text-slate-800 dark:text-slate-100"
-        >
-          Purpose
-        </label>
-        <input
-          type="text"
-          id="purpose"
-          value={editedPurpose}
-          onChange={(e) => setEditedPurpose(e.target.value)}
-          className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-        />
-      </div>
-      <div className="mb-2 sm:mb-4">
-        <label
-          htmlFor="address"
-          className="block text-sm font-medium text-slate-800 dark:text-slate-50"
-        >
-          Address
-        </label>
-        <input
-          type="text"
-          id="address"
-          value={editedAddress}
-          onChange={(e) => setEditedAddress(e.target.value)}
-          className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-        />
-      </div>
-      <div className="mb-2 sm:mb-4">
-        <label
-          htmlFor="phone"
-          className="block text-sm font-medium text-slate-800 dark:text-slate-50"
-        >
-          Phone
-        </label>
-        <input
-          type="text"
-          id="phone"
-          value={editedPhone}
-          onChange={(e) => setEditedPhone(e.target.value)}
-          className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-        />
-      </div>
-      <div className="mb-2 sm:mb-4">
-        <label
-          htmlFor="emailAddress"
-          className="block text-sm font-medium text-slate-800 dark:text-slate-50"
-        >
-          Email Address
-        </label>
-        <input
-          type="text"
-          id="emailAddress"
-          value={editedEmailAddress}
-          onChange={(e) => setEditedEmailAddress(e.target.value)}
-          className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-        />
-      </div>
-      <div className="flex justify-end">
-        <button
-          onClick={handleSave}
-          className="mr-2 px-3 py-1 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 sm:px-4 dark:text-slate-100"
-        >
-          Save
-        </button>
-        <button
-          onClick={closeModal}
-          className="px-3 py-1 bg-red-700 text-white rounded-2xl hover:bg-red-800 sm:px-4"
-        >
-          Close
-        </button>
+    <div className="p-6 sm:px-4 bg-slate-200 dark:bg-slate-900 rounded-lg">
+      <div className="overflow-auto sm:max-h-49 lg:max-h-125 ">
+        <h2 className="text-3xl text-center my-1">Edit Client</h2>
+        <div className="mb-2 sm:mb-4 dark:text-slate-50">
+          <label
+            htmlFor="salutation"
+            className="block text-sm font-medium text-slate-800 dark:text-slate-300"
+          >
+            Salutation
+          </label>
+          <input
+            type="text"
+            id="salutation"
+            value={editedSalutation}
+            onChange={(e) => setEditedSalutation(e.target.value)}
+            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
+          />
+        </div>
+        <div className="mb-2 sm:mb-4">
+          <label
+            htmlFor="clientName"
+            className="block text-sm font-medium text-slate-800 dark:text-slate-50"
+          >
+            Client Name
+          </label>
+          <input
+            type="text"
+            id="clientName"
+            value={editedClientName}
+            onChange={(e) => setEditedClientName(e.target.value)}
+            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
+          />
+        </div>
+        <div className="mb-2 sm:mb-4">
+          <label
+            htmlFor="clientType"
+            className="block text-sm font-medium text-slate-800 dark:text-slate-50"
+          >
+            Client Type
+          </label>
+          <input
+            type="text"
+            id="clientType"
+            value={editedClientType}
+            onChange={(e) => setEditedClientType(e.target.value)}
+            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
+          />
+        </div>
+        <div className="mb-2 sm:mb-4">
+          <label
+            htmlFor="purpose"
+            className="block text-sm font-medium text-slate-800 dark:text-slate-100"
+          >
+            Purpose
+          </label>
+          <input
+            type="text"
+            id="purpose"
+            value={editedPurpose}
+            onChange={(e) => setEditedPurpose(e.target.value)}
+            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
+          />
+        </div>
+        <div className="mb-2 sm:mb-4">
+          <label
+            htmlFor="address"
+            className="block text-sm font-medium text-slate-800 dark:text-slate-50"
+          >
+            Address
+          </label>
+          <input
+            type="text"
+            id="address"
+            value={editedAddress}
+            onChange={(e) => setEditedAddress(e.target.value)}
+            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
+          />
+        </div>
+        <div className="mb-2 sm:mb-4">
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-slate-800 dark:text-slate-50"
+          >
+            Phone
+          </label>
+          <input
+            type="text"
+            id="phone"
+            value={editedPhone}
+            onChange={(e) => setEditedPhone(e.target.value)}
+            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
+          />
+        </div>
+        <div className="mb-2 sm:mb-4">
+          <label
+            htmlFor="emailAddress"
+            className="block text-sm font-medium text-slate-800 dark:text-slate-50"
+          >
+            Email Address
+          </label>
+          <input
+            type="text"
+            id="emailAddress"
+            value={editedEmailAddress}
+            onChange={(e) => setEditedEmailAddress(e.target.value)}
+            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
+          />
+        </div>
+        <div className="flex justify-end">
+          <button
+            onClick={handleSave}
+            className="mr-2 px-3 py-1 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 sm:px-4 dark:text-slate-100"
+          >
+            Save
+          </button>
+          <button
+            onClick={closeModal}
+            className="px-3 py-1 bg-red-700 text-white rounded-2xl hover:bg-red-800 sm:px-4"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );
