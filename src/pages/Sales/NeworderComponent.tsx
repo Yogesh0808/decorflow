@@ -159,7 +159,7 @@ const CustomerTable = () => {
           <option value="">Select Customer</option>
           {customers.map((customer, index) => (
             <option key={index} value={customer.id}>
-              {customer.clientName} - #{customer.id}
+              {customer.clientName} - {customer.id}
             </option>
           ))}
         </select>
@@ -178,7 +178,7 @@ const CustomerTable = () => {
           {/* Cards */}
           {/* New Order For {client Name} */}
           <p className="text-center text-slate-700 dark:text-slate-50 text-2xl">
-            New Order For {selectedCustomer.clientName} - #{selectedCustomer.id}
+            New Order For {selectedCustomer.clientName} - {selectedCustomer.id}
           </p>
 
           <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100">
