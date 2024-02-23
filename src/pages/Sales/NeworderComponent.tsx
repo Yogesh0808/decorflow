@@ -146,16 +146,20 @@ const CustomerTable = () => {
       {/* Show customer selection dropdown if no customer is selected */}
       {!selectedCustomer && (
         <select
-          value={selectedCustomer}
-          onChange={(e) => setSelectedCustomer(e.target.value)}
+          value={selectedCustomer ? selectedCustomer.id : ''}
+          onChange={(e) => {
+            const selectedId = e.target.value;
+            const selectedCustomer = customers.find(
+              (customer) => customer.id === selectedId,
+            );
+            setSelectedCustomer(selectedCustomer);
+          }}
           className="block w-full mt-4 p-3 border border-slate-400 shadow-lg rounded-xl focus:outline-none focus:border-red-600"
         >
-          <option value="" className="rounded-lg p-4 m-10">
-            Select Customer
-          </option>
+          <option value="">Select Customer</option>
           {customers.map((customer, index) => (
-            <option key={index} value={customer} className="rounded-lg p-2">
-              {customer}
+            <option key={index} value={customer.id}>
+              {customer.clientName} - #{customer.id}
             </option>
           ))}
         </select>
@@ -174,7 +178,7 @@ const CustomerTable = () => {
           {/* Cards */}
           {/* New Order For {client Name} */}
           <p className="text-center text-slate-700 dark:text-slate-50 text-2xl">
-            New Order For {selectedCustomer}
+            New Order For {selectedCustomer.clientName} - #{selectedCustomer.id}
           </p>
 
           <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100">
