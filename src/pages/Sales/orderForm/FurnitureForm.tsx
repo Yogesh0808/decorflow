@@ -10,7 +10,7 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
   onSubmit,
 }) => {
   return (
-    <div className="relative bg-purple-100 rounded-lg shadow dark:bg-slate-700">
+    <div className="relative bg-purple-100 rounded-lg shadow dark:bg-slate-700 sm:mt-2 lg:mt-20 lg:ml-10">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-slate-600">
         <h3 className="text-lg font-normal text-slate-800 dark:text-white">
           Furniture Order Form
@@ -39,7 +39,7 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
           <span className="sr-only">Close modal</span>
         </button>
       </div>
-      <div className="overflow-auto sm:max-h-full lg:max-h-[30rem]">
+      <div className="overflow-auto max-h-[30rem]">
         <form className="p-4 md:p-5" onSubmit={onSubmit}>
           <div className="grid gap-4 mb-4 grid-cols-2">
             <div className="col-span-2">

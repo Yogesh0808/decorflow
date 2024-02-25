@@ -19,7 +19,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
 }) => {
   return (
     <div className="relative bg-rose-50 rounded-lg shadow dark:bg-slate-700">
-      <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 mt-20">
+      <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
         <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
           Sofa Order Form
         </h3>
@@ -47,7 +47,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
           <span className="sr-only">Close modal</span>
         </button>
       </div>
-      <div className="overflow-auto sm:max-h-full lg:max-h-[30rem]">
+      <div className="overflow-auto max-h-[30rem]">
         <form className="p-4 md:p-5" onSubmit={onSubmit}>
           <div className="grid gap-4 mb-4 grid-cols-2">
             <div className="col-span-2">
