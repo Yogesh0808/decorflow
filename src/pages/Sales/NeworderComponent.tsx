@@ -5,7 +5,7 @@ import BlindsForm from './orderForm/BlindsForm';
 import CurtainsForm from './orderForm/CurtainsForm';
 import FlooringForm from './orderForm/FlooringForm';
 import WallpaperForm from './orderForm/WallpaperForm';
-import FurnitureForm from './orderForm/FurnitureForm'; // Add this import
+import FurnitureForm from './orderForm/FurnitureForm'; 
 
 axios.defaults.baseURL = 'https://cors-h05i.onrender.com';
 
