@@ -3,7 +3,7 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
-axios.defaults.baseURL = 'http://3.106.227.95:8080';
+axios.defaults.baseURL = 'https://cors-h05i.onrender.com';
 
 const getHeaders = () => {
   const username = 'abinesh';
@@ -165,6 +165,18 @@ const AddCustomer = () => {
                 className="text-sm focus:border-red-700"
               >
                 Architect
+              </label>
+              <input
+                type="radio"
+                id="client"
+                name="clientType"
+                value="Client"
+                onChange={handleInputChange}
+                checked={formData.clientType === 'Client'}
+                required
+              />
+              <label htmlFor="client" className="focus:border-red-700 text-sm">
+                Client
               </label>
             </div>
           </div>
