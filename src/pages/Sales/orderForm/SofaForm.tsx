@@ -1,9 +1,22 @@
+import React from 'react';
+
 interface SofaFormProps {
+  formData: any; // Define type for form data
+  onInputChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => void; // Define type for input change event handler
   onCloseModal: () => void;
   onSubmit: () => void;
 }
 
-const SofaForm: React.FC<SofaFormProps> = ({ onCloseModal, onSubmit }) => {
+const SofaForm: React.FC<SofaFormProps> = ({
+  formData,
+  onInputChange,
+  onCloseModal,
+  onSubmit,
+}) => {
   return (
     <div className="relative bg-rose-50 rounded-lg shadow dark:bg-slate-700">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 mt-20">
@@ -35,7 +48,6 @@ const SofaForm: React.FC<SofaFormProps> = ({ onCloseModal, onSubmit }) => {
         </button>
       </div>
       <div className="overflow-auto sm:max-h-full lg:max-h-[30rem]">
-        {' '}
         <form className="p-4 md:p-5" onSubmit={onSubmit}>
           <div className="grid gap-4 mb-4 grid-cols-2">
             <div className="col-span-2">
@@ -137,6 +149,54 @@ const SofaForm: React.FC<SofaFormProps> = ({ onCloseModal, onSubmit }) => {
                 accept="image/*"
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
+            </div>
+            <div className="col-span-2">
+              <label
+                htmlFor="sofaLeg"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Sofa Leg
+              </label>
+              <input
+                type="text"
+                id="sofaLeg"
+                name="sofaLeg"
+                value={formData.sofaLeg}
+                onChange={onInputChange}
+                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter sofa leg details"
+              />
+            </div>
+            <div className="col-span-2">
+              <label
+                htmlFor="sofaLegImage"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Sofa Leg Image
+              </label>
+              <input
+                type="file"
+                id="sofaLegImage"
+                accept="image/*"
+                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div className="col-span-2">
+              <label
+                htmlFor="remarks"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Remarks
+              </label>
+              <textarea
+                id="remarks"
+                name="remarks"
+                rows={4}
+                value={formData.remarks}
+                onChange={onInputChange}
+                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Add any additional remarks here"
+              ></textarea>
             </div>
           </div>
           <button

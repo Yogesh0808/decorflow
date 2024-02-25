@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface BlindsFormProps {
   onCloseModal: () => void;
@@ -6,6 +6,43 @@ interface BlindsFormProps {
 }
 
 const BlindsForm: React.FC<BlindsFormProps> = ({ onCloseModal, onSubmit }) => {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    size: '',
+    quantity: '',
+    typeOfBlinds: 'Roman Blinds',
+    catalogueName: '',
+    fabricCode: '',
+    fabricImage: null,
+    remarks: '', // New field for Remarks
+  });
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setFormData({
+      ...formData,
+      fabricImage: file,
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit();
+  };
+
   return (
     <div className="relative bg-white rounded-lg shadow dark:bg-slate-700">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 mt-20">
@@ -37,7 +74,7 @@ const BlindsForm: React.FC<BlindsFormProps> = ({ onCloseModal, onSubmit }) => {
         </button>
       </div>
       <div className="overflow-auto sm:max-h-full lg:max-h-[30rem]">
-        <form className="p-4 md:p-5" onSubmit={onSubmit}>
+        <form className="p-4 md:p-5" onSubmit={handleSubmit}>
           <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
             <div className="col-span-2">
               <label
@@ -49,6 +86,9 @@ const BlindsForm: React.FC<BlindsFormProps> = ({ onCloseModal, onSubmit }) => {
               <input
                 type="text"
                 id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter title"
               />
@@ -62,10 +102,13 @@ const BlindsForm: React.FC<BlindsFormProps> = ({ onCloseModal, onSubmit }) => {
               </label>
               <textarea
                 id="description"
-                rows={4}
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                rows={1}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write product description here"
-              ></textarea>
+              />
             </div>
             <div>
               <label
@@ -77,81 +120,71 @@ const BlindsForm: React.FC<BlindsFormProps> = ({ onCloseModal, onSubmit }) => {
               <input
                 type="text"
                 id="size"
+                name="size"
+                value={formData.size}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter size"
               />
             </div>
             <div>
               <label
-                htmlFor="widthOfFabric"
+                htmlFor="quantity"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Width of Fabric
+                Quantity
               </label>
               <input
                 type="text"
-                id="widthOfFabric"
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter width of fabric"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="noOfPieces"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Number of Pieces
-              </label>
-              <input
-                type="text"
-                id="noOfPieces"
+                id="quantity"
+                name="quantity"
+                value={formData.quantity}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter number of pieces"
               />
             </div>
             <div>
               <label
-                htmlFor="noOfPanels"
+                htmlFor="typeOfBlinds"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Number of Panels
+                Type of Blinds
               </label>
-              <input
-                type="number"
-                id="noOfPanels"
+              <select
+                id="typeOfBlinds"
+                name="typeOfBlinds"
+                value={formData.typeOfBlinds}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter number of panels"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="modelOfStitching"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Model of Stitching
-              </label>
-              <input
-                type="text"
-                id="modelOfStitching"
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter model of stitching"
-              />
+                <option value="Roman Blinds">Roman Blinds</option>
+                <option value="Roller Blinds">Roller Blinds</option>
+                <option value="Zebra Blinds">Zebra Blinds</option>
+                <option value="Wooden Blinds">Wooden Blinds</option>
+                <option value="Aluminium Blinds">Aluminium Blinds</option>
+                <option value="Skylight Blinds">Skylight Blinds</option>
+                <option value="Vertical Blinds">Vertical Blinds</option>
+                <option value="Honeycomb Blinds">Honeycomb Blinds</option>
+              </select>
             </div>
           </div>
-          <hr className="my-4" />
           <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
             <div>
               <label
-                htmlFor="fabricName"
+                htmlFor="catalogueName"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Fabric Name
+                Catalogue Name
               </label>
               <input
                 type="text"
-                id="fabricName"
+                id="catalogueName"
+                name="catalogueName"
+                value={formData.catalogueName}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter fabric name"
+                placeholder="Enter Catalog name"
               />
             </div>
             <div>
@@ -164,6 +197,9 @@ const BlindsForm: React.FC<BlindsFormProps> = ({ onCloseModal, onSubmit }) => {
               <input
                 type="text"
                 id="fabricCode"
+                name="fabricCode"
+                value={formData.fabricCode}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter fabric code"
               />
@@ -178,8 +214,27 @@ const BlindsForm: React.FC<BlindsFormProps> = ({ onCloseModal, onSubmit }) => {
               <input
                 type="file"
                 id="fabricImage"
+                name="fabricImage"
                 accept="image/*"
+                onChange={handleFileChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div className="col-span-2">
+              <label
+                htmlFor="remarks"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Remarks
+              </label>
+              <textarea
+                id="remarks"
+                name="remarks"
+                value={formData.remarks}
+                onChange={handleInputChange}
+                rows={2}
+                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Add any additional remarks here"
               />
             </div>
           </div>

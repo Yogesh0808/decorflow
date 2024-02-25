@@ -1,5 +1,6 @@
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
+import ViewOrderTable from './ViewOrderTable';
 
 const Vieworder = () => {
   return (
@@ -8,6 +9,7 @@ const Vieworder = () => {
 
       {/* <!-- ====== Vieworder Section Start ====== --> */}
       <h1>View Order Section</h1>
+      <ViewOrderTable />
       {/* <!-- ====== Calendar Section End ====== --> */}
     </DefaultLayout>
   );

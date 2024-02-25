@@ -1,51 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const FlooringForm = ({ onSubmit, onCloseModal }) => {
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    sizeOfFloor: '',
-    numberOfSqft: '',
-    catalogCodeAndNumber: '',
-    flooringImage: null,
-    remarks: '',
-  });
+interface FurnitureFormProps {
+  onCloseModal: () => void;
+  onSubmit: () => void;
+}
 
-  // Define state for modal visibility
-  const [showModal, setShowModal] = useState(false);
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-  const [flooringType, setFlooringType] = useState('');
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      flooringImage: file,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Call the onSubmit callback function passed from the parent component
-    onSubmit(formData);
-  };
-
+const FurnitureForm: React.FC<FurnitureFormProps> = ({
+  onCloseModal,
+  onSubmit,
+}) => {
   return (
     <div className="relative bg-purple-100 rounded-lg shadow dark:bg-slate-700">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-slate-600">
-        <h3 className="text-xl font-normal text-slate-800 dark:text-white">
-          Floorings Order Form
+        <h3 className="text-lg font-normal text-slate-800 dark:text-white">
+          Furniture Order Form
         </h3>
         <button
           type="button"
@@ -72,7 +40,7 @@ const FlooringForm = ({ onSubmit, onCloseModal }) => {
         </button>
       </div>
       <div className="overflow-auto sm:max-h-full lg:max-h-[30rem]">
-        <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+        <form className="p-4 md:p-5" onSubmit={onSubmit}>
           <div className="grid gap-4 mb-4 grid-cols-2">
             <div className="col-span-2">
               <label
@@ -84,10 +52,6 @@ const FlooringForm = ({ onSubmit, onCloseModal }) => {
               <input
                 type="text"
                 id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleInputChange}
-                required
                 className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter title"
               />
@@ -99,99 +63,73 @@ const FlooringForm = ({ onSubmit, onCloseModal }) => {
               >
                 Description
               </label>
-              <select
+              <textarea
                 id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                required
-                className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              >
-                <option value="">Select description</option>
-                <option value="Vinyl Roll">Vinyl - Vinyl Roll</option>
-                <option value="Vinyl Plank">Vinyl - Vinyl Plank</option>
-                <option value="Wooden">Wooden</option>
-                <option value="Carpet - Roll Carpet">
-                  Carpet - Roll Carpet
-                </option>
-                <option value="Carpet - Tile Carpet">
-                  Carpet - Tile Carpet
-                </option>
-              </select>
+                rows={4}
+                className="block p-2.5 w-full text-sm text-slate-900 bg-purple-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Write product description here"
+              ></textarea>
             </div>
             <div className="col-span-2">
               <label
-                htmlFor="sizeOfFloor"
+                htmlFor="size"
                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
-                Size of the Floor
+                Size
               </label>
               <input
                 type="text"
-                name="sizeOfFloor"
-                id="sizeOfFloor"
-                value={formData.sizeOfFloor}
-                onChange={handleInputChange}
-                required
+                id="size"
                 className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter size of the floor"
+                placeholder="Enter size"
               />
             </div>
             <div className="col-span-2">
               <label
-                htmlFor="numberOfSqft"
+                htmlFor="qty"
                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
-                Number of Sqft/meter
+                Quantity
               </label>
               <input
                 type="text"
-                name="numberOfSqft"
-                id="numberOfSqft"
-                value={formData.numberOfSqft}
-                onChange={handleInputChange}
-                required
+                id="qty"
                 className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter number of sqft/meter"
+                placeholder="Enter quantity"
               />
             </div>
             <div className="col-span-2">
               <label
-                htmlFor="catalogCodeAndNumber"
+                htmlFor="referenceCode"
                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
-                Catalog Code and Number
+                Reference Code
               </label>
               <input
                 type="text"
-                id="catalogCodeAndNumber"
-                name="catalogCodeAndNumber"
-                value={formData.catalogCodeAndNumber}
-                onChange={handleInputChange}
-                required
+                id="referenceCode"
                 className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter catalog code and number"
+                placeholder="Enter reference code"
               />
             </div>
             <div className="col-span-2">
               <label
-                htmlFor="flooringImage"
+                htmlFor="referenceImage"
                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
-                Flooring Image
+                Reference Image
               </label>
               <input
                 type="file"
-                name="flooringImage"
-                onChange={handleFileChange}
+                id="referenceImage"
                 accept="image/*"
-                required
+                className="block p-2.5 w-full text-sm text-slate-900 bg-purple-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
             <div className="col-span-2">
               <label
                 htmlFor="remarks"
-                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Remarks
               </label>
@@ -199,9 +137,7 @@ const FlooringForm = ({ onSubmit, onCloseModal }) => {
                 id="remarks"
                 name="remarks"
                 rows={2}
-                value={formData.remarks}
-                onChange={handleInputChange}
-                className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                className="block p-2.5 w-full text-sm text-slate-900 bg-purple-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Add any additional remarks here"
               ></textarea>
             </div>
@@ -230,4 +166,4 @@ const FlooringForm = ({ onSubmit, onCloseModal }) => {
   );
 };
 
-export default FlooringForm;
+export default FurnitureForm;

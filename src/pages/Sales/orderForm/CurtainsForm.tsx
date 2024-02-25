@@ -1,14 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+// Define interface for props
 interface CurtainsFormProps {
   onCloseModal: () => void;
-  onSubmit: () => void;
+  onSubmit: (formData: any) => void;
 }
 
+// Define CurtainsForm component
 const CurtainsForm: React.FC<CurtainsFormProps> = ({
   onCloseModal,
   onSubmit,
 }) => {
+  // State to hold form data
+  const [formData, setFormData] = useState<any>({
+    title: '',
+    description: '',
+    size: '',
+    widthOfFabric: '',
+    noOfPieces: '',
+    noOfPanels: '',
+    modelOfStitching: '',
+    fabricName: '',
+    fabricCode: '',
+    fabricImage: null,
+    tieOption: '',
+    remarks: '',
+  });
+
+  // Function to handle input changes
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // Function to handle file input change
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    setFormData({
+      ...formData,
+      fabricImage: file,
+    });
+  };
+
+  // Function to handle form submission
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(formData); // Pass form data to the parent component
+  };
+
   return (
     <div className="relative bg-white rounded-lg shadow dark:bg-slate-700">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 mt-20">
@@ -156,6 +200,42 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter fabric name"
               />
+            </div>
+            <div>
+              <label
+                htmlFor="tieOption"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Tie Option
+              </label>
+              <select
+                id="tieOption"
+                name="tieOption"
+                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                onChange={handleInputChange}
+                value={formData.tieOption}
+              >
+                <option value="">Select Tie Option</option>
+                <option value="Attached">Attached in curtain</option>
+                <option value="Separate">Separate with tie back holder</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="remarks"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Remarks
+              </label>
+              <textarea
+                id="remarks"
+                name="remarks"
+                rows={4}
+                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Add any additional remarks here"
+                value={formData.remarks}
+                onChange={handleInputChange}
+              ></textarea>
             </div>
             <div>
               <label

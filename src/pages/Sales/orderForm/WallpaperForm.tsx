@@ -126,6 +126,21 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
+            <div className="col-span-2">
+              <label
+                htmlFor="remarks"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Remarks
+              </label>
+              <textarea
+                id="remarks"
+                name="remarks"
+                rows={2}
+                className="block p-2.5 w-full text-sm text-slate-900 bg-white rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Add any additional remarks here"
+              ></textarea>
+            </div>
           </div>
           <button
             type="submit"

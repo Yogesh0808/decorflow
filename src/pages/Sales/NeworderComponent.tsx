@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SofaForm from './orderForm/SofaForm';
 import BlindsForm from './orderForm/BlindsForm';
-import CarpetForm from './orderForm/CarpetForm';
 import CurtainsForm from './orderForm/CurtainsForm';
 import FlooringForm from './orderForm/FlooringForm';
 import WallpaperForm from './orderForm/WallpaperForm';
+import FurnitureForm from './orderForm/FurnitureForm'; // Add this import
 
 axios.defaults.baseURL = 'https://cors-h05i.onrender.com';
 
@@ -15,16 +15,16 @@ const CustomerTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [notification, setNotification] = useState('');
   const [formData, setFormData] = useState({
-    // Initialize form data here for each product
-    Curtains: '',
-    Sofas: '',
-    Blinds: '',
-    Carpets: '',
-    Floorings: '',
+    title: '',
+    description: '',
+    size: '',
+    shapeModel: 'L-Shaped',
+    referenceImage: null,
+    fabricNameCode: '',
+    fabricImage: null,
   });
   const [customers, setCustomers] = useState([]);
 
-  // Define the getHeaders function for Basic Authentication
   const getHeaders = () => {
     const username = 'abinesh';
     const password = 'abi';
@@ -35,21 +35,6 @@ const CustomerTable = () => {
       },
     };
   };
-
-  // Function to fetch customers from the API
-  const fetchCustomers = async () => {
-    try {
-      const response = await axios.get('/api/clients/names', getHeaders());
-      setCustomers(response.data);
-    } catch (error) {
-      console.error('Error fetching customers:', error.message);
-    }
-  };
-
-  useEffect(() => {
-    // Fetch customers when the component mounts
-    fetchCustomers();
-  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -63,6 +48,36 @@ const CustomerTable = () => {
     });
   };
 
+  const productImages = {
+    Curtains:
+      'https://ik.imagekit.io/tealcdn2023/assets/curtains.png?updatedAt=1708796208451',
+    Sofas: 'https://cdn-icons-png.flaticon.com/512/5781/5781883.png',
+    Blinds:
+      'https://ik.imagekit.io/tealcdn2023/assets/blinds.png?updatedAt=1708795944875',
+    Carpets:
+      'https://cdn.iconscout.com/icon/premium/png-256-thumb/carpet-1469898-1243937.png?f=webp',
+    Floorings:
+      'https://ik.imagekit.io/tealcdn2023/assets/flooring.png?updatedAt=1708795833951',
+    Wallpaper:
+      'https://ik.imagekit.io/tealcdn2023/assets/wallpaper.png?updatedAt=1708795761824',
+    Furniture:
+      'https://ik.imagekit.io/tealcdn2023/assets/Decor.png?updatedAt=1708795608010',
+  };
+
+  const fetchCustomers = async () => {
+    try {
+      const response = await axios.get('/api/clients/names', getHeaders());
+      setCustomers(response.data);
+    } catch (error) {
+      console.error('Error fetching customers:', error.message);
+    }
+  };
+
+  const handleCategorySelect = (product) => {
+    setSelectedProduct(product);
+    setShowModal(true); // Show modal when a card is clicked
+  };
+
   // Function to handle modal close
   const handleCloseModal = () => {
     setShowModal(false);
@@ -72,18 +87,6 @@ const CustomerTable = () => {
     });
   };
 
-  const productImages = {
-    Curtains:
-      'https://static.vecteezy.com/system/resources/previews/012/723/093/original/curtain-icon-free-vector.jpg',
-    Sofas: 'https://cdn-icons-png.flaticon.com/512/5781/5781883.png',
-    Blinds: 'https://cdn-icons-png.flaticon.com/512/1606/1606190.png',
-    Carpets:
-      'https://cdn.iconscout.com/icon/premium/png-256-thumb/carpet-1469898-1243937.png?f=webp',
-    Floorings: 'https://www.svgrepo.com/download/208462/parquet-floor.svg',
-    Wallpaper: 'https://cdn-icons-png.flaticon.com/512/253/253002.png',
-  };
-
-  // Function to handle form field changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -92,10 +95,32 @@ const CustomerTable = () => {
     });
   };
 
-  // Function to handle card click
-  const handleCategorySelect = (product) => {
-    setSelectedProduct(product);
-    setShowModal(true); // Show modal when a card is clicked
+  useEffect(() => {
+    // Fetch customers when the component mounts
+    fetchCustomers();
+  }, []);
+  const handleFormSubmit = async (formData) => {
+    try {
+      console.log('Handle Form Submission Called');
+      const { clientName } = selectedCustomer;
+      const dataToSubmit = { ...formData, customerName: clientName };
+      console.log('Submitted Data:', dataToSubmit); // Logging the object directly
+      const response = await axios.post(
+        '/api/products/floorings',
+        dataToSubmit,
+        {
+          headers: {
+            Authorization: 'Basic ' + btoa('abinesh:abi'),
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      console.log('Form submission response:', response.data);
+      setShowModal(false);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // Handle error
+    }
   };
 
   const renderProductForm = () => {
@@ -103,22 +128,24 @@ const CustomerTable = () => {
       case 'Curtains':
         return (
           <CurtainsForm
+            formData={formData}
+            onInputChange={(e) => handleInputChange(e)}
             onCloseModal={handleCloseModal}
             onSubmit={handleSubmit}
           />
         );
       case 'Sofas':
         return (
-          <SofaForm onCloseModal={handleCloseModal} onSubmit={handleSubmit} />
+          <SofaForm
+            formData={formData}
+            onInputChange={(e) => handleInputChange(e)}
+            onCloseModal={handleCloseModal}
+            onSubmit={handleSubmit}
+          />
         );
       case 'Blinds':
         return (
           <BlindsForm onCloseModal={handleCloseModal} onSubmit={handleSubmit} />
-        );
-
-      case 'Carpets':
-        return (
-          <CarpetForm onCloseModal={handleCloseModal} onSubmit={handleSubmit} />
         );
 
       case 'Wallpaper':
@@ -132,10 +159,19 @@ const CustomerTable = () => {
       case 'Floorings':
         return (
           <FlooringForm
+            onSubmit={handleFormSubmit}
             onCloseModal={handleCloseModal}
-            onSubmit={handleSubmit}
           />
         );
+
+      case 'Furniture': // Add the case for Furniture
+        return (
+          <FurnitureForm
+            onSubmit={handleFormSubmit}
+            onCloseModal={handleCloseModal}
+          />
+        );
+
       default:
         return null;
     }
@@ -154,7 +190,7 @@ const CustomerTable = () => {
             );
             setSelectedCustomer(selectedCustomer);
           }}
-          className="block w-full mt-4 p-3 border border-slate-400 shadow-lg rounded-xl focus:outline-none focus:border-red-600"
+          className="block w-full mt-4 p-3 border border-slate-400 shadow-lg rounded-xl dark:bg-slate-950 focus:outline-none focus:border-strokedark"
         >
           <option value="">Select Customer</option>
           {customers.map((customer, index) => (
@@ -181,20 +217,20 @@ const CustomerTable = () => {
             New Order For {selectedCustomer.clientName} - {selectedCustomer.id}
           </p>
 
-          <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100">
+          <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100 dark:bg-gray-800">
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
               {[
                 'Curtains',
                 'Sofas',
                 'Blinds',
-                'Carpets',
                 'Floorings',
                 'Wallpaper',
+                'Furniture',
               ].map((product, index) => (
                 <div
                   key={index}
                   onClick={() => handleCategorySelect(product)}
-                  className="rounded-lg bg-blue-100 shadow-lg overflow-hidden"
+                  className="rounded-lg bg-blue-200 shadow-lg overflow-hidden dark:bg-blue-950"
                 >
                   <img
                     src={productImages[product]}
@@ -202,7 +238,7 @@ const CustomerTable = () => {
                     className="w-full lg:h-32 sm:h-28 p-4"
                   />
                   <div className="p-4">
-                    <p className="text-center text-blue-800 bg-blue-50 rounded-xl py-1 text-xl font-normal">
+                    <p className="text-center text-blue-800 bg-blue-50 dark:text-white dark:bg-blue-800 rounded-xl py-1 text-xl font-normal">
                       {product}
                     </p>
                   </div>
