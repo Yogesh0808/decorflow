@@ -95,7 +95,7 @@ const AddCustomer = () => {
               <select
                 id="salutation"
                 name="salutation"
-                className="border rounded-md py-2 px-3 dark:border-neutral-500 dark:bg-slate-700"
+                className="rounded-md py-2 px-3 dark:border-neutral-500 dark:bg-slate-700"
                 onChange={handleInputChange}
                 value={formData.salutation}
                 required
@@ -112,7 +112,7 @@ const AddCustomer = () => {
                 type="text"
                 name="clientName"
                 id="client-name"
-                className="border rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+                className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
                 onChange={handleInputChange}
                 value={formData.clientName}
                 required
@@ -127,7 +127,7 @@ const AddCustomer = () => {
               type="text"
               name="purpose"
               id="purpose-of-order"
-              className="border rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+              className=" rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
               onChange={handleInputChange}
               value={formData.purpose}
               required
@@ -189,7 +189,7 @@ const AddCustomer = () => {
             <input
               name="phone"
               id="phone"
-              className="border rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+              className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
               onChange={handleInputChange}
               value={formData.phone}
               pattern="[0-9]{10}"
@@ -204,7 +204,7 @@ const AddCustomer = () => {
               type="email"
               name="emailAddress"
               id="email"
-              className="border rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+              className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
               onChange={handleInputChange}
               value={formData.emailAddress}
               required
@@ -218,7 +218,7 @@ const AddCustomer = () => {
               name="address"
               id="address"
               rows="3"
-              className="border rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+              className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
               onChange={handleInputChange}
               value={formData.address}
               required
