@@ -7,7 +7,7 @@ import FlooringForm from "./orderForm/FlooringForm";
 import WallpaperForm from "./orderForm/WallpaperForm";
 import FurnitureForm from "./orderForm/FurnitureForm"; // Add this import
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+axios.defaults.baseURL = "http://localhost:8080/";
 
 const CustomerTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
