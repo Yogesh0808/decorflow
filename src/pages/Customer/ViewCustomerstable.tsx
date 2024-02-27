@@ -37,7 +37,7 @@ function ViewCustomers() {
 
   const getClients = () => {
     axios
-      .get('/api/clients', getHeaders())
+      .get('/api/customer', getHeaders())
       .then((response) => {
         setClients(response.data);
       })
@@ -49,7 +49,7 @@ function ViewCustomers() {
   const deleteClient = (clientId) => {
     if (window.confirm('Are you sure you want to delete this client?')) {
       axios
-        .delete(`/api/clients/${clientId}`, getHeaders())
+        .delete(`/api/customer/${clientId}`, getHeaders())
         .then(() => {
           console.log('Client deleted');
           setToastMessage('Client Deleted successfully.');
@@ -73,7 +73,7 @@ function ViewCustomers() {
 
   const saveEditedClient = (editedData) => {
     axios
-      .put(`/api/clients/${editedData.id}`, editedData, getHeaders())
+      .put(`/api/customer/${editedData.id}`, editedData, getHeaders())
       .then((response) => {
         console.log('Edited client data:', editedData);
         setClients((prevClients) =>

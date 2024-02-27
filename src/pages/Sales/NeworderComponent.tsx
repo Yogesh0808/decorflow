@@ -81,7 +81,7 @@ const CustomerTable = () => {
 
   const fetchCustomers = async () => {
     try {
-      const response = await axios.get("/api/clients/names", getHeaders());
+      const response = await axios.get("/api/customer/names", getHeaders());
       setCustomers(response.data);
     } catch (error) {
       console.error("Error fetching customers:", error.message);

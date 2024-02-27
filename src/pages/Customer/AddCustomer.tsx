@@ -31,7 +31,7 @@ const AddCustomer = () => {
 
   const saveClient = () => {
     axios
-      .post('/api/clients', formData, getHeaders())
+      .post('/api/customer', formData, getHeaders())
       .then((response) => {
         console.log('Client saved:', response.data);
         setShowToast(true); // Show the toast
