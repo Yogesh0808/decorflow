@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-axios.defaults.baseURL = 'https://cors-h05i.onrender.com';
+axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
 const getHeaders = () => {
-  const username = 'abinesh';
-  const password = 'abi';
-  const basicAuth = 'Basic ' + btoa(username + ':' + password);
+  const username = "abinesh";
+  const password = "abi";
+  const basicAuth = "Basic " + btoa(username + ":" + password);
   return {
     headers: {
       Authorization: basicAuth,
@@ -19,16 +19,16 @@ function ViewCustomers() {
   const [showModal, setShowModal] = useState(false);
   const [editedClient, setEditedClient] = useState(null);
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState("");
   const [formData, setFormData] = useState({
-    id: '',
-    salutation: '',
-    clientName: '',
-    clientType: '',
-    purpose: '',
-    address: '',
-    phone: '',
-    emailAddress: '',
+    cid: "",
+    salutation: "",
+    clientName: "",
+    clientType: "",
+    purpose: "",
+    address: "",
+    phone: "",
+    emailAddress: "",
   });
 
   useEffect(() => {
@@ -37,27 +37,27 @@ function ViewCustomers() {
 
   const getClients = () => {
     axios
-      .get('/api/clients', getHeaders())
+      .get("/api/customer", getHeaders())
       .then((response) => {
         setClients(response.data);
       })
       .catch((error) => {
-        console.error('Error fetching clients:', error);
+        console.error("Error fetching clients:", error);
       });
   };
 
   const deleteClient = (clientId) => {
-    if (window.confirm('Are you sure you want to delete this client?')) {
+    if (window.confirm("Are you sure you want to delete this client?")) {
       axios
-        .delete(`/api/clients/${clientId}`, getHeaders())
+        .delete(`/api/customer/${clientId}`, getHeaders())
         .then(() => {
-          console.log('Client deleted');
-          setToastMessage('Client Deleted successfully.');
+          console.log("Client deleted");
+          setToastMessage("Client Deleted successfully.");
           setShowToast(true);
           getClients();
         })
         .catch((error) => {
-          console.error('Error deleting client:', error);
+          console.error("Error deleting client:", error);
         });
     }
   };
@@ -73,23 +73,23 @@ function ViewCustomers() {
 
   const saveEditedClient = (editedData) => {
     axios
-      .put(`/api/clients/${editedData.id}`, editedData, getHeaders())
+      .put(`/api/customer/${editedData.id}`, editedData, getHeaders())
       .then((response) => {
-        console.log('Edited client data:', editedData);
+        console.log("Edited client data:", editedData);
         setClients((prevClients) =>
           prevClients.map((client) => {
             if (client.id === editedData.id) {
               return editedData;
             }
             return client;
-          }),
+          })
         );
         setShowModal(false);
-        setToastMessage('Client Edited successfully.');
+        setToastMessage("Client Edited successfully.");
         setShowToast(true);
       })
       .catch((error) => {
-        console.error('Error saving edited client:', error);
+        console.error("Error saving edited client:", error);
       });
   };
 
@@ -98,7 +98,7 @@ function ViewCustomers() {
     if (showToast) {
       timer = setTimeout(() => {
         setShowToast(false);
-        setToastMessage('');
+        setToastMessage("");
       }, 3500);
     }
     return () => clearTimeout(timer);
@@ -147,7 +147,7 @@ function ViewCustomers() {
                   className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
                 >
                   <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                    {client.id}
+                    {/*client.id*/}
                   </td>
                   <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                     {client.salutation}
@@ -179,7 +179,7 @@ function ViewCustomers() {
         </div>
         {showModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-            <div className="bg-slate-200 w-full lg:max-w-md sm:max-w-64 rounded-xl p-6 dark:bg-slate-900">
+            <div className="bg-slate-200 w-full lg:max-w-md sm:max-w-64 rounded-xl p- dark:bg-slate-900">
               {/*<h2 className="text-3xl text-center my-1">Edit Client</h2>*/}
               <EditClientModal
                 client={editedClient}
@@ -227,19 +227,19 @@ function EditClientModal({
 }) {
   // State variables for edited client data
   const [editedSalutation, setEditedSalutation] = useState(
-    client?.salutation || '',
+    client?.salutation || ""
   );
   const [editedClientName, setEditedClientName] = useState(
-    client?.clientName || '',
+    client?.clientName || ""
   );
   const [editedClientType, setEditedClientType] = useState(
-    client?.clientType || '',
+    client?.clientType || ""
   );
-  const [editedPurpose, setEditedPurpose] = useState(client?.purpose || '');
-  const [editedAddress, setEditedAddress] = useState(client?.address || '');
-  const [editedPhone, setEditedPhone] = useState(client?.phone || '');
+  const [editedPurpose, setEditedPurpose] = useState(client?.purpose || "");
+  const [editedAddress, setEditedAddress] = useState(client?.address || "");
+  const [editedPhone, setEditedPhone] = useState(client?.phone || "");
   const [editedEmailAddress, setEditedEmailAddress] = useState(
-    client?.emailAddress || '',
+    client?.emailAddress || ""
   );
 
   // Function to handle saving the edited client data
@@ -267,7 +267,7 @@ function EditClientModal({
       saveEditedClient(editedData);
     } else {
       // Display an alert if any field is empty
-      alert('Please fill in all fields.');
+      alert("Please fill in all fields.");
     }
   };
 
