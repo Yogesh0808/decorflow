@@ -3,11 +3,13 @@ import React from 'react';
 interface FurnitureOrdersTableProps {
   orders: {
     id: number;
+    title: string;
     description: string;
     size: string;
     quantity: number;
     referenceCode: string;
     referenceImage: string;
+    remarks: string;
   }[];
 }
 
@@ -22,6 +24,9 @@ const FurnitureOrdersTable: React.FC<FurnitureOrdersTableProps> = ({
             <tr>
               <th scope="col" className="px-3 py-4">
                 Order ID
+              </th>
+              <th scope="col" className="px-3 py-4">
+                Title
               </th>
               <th scope="col" className="px-3 py-4">
                 Description
@@ -39,6 +44,9 @@ const FurnitureOrdersTable: React.FC<FurnitureOrdersTableProps> = ({
                 Reference Image
               </th>
               <th scope="col" className="px-4 py-4">
+                Remarks
+              </th>
+              <th scope="col" className="px-4 py-4">
                 Action
               </th>
             </tr>
@@ -52,7 +60,8 @@ const FurnitureOrdersTable: React.FC<FurnitureOrdersTableProps> = ({
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                   {order.id}
                 </td>
-                <td className="px-4 py-2">{order.description}</td>
+                <td className="px-3 py-2">{order.title}</td>
+                <td className="px-3 py-2">{order.description}</td>
                 <td className="px-4 py-2">{order.size}</td>
                 <td className="px-4 py-2">{order.quantity}</td>
                 <td className="px-4 py-2">{order.referenceCode}</td>
@@ -63,6 +72,7 @@ const FurnitureOrdersTable: React.FC<FurnitureOrdersTableProps> = ({
                     style={{ maxWidth: '100px' }}
                   />
                 </td>
+                <td className="px-4 py-2">{order.remarks}</td>
                 <td className="px-4 py-2">
                   {/* Add action buttons here if needed */}
                 </td>

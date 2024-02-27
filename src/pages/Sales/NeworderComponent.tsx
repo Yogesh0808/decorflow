@@ -5,7 +5,7 @@ import BlindsForm from "./orderForm/BlindsForm";
 import CurtainsForm from "./orderForm/CurtainsForm";
 import FlooringForm from "./orderForm/FlooringForm";
 import WallpaperForm from "./orderForm/WallpaperForm";
-import FurnitureForm from "./orderForm/FurnitureForm"; // Add this import
+import FurnitureForm from "./orderForm/FurnitureForm";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
@@ -24,7 +24,6 @@ const CustomerTable = () => {
     fabricImage: null,
   });
   const [customers, setCustomers] = useState([]);
-
   const getHeaders = () => {
     const username = "abinesh";
     const password = "abi";
@@ -35,7 +34,6 @@ const CustomerTable = () => {
       },
     };
   };
-
   /*const handleSubmit = (e) => {
     e.preventDefault();
     // Your logic for form submission goes here
@@ -47,7 +45,6 @@ const CustomerTable = () => {
       [selectedProduct]: '',
     });
   };*/
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedCustomer) {
@@ -62,7 +59,6 @@ const CustomerTable = () => {
       [selectedProduct]: "",
     });
   };
-
   const productImages = {
     Curtains:
       "https://ik.imagekit.io/tealcdn2023/assets/curtains.png?updatedAt=1708796208451",
@@ -78,21 +74,18 @@ const CustomerTable = () => {
     Furniture:
       "https://ik.imagekit.io/tealcdn2023/assets/Decor.png?updatedAt=1708795608010",
   };
-
   const fetchCustomers = async () => {
     try {
-      const response = await axios.get("/api/clients/names", getHeaders());
+      const response = await axios.get("/api/customer/names", getHeaders());
       setCustomers(response.data);
     } catch (error) {
       console.error("Error fetching customers:", error.message);
     }
   };
-
   const handleCategorySelect = (product) => {
     setSelectedProduct(product);
     setShowModal(true); // Show modal when a card is clicked
   };
-
   // Function to handle modal close
   const handleCloseModal = () => {
     setShowModal(false);
@@ -101,7 +94,6 @@ const CustomerTable = () => {
       [selectedProduct]: "",
     });
   };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -109,12 +101,10 @@ const CustomerTable = () => {
       [name]: value,
     });
   };
-
   useEffect(() => {
     // Fetch customers when the component mounts
     fetchCustomers();
   }, []);
-
   const handleFormSubmit = async (formData) => {
     try {
       console.log("Handle Form Submission Called");
@@ -135,7 +125,6 @@ const CustomerTable = () => {
       console.error("Error submitting form:", error);
     }
   };
-
   const renderProductForm = () => {
     switch (selectedProduct) {
       case "Curtains":
@@ -155,13 +144,17 @@ const CustomerTable = () => {
             onInputChange={(e) => handleInputChange(e)}
             onCloseModal={handleCloseModal}
             onSubmit={handleSubmit}
+            selectedCustomer={selectedCustomer}
           />
         );
       case "Blinds":
         return (
-          <BlindsForm onCloseModal={handleCloseModal} onSubmit={handleSubmit} />
+          <BlindsForm
+            onCloseModal={handleCloseModal}
+            onSubmit={handleSubmit}
+            selectedCustomer={selectedCustomer}
+          />
         );
-
       case "Wallpaper":
         return (
           <WallpaperForm
@@ -170,7 +163,6 @@ const CustomerTable = () => {
             selectedCustomer={selectedCustomer}
           />
         );
-
       case "Floorings":
         return (
           <FlooringForm
@@ -179,7 +171,6 @@ const CustomerTable = () => {
             selectedCustomer={selectedCustomer}
           />
         );
-
       case "Furniture":
         return (
           <FurnitureForm
@@ -188,12 +179,10 @@ const CustomerTable = () => {
             selectedCustomer={selectedCustomer}
           />
         );
-
       default:
         return null;
     }
   };
-
   return (
     <div>
       {/* Show customer selection dropdown if no customer is selected */}
@@ -217,7 +206,6 @@ const CustomerTable = () => {
           ))}
         </select>
       )}
-
       {/* Show cards and modal if a customer is selected */}
       {selectedCustomer && (
         <>
@@ -227,14 +215,12 @@ const CustomerTable = () => {
           >
             Back
           </button>
-
           {/* Cards */}
           {/* New Order For {client Name} */}
           <p className="text-center text-slate-700 dark:text-slate-50 text-2xl">
             New Order For {selectedCustomer && selectedCustomer.clientName} -{" "}
             {selectedCustomer && selectedCustomer.id}
           </p>
-
           <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100 dark:bg-gray-800">
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
               {[
@@ -275,7 +261,6 @@ const CustomerTable = () => {
               </div>
             </div>
           )}
-
           {/* Notification */}
           {notification && (
             <div className="absolute bottom-0 right-2 text-xl text-lime-600 bg-slate-100 p-4 rounded-xl">
@@ -287,5 +272,4 @@ const CustomerTable = () => {
     </div>
   );
 };
-
 export default CustomerTable;

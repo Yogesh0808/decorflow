@@ -25,6 +25,17 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
     remarks: "",
   });
 
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -40,9 +51,10 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        const base64String = reader.result?.toString().split(",")[1];
         setFormData({
           ...formData,
-          fabricImage: reader.result as string,
+          image: base64String,
         });
       };
       reader.readAsDataURL(file);
@@ -57,24 +69,19 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         customerName: selectedCustomer.clientName,
         customerId: selectedCustomer.id,
       };
-      console.log(dataToSubmit);
 
-      /*const response = await axios.post(
+      const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Curtains`,
-        dataToSubmit
-      );*/
+        dataToSubmit,
+        getHeaders()
+      );
 
-      // Handle success response
       console.log("Form submitted successfully:", response.data);
-
-      // Close modal or perform any other necessary actions
       onCloseModal();
     } catch (error) {
       console.error("Error submitting form:", error);
-      // Handle error
     }
   };
-
   return (
     <div className="relative bg-white rounded-lg shadow dark:bg-slate-700">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 mt-20">

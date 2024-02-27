@@ -1,44 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import axios from "axios";
 
-const FlooringForm = ({ onSubmit, onCloseModal }) => {
+interface FlooringFormProps {
+  onSubmit: (formData: any) => void;
+  onCloseModal: () => void;
+  selectedCustomer: { id: string; clientName: string };
+}
+
+const FlooringForm: React.FC<FlooringFormProps> = ({
+  onSubmit,
+  onCloseModal,
+  selectedCustomer,
+}) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    sizeOfFloor: '',
-    numberOfSqft: '',
-    catalogCodeAndNumber: '',
+    title: "",
+    description: "",
+    sizeOfFloor: "",
+    numberOfSqft: "",
+    catalogCodeAndNumber: "",
     flooringImage: null,
-    remarks: '',
+    remarks: "",
+    id: "",
   });
-
-  // Define state for modal visibility
-  const [showModal, setShowModal] = useState(false);
-
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
   };
-  const [flooringType, setFlooringType] = useState('');
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
-    });
+    }));
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      flooringImage: file,
-    });
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
+        setFormData({
+          ...formData,
+          image: base64String,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Call the onSubmit callback function passed from the parent component
-    onSubmit(formData);
+    try {
+      const dataToSubmit = {
+        ...formData,
+        customerName: selectedCustomer.clientName,
+        customerId: selectedCustomer.id,
+      };
+
+      const response = await axios.post(
+        `/api/products/${selectedCustomer.id}/Flooring`,
+        dataToSubmit,
+        getHeaders()
+      );
+
+      console.log("Form submitted successfully:", response.data);
+      onCloseModal();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
@@ -183,7 +222,7 @@ const FlooringForm = ({ onSubmit, onCloseModal }) => {
               <input
                 type="file"
                 name="flooringImage"
-                onChange={handleFileChange}
+                onChange={handleFileInputChange}
                 accept="image/*"
                 required
               />

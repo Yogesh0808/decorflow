@@ -1,48 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import axios from "axios";
 
 interface BlindsFormProps {
   onCloseModal: () => void;
   onSubmit: () => void;
+  selectedCustomer: { id: string; clientName: string };
 }
 
-const BlindsForm: React.FC<BlindsFormProps> = ({ onCloseModal, onSubmit }) => {
+const BlindsForm: React.FC<BlindsFormProps> = ({
+  onCloseModal,
+  onSubmit,
+  selectedCustomer,
+}) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    size: '',
-    quantity: '',
-    typeOfBlinds: 'Roman Blinds',
-    catalogueName: '',
-    fabricCode: '',
+    title: "",
+    description: "",
+    size: "",
+    quantity: "",
+    typeOfBlinds: "Roman Blinds",
+    catalogueName: "",
+    fabricCode: "",
     fabricImage: null,
-    remarks: '', // New field for Remarks
+    remarks: "", // New field for Remarks
   });
 
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
-    });
+    }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setFormData({
-      ...formData,
-      fabricImage: file,
-    });
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
+        setFormData({
+          ...formData,
+          image: base64String,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit();
-  };
+    try {
+      const dataToSubmit = {
+        ...formData,
+        customerName: selectedCustomer.clientName,
+        customerId: selectedCustomer.id,
+      };
 
+      const response = await axios.post(
+        `/api/products/${selectedCustomer.id}/Blinds`,
+        dataToSubmit,
+        getHeaders()
+      );
+
+      console.log("Form submitted successfully:", response.data);
+      onCloseModal();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
   return (
     <div className="relative bg-white rounded-lg shadow dark:bg-slate-700">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 mt-20">

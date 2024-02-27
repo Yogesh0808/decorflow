@@ -1,18 +1,90 @@
-import React from 'react';
+import React, { useState } from "react";
+import axios from "axios";
 
 interface WallpaperFormProps {
   onCloseModal: () => void;
-  onSubmit: () => void;
+  selectedCustomer: { id: string; clientName: string };
 }
 
 const WallpaperForm: React.FC<WallpaperFormProps> = ({
   onCloseModal,
-  onSubmit,
+  selectedCustomer,
 }) => {
+  const [formData, setFormData] = useState<any>({
+    title: "",
+    description: "",
+    size: "",
+    wallpaperType: "",
+    pattern: "",
+    rollLength: "",
+    rollWidth: "",
+    repeatSize: "",
+    remarks: "",
+    image: null,
+  });
+
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
+        setFormData({
+          ...formData,
+          image: base64String, // Set the base64 string
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const dataToSubmit = {
+        ...formData,
+        customerName: selectedCustomer.clientName,
+        customerId: selectedCustomer.id,
+      };
+
+      const response = await axios.post(
+        `/api/products/${selectedCustomer.id}/Wallpaper`,
+        dataToSubmit,
+        getHeaders()
+      );
+
+      console.log("Form submitted successfully:", response.data);
+      onCloseModal();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
-    <div className="relative bg-lime-50 rounded-lg shadow dark:bg-slate-700">
+    <div className="relative bg-white rounded-lg shadow dark:bg-slate-700">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 mt-20">
-        <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
+        <h3 className="text-lg font-normal text-slate-800 dark:text-white">
           Wallpaper Order Form
         </h3>
         <button
@@ -40,8 +112,8 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
         </button>
       </div>
       <div className="overflow-auto max-h-[30rem]">
-        <form className="p-4 md:p-5" onSubmit={onSubmit}>
-          <div className="grid gap-4 mb-4 grid-cols-2">
+        <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+          <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
             <div className="col-span-2">
               <label
                 htmlFor="title"
@@ -52,11 +124,14 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
               <input
                 type="text"
                 id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter title"
               />
             </div>
-            <div className="col-span-2">
+            <div>
               <label
                 htmlFor="description"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -64,69 +139,122 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
                 Description
               </label>
               <textarea
+                type="text"
                 id="description"
+                name="description"
+                value={formData.description}
                 rows={4}
+                onChange={handleInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write product description here"
               ></textarea>
             </div>
-            <div className="col-span-2">
+            <div>
               <label
-                htmlFor="sizeOfWall"
+                htmlFor="size"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Size of the Wall
+                Size
               </label>
               <input
                 type="text"
-                id="sizeOfWall"
+                value={formData.size}
+                id="size"
+                name="size"
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter size of the wall"
+                placeholder="Enter size"
               />
             </div>
-            <div className="col-span-2">
+            <div>
               <label
-                htmlFor="numberOfRollsSqftYard"
+                htmlFor="wallpaperType"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Number of Rolls/sqft or yard
+                Wallpaper Type
               </label>
               <input
                 type="text"
-                id="numberOfRollsSqftYard"
+                id="wallpaperType"
+                name="wallpaperType"
+                value={formData.wallpaperType}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter number of rolls/sqft or yard"
+                placeholder="Enter wallpaper type"
               />
             </div>
-            <div className="col-span-2">
+            <div>
               <label
-                htmlFor="catalogCodeNumber"
+                htmlFor="pattern"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Catalog Code and Number
+                Pattern
               </label>
               <input
                 type="text"
-                id="catalogCodeNumber"
+                id="pattern"
+                name="pattern"
+                value={formData.pattern}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter catalog code and number"
+                placeholder="Enter pattern"
               />
             </div>
-            <div className="col-span-2">
+            <div>
               <label
-                htmlFor="wallpaperImage"
+                htmlFor="rollLength"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Wallpaper Image
+                Roll Length
               </label>
               <input
-                type="file"
-                id="wallpaperImage"
-                accept="image/*"
-                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                type="text"
+                id="rollLength"
+                name="rollLength"
+                value={formData.rollLength}
+                onChange={handleInputChange}
+                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter roll length"
               />
             </div>
-            <div className="col-span-2">
+            <div>
+              <label
+                htmlFor="rollWidth"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Roll Width
+              </label>
+              <input
+                type="text"
+                id="rollWidth"
+                name="rollWidth"
+                value={formData.rollWidth}
+                onChange={handleInputChange}
+                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter roll width"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="repeatSize"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Repeat Size
+              </label>
+              <input
+                type="text"
+                id="repeatSize"
+                name="repeatSize"
+                value={formData.repeatSize}
+                onChange={handleInputChange}
+                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter repeat size"
+              />
+            </div>
+          </div>
+          <hr className="my-4" />
+          <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
+            <div>
               <label
                 htmlFor="remarks"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -136,10 +264,28 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
               <textarea
                 id="remarks"
                 name="remarks"
-                rows={2}
-                className="block p-2.5 w-full text-sm text-slate-900 bg-white rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                rows={4}
+                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Add any additional remarks here"
+                value={formData.remarks}
+                onChange={handleInputChange}
               ></textarea>
+            </div>
+            <div>
+              <label
+                htmlFor="image"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Wallpaper Image
+              </label>
+              <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                onChange={handleFileInputChange}
+                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
             </div>
           </div>
           <button

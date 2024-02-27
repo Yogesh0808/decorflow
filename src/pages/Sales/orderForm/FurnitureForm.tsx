@@ -1,14 +1,83 @@
-import React from 'react';
+import React, { useState } from "react";
+import axios from "axios";
 
 interface FurnitureFormProps {
   onCloseModal: () => void;
-  onSubmit: () => void;
+  selectedCustomer: { id: string; clientName: string };
 }
 
 const FurnitureForm: React.FC<FurnitureFormProps> = ({
   onCloseModal,
-  onSubmit,
+  selectedCustomer,
 }) => {
+  const [formData, setFormData] = useState<any>({
+    title: "",
+    description: "",
+    size: "",
+    qty: "",
+    referenceCode: "",
+    referenceImage: null,
+    remarks: "",
+  });
+
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result?.toString().split(",")[1];
+        setFormData({
+          ...formData,
+          image: base64String,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const dataToSubmit = {
+        ...formData,
+        customerName: selectedCustomer.clientName,
+        customerId: selectedCustomer.id,
+      };
+
+      const response = await axios.post(
+        `/api/products/${selectedCustomer.id}/Furniture`,
+        dataToSubmit,
+        getHeaders()
+      );
+
+      console.log("Form submitted successfully:", response.data);
+      onCloseModal();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
     <div className="relative bg-purple-100 rounded-lg shadow dark:bg-slate-700 sm:mt-2 lg:mt-20 lg:ml-10">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-slate-600">
@@ -40,7 +109,7 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
         </button>
       </div>
       <div className="overflow-auto max-h-[30rem]">
-        <form className="p-4 md:p-5" onSubmit={onSubmit}>
+        <form className="p-4 md:p-5" onSubmit={handleSubmit}>
           <div className="grid gap-4 mb-4 grid-cols-2">
             <div className="col-span-2">
               <label
@@ -52,8 +121,11 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
               <input
                 type="text"
                 id="title"
+                name="title"
                 className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter title"
+                value={formData.title}
+                onChange={handleInputChange}
               />
             </div>
             <div className="col-span-2">
@@ -65,9 +137,12 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
               </label>
               <textarea
                 id="description"
-                rows={4}
+                name="description"
+                rows={2}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-purple-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write product description here"
+                value={formData.description}
+                onChange={handleInputChange}
               ></textarea>
             </div>
             <div className="col-span-2">
@@ -80,6 +155,9 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
               <input
                 type="text"
                 id="size"
+                name="size"
+                value={formData.size}
+                onChange={handleInputChange}
                 className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter size"
               />
@@ -94,8 +172,11 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
               <input
                 type="text"
                 id="qty"
+                name="qty"
                 className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter quantity"
+                value={formData.qty}
+                onChange={handleInputChange}
               />
             </div>
             <div className="col-span-2">
@@ -108,8 +189,11 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
               <input
                 type="text"
                 id="referenceCode"
+                name="referenceCode"
+                value={formData.referenceCode}
                 className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter reference code"
+                onChange={handleInputChange}
               />
             </div>
             <div className="col-span-2">
@@ -121,9 +205,11 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
               </label>
               <input
                 type="file"
-                id="referenceImage"
+                id="image"
+                name="image"
                 accept="image/*"
-                className="block p-2.5 w-full text-sm text-slate-900 bg-purple-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={handleFileInputChange}
+                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
             <div className="col-span-2">
@@ -139,6 +225,8 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
                 rows={2}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-purple-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Add any additional remarks here"
+                onChange={handleInputChange}
+                value={formData.remarks}
               ></textarea>
             </div>
           </div>

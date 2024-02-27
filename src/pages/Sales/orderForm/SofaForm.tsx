@@ -1,22 +1,86 @@
-import React from 'react';
+import React, { useState } from "react";
+import axios from "axios";
 
 interface SofaFormProps {
-  formData: any; // Define type for form data
-  onInputChange: (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
-  ) => void; // Define type for input change event handler
   onCloseModal: () => void;
-  onSubmit: () => void;
+  selectedCustomer: { id: string; clientName: string };
 }
 
 const SofaForm: React.FC<SofaFormProps> = ({
-  formData,
-  onInputChange,
   onCloseModal,
-  onSubmit,
+  selectedCustomer,
 }) => {
+  const [formData, setFormData] = useState<any>({
+    title: "",
+    description: "",
+    size: "",
+    shapeModel: "L-Shaped",
+    referenceImage: null,
+    fabricNameCode: "",
+    fabricImage: null,
+    sofaLeg: "",
+    sofaLegImage: null,
+    remarks: "",
+  });
+
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
+        setFormData({
+          ...formData,
+          image: base64String,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const dataToSubmit = {
+        ...formData,
+        customerName: selectedCustomer.clientName,
+        customerId: selectedCustomer.id,
+      };
+
+      const response = await axios.post(
+        `/api/products/${selectedCustomer.id}/Sofa`,
+        dataToSubmit,
+        getHeaders()
+      );
+
+      console.log("Form submitted successfully:", response.data);
+      onCloseModal();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
     <div className="relative bg-rose-50 rounded-lg shadow dark:bg-slate-700">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
@@ -48,8 +112,10 @@ const SofaForm: React.FC<SofaFormProps> = ({
         </button>
       </div>
       <div className="overflow-auto max-h-[30rem]">
-        <form className="p-4 md:p-5" onSubmit={onSubmit}>
+        <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+          {/* Form fields */}
           <div className="grid gap-4 mb-4 grid-cols-2">
+            {/* Title */}
             <div className="col-span-2">
               <label
                 htmlFor="title"
@@ -60,10 +126,14 @@ const SofaForm: React.FC<SofaFormProps> = ({
               <input
                 type="text"
                 id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter title"
               />
             </div>
+            {/* Description */}
             <div className="col-span-2">
               <label
                 htmlFor="description"
@@ -73,11 +143,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
               </label>
               <textarea
                 id="description"
+                name="description"
                 rows={4}
+                value={formData.description}
+                onChange={handleInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write product description here"
               ></textarea>
             </div>
+            {/* Size */}
             <div className="col-span-2">
               <label
                 htmlFor="size"
@@ -88,10 +162,14 @@ const SofaForm: React.FC<SofaFormProps> = ({
               <input
                 type="text"
                 id="size"
+                name="size"
+                value={formData.size}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter size"
               />
             </div>
+            {/* Shape and Model */}
             <div className="col-span-2">
               <label
                 htmlFor="shapeModel"
@@ -101,6 +179,9 @@ const SofaForm: React.FC<SofaFormProps> = ({
               </label>
               <select
                 id="shapeModel"
+                name="shapeModel"
+                value={formData.shapeModel}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               >
                 <option value="L-Shaped">L-Shaped</option>
@@ -108,6 +189,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 <option value="Squared">Squared</option>
               </select>
             </div>
+            {/* Reference Image */}
             <div className="col-span-2">
               <label
                 htmlFor="referenceImage"
@@ -118,10 +200,13 @@ const SofaForm: React.FC<SofaFormProps> = ({
               <input
                 type="file"
                 id="referenceImage"
+                name="referenceImage"
                 accept="image/*"
+                onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
+            {/* Fabric Name & Code */}
             <div className="col-span-2">
               <label
                 htmlFor="fabricNameCode"
@@ -132,10 +217,14 @@ const SofaForm: React.FC<SofaFormProps> = ({
               <input
                 type="text"
                 id="fabricNameCode"
+                name="fabricNameCode"
+                value={formData.fabricNameCode}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter fabric name and code"
               />
             </div>
+            {/* Fabric Image */}
             <div className="col-span-2">
               <label
                 htmlFor="fabricImage"
@@ -146,10 +235,13 @@ const SofaForm: React.FC<SofaFormProps> = ({
               <input
                 type="file"
                 id="fabricImage"
+                name="fabricImage"
                 accept="image/*"
+                onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
+            {/* Sofa Leg */}
             <div className="col-span-2">
               <label
                 htmlFor="sofaLeg"
@@ -162,11 +254,12 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 id="sofaLeg"
                 name="sofaLeg"
                 value={formData.sofaLeg}
-                onChange={onInputChange}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter sofa leg details"
               />
             </div>
+            {/* Sofa Leg Image */}
             <div className="col-span-2">
               <label
                 htmlFor="sofaLegImage"
@@ -177,10 +270,13 @@ const SofaForm: React.FC<SofaFormProps> = ({
               <input
                 type="file"
                 id="sofaLegImage"
+                name="sofaLegImage"
                 accept="image/*"
+                onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
+            {/* Remarks */}
             <div className="col-span-2">
               <label
                 htmlFor="remarks"
@@ -193,12 +289,13 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 name="remarks"
                 rows={4}
                 value={formData.remarks}
-                onChange={onInputChange}
+                onChange={handleInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Add any additional remarks here"
               ></textarea>
             </div>
           </div>
+          {/* Submit Button */}
           <button
             type="submit"
             className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
