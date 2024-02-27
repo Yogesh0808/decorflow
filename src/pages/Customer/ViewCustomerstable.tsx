@@ -147,7 +147,7 @@ function ViewCustomers() {
                   className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
                 >
                   <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                    {/*client.id*/}
+                    {client.cid}
                   </td>
                   <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                     {client.salutation}
