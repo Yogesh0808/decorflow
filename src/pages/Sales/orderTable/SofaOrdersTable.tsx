@@ -61,9 +61,9 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.size}</td>
                 <td className="px-4 py-2">{product.data.shapeModel}</td>
                 <td className="px-4 py-2">
-                  {product.image ? (
+                  {product.data.image ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.image}`}
+                      src={`data:image/jpeg;base64,${product.data.image}`}
                       width="100"
                     />
                   ) : (
@@ -72,9 +72,9 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 </td>
                 <td className="px-4 py-2">{product.data.fabricNameCode}</td>
                 <td className="px-4 py-2">
-                  {product.limg ? (
+                  {product.data.limg ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.limg}`}
+                      src={`data:image/jpeg;base64,${product.data.limg}`}
                       width="100"
                     />
                   ) : (
@@ -85,7 +85,7 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">
                   {product.rimg ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.rimg}`}
+                      src={`data:image/jpeg;base64,${product.data.rimg}`}
                       width="100"
                     />
                   ) : (
@@ -117,4 +117,3 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
 };
 
 export default SofaOrdersTable;
-
