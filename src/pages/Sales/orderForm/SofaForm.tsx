@@ -46,13 +46,14 @@ const SofaForm: React.FC<SofaFormProps> = ({
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
+    const name = e.target.name;
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
         setFormData({
           ...formData,
-          image: base64String,
+          [name]: base64String,
         });
       };
       reader.readAsDataURL(file);
@@ -67,7 +68,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
         customerName: selectedCustomer.clientName,
         customerId: selectedCustomer.id,
       };
-
+      console.log("Sofa Data Sending:", dataToSubmit);
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Sofa`,
         dataToSubmit,
