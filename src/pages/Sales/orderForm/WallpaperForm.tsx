@@ -49,10 +49,9 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
         setFormData({
           ...formData,
-          image: base64String, // Set the base64 string
+          image: file, // Set the file object directly
         });
       };
       reader.readAsDataURL(file);
@@ -68,10 +67,23 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
         customerId: selectedCustomer.id,
       };
 
+      const formDataToSend = new FormData();
+      Object.entries(dataToSubmit).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
+
+      // Append the image separately as a file
+      formDataToSend.append("file", formData.image);
+
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Wallpaper`,
-        dataToSubmit,
-        getHeaders()
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            ...getHeaders().headers,
+          },
+        }
       );
 
       console.log("Form submitted successfully:", response.data);

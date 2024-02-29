@@ -108,14 +108,13 @@ const CustomerTable = () => {
   const handleFormSubmit = async (formData) => {
     try {
       console.log("Handle Form Submission Called");
-      const { clientName, id } = selectedCustomer; // Destructure clientName and id from selectedCustomer
+      const { clientName, cid } = selectedCustomer; // Destructure clientName and id from selectedCustomer
       const dataToSubmit = {
         ...formData,
         customerName: clientName,
-        customerId: id,
+        customerId: cid,
       }; // Include customerName and customerId in the data
       console.log("Submitted Data:", dataToSubmit); // Logging the object directly
-      // Pass data to CurtainsForm
       setShowModal(false);
       setFormData({
         ...formData,
@@ -201,7 +200,7 @@ const CustomerTable = () => {
           <option value="">Select Customer</option>
           {customers.map((customer, index) => (
             <option key={index} value={customer.id}>
-              {customer.clientName} - {customer.id}
+              {customer.clientName} - {customer.cid}
             </option>
           ))}
         </select>
@@ -219,7 +218,7 @@ const CustomerTable = () => {
           {/* New Order For {client Name} */}
           <p className="text-center text-slate-700 dark:text-slate-50 text-2xl">
             New Order For {selectedCustomer && selectedCustomer.clientName} -{" "}
-            {selectedCustomer && selectedCustomer.id}
+            {selectedCustomer && selectedCustomer.cid}
           </p>
           <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100 dark:bg-gray-800">
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
