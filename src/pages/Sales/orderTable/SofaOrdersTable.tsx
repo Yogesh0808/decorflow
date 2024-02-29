@@ -117,3 +117,4 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
 };
 
 export default SofaOrdersTable;
+
