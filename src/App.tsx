@@ -19,7 +19,6 @@ import Neworder from "./pages/Sales/Neworder";
 import Vieworder from "./pages/Sales/Vieworder";
 import AddCustomer from "./pages/Customer/AddCustomer";
 import ViewCustomer from "./pages/Customer/ViewCustomer";
-import NotFound from "./pages/NotFound";
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
