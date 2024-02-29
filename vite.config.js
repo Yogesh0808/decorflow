@@ -8,4 +8,4 @@ export default defineConfig({
     rollupOptions: {
       external: ['parallax-js']
     },
-});
+}});
