@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Parallax from "parallax-js"; // Assuming Parallax is installed as a dependency
 
-import "../css/404.scss";
+import "../css/404.css";
 import favicon from "/favicon.png";
 
 const NotFoundPage: React.FC = () => {
