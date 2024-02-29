@@ -15,11 +15,11 @@ const SofaForm: React.FC<SofaFormProps> = ({
     description: "",
     size: "",
     shapeModel: "L-Shaped",
-    rimg: null,
+    referenceImage: null,
     fabricNameCode: "",
     fabricImage: null,
     sofaLeg: "",
-    limg: null,
+    sofaLegImage: null,
     remarks: "",
   });
 
@@ -53,6 +53,8 @@ const SofaForm: React.FC<SofaFormProps> = ({
         setFormData({
           ...formData,
           image: base64String,
+          limg: base64String,
+          rimg: base64String,
         });
       };
       reader.readAsDataURL(file);
@@ -67,6 +69,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
         customerName: selectedCustomer.clientName,
         customerId: selectedCustomer.id,
       };
+      console.log("Sofa Data Sending:", dataToSubmit);
 
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Sofa`,
@@ -192,15 +195,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
             {/* Reference Image */}
             <div className="col-span-2">
               <label
-                htmlFor="rimg"
+                htmlFor="referenceImage"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Reference Image
               </label>
               <input
                 type="file"
-                id="rimg"
-                name="rimg"
+                id="referenceImage"
+                name="referenceImage"
                 accept="image/*"
                 onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -262,15 +265,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
             {/* Sofa Leg Image */}
             <div className="col-span-2">
               <label
-                htmlFor="limg"
+                htmlFor="sofaLegImage"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Sofa Leg Image
               </label>
               <input
                 type="file"
-                id="limg"
-                name="limg"
+                id="sofaLegImage"
+                name="sofaLegImage"
                 accept="image/*"
                 onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
