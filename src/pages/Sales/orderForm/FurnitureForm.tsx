@@ -3,7 +3,7 @@ import axios from "axios";
 
 interface FurnitureFormProps {
   onCloseModal: () => void;
-  selectedCustomer: { id: string; clientName: string };
+  selectedCustomer: { id: string; clientName: string; cid: string };
 }
 
 const FurnitureForm: React.FC<FurnitureFormProps> = ({

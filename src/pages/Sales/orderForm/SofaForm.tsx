@@ -3,7 +3,7 @@ import axios from "axios";
 
 interface SofaFormProps {
   onCloseModal: () => void;
-  selectedCustomer: { id: string; clientName: string };
+  selectedCustomer: { cid: string; clientName: string };
 }
 
 const SofaForm: React.FC<SofaFormProps> = ({

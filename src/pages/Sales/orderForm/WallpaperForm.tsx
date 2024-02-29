@@ -13,14 +13,12 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
   const [formData, setFormData] = useState<any>({
     title: "",
     description: "",
-    size: "",
-    wallpaperType: "",
-    pattern: "",
-    rollLength: "",
-    rollWidth: "",
-    repeatSize: "",
-    remarks: "",
+    sizeOfWall: "",
+    noOfRolls: "",
+    catalogCode: "",
+    catalogNumber: "",
     image: null,
+    remarks: "",
   });
 
   const getHeaders = () => {
@@ -151,104 +149,70 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
             </div>
             <div>
               <label
-                htmlFor="size"
+                htmlFor="sizeOfWall"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Size
+                Size of Wall
               </label>
               <input
                 type="text"
-                value={formData.size}
-                id="size"
-                name="size"
+                value={formData.sizeOfWall}
+                id="sizeOfWall"
+                name="sizeOfWall"
                 onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter size"
+                placeholder="Enter size of wall"
               />
             </div>
             <div>
               <label
-                htmlFor="wallpaperType"
+                htmlFor="noOfRolls"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Wallpaper Type
+                Number of Rolls
               </label>
               <input
                 type="text"
-                id="wallpaperType"
-                name="wallpaperType"
-                value={formData.wallpaperType}
+                value={formData.noOfRolls}
+                id="noOfRolls"
+                name="noOfRolls"
                 onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter wallpaper type"
+                placeholder="Enter number of rolls"
               />
             </div>
             <div>
               <label
-                htmlFor="pattern"
+                htmlFor="catalogCode"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Pattern
+                Catalog Code
               </label>
               <input
                 type="text"
-                id="pattern"
-                name="pattern"
-                value={formData.pattern}
+                value={formData.catalogCode}
+                id="catalogCode"
+                name="catalogCode"
                 onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter pattern"
+                placeholder="Enter catalog code"
               />
             </div>
             <div>
               <label
-                htmlFor="rollLength"
+                htmlFor="catalogNumber"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Roll Length
+                Catalog Number
               </label>
               <input
                 type="text"
-                id="rollLength"
-                name="rollLength"
-                value={formData.rollLength}
+                value={formData.catalogNumber}
+                id="catalogNumber"
+                name="catalogNumber"
                 onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter roll length"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="rollWidth"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Roll Width
-              </label>
-              <input
-                type="text"
-                id="rollWidth"
-                name="rollWidth"
-                value={formData.rollWidth}
-                onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter roll width"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="repeatSize"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Repeat Size
-              </label>
-              <input
-                type="text"
-                id="repeatSize"
-                name="repeatSize"
-                value={formData.repeatSize}
-                onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter repeat size"
+                placeholder="Enter catalog number"
               />
             </div>
           </div>

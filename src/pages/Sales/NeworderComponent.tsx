@@ -108,14 +108,13 @@ const CustomerTable = () => {
   const handleFormSubmit = async (formData) => {
     try {
       console.log("Handle Form Submission Called");
-      const { clientName, id } = selectedCustomer; // Destructure clientName and id from selectedCustomer
+      const { clientName, cid } = selectedCustomer; // Destructure clientName and id from selectedCustomer
       const dataToSubmit = {
         ...formData,
         customerName: clientName,
-        customerId: id,
+        customerId: cid,
       }; // Include customerName and customerId in the data
       console.log("Submitted Data:", dataToSubmit); // Logging the object directly
-      // Pass data to CurtainsForm
       setShowModal(false);
       setFormData({
         ...formData,
