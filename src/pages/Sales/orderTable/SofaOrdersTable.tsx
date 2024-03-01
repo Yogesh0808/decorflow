@@ -61,6 +61,17 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.size}</td>
                 <td className="px-4 py-2">{product.data.shapeModel}</td>
                 <td className="px-4 py-2">
+                  {product.data.rimg ? (
+                    <img
+                      src={`data:image/jpeg;base64,${product.data.rimg}`}
+                      width="100"
+                    />
+                  ) : (
+                    "No (W)Image Available"
+                  )}
+                </td>
+                <td className="px-4 py-2">{product.data.fabricNameCode}</td>
+                <td className="px-4 py-2">
                   {product.data.image ? (
                     <img
                       src={`data:image/jpeg;base64,${product.data.image}`}
@@ -70,22 +81,11 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                     "No (W)Image Available"
                   )}
                 </td>
-                <td className="px-4 py-2">{product.data.fabricNameCode}</td>
-                <td className="px-4 py-2">
-                  {product.data.limg ? (
-                    <img
-                      src={`data:image/jpeg;base64,${product.data.limg}`}
-                      width="100"
-                    />
-                  ) : (
-                    "No (W)Image Available"
-                  )}
-                </td>
                 <td className="px-4 py-2">{product.data.sofaLeg}</td>
                 <td className="px-4 py-2">
-                  {product.rimg ? (
+                  {product.limg ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.data.rimg}`}
+                      src={`data:image/jpeg;base64,${product.data.limg}`}
                       width="100"
                     />
                   ) : (
