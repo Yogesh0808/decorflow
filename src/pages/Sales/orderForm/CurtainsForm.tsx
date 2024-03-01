@@ -54,7 +54,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         const base64String = reader.result?.toString().split(",")[1];
         setFormData({
           ...formData,
-          fimg: base64String,
+          image: base64String,
         });
       };
       reader.readAsDataURL(file);
@@ -310,15 +310,15 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
             </div>
             <div>
               <label
-                htmlFor="fimg"
+                htmlFor="fabricImage"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Fabric Image
               </label>
               <input
                 type="file"
-                id="fimg"
-                name="fimg"
+                id="fabricImage"
+                name="fabricImage"
                 accept="image/*"
                 onChange={handleFileInputChange} // Add onChange event handler
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

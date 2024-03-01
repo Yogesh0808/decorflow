@@ -15,11 +15,11 @@ const SofaForm: React.FC<SofaFormProps> = ({
     description: "",
     size: "",
     shapeModel: "L-Shaped",
-    referenceImage: null,
+    rimg: null,
     fabricNameCode: "",
-    fabricImage: null,
+    image: null,
     sofaLeg: "",
-    sofaLegImage: null,
+    limg: null,
     remarks: "",
   });
 
@@ -50,10 +50,11 @@ const SofaForm: React.FC<SofaFormProps> = ({
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
-        setFormData({
-          ...formData,
-          image: base64String,
-        });
+        const name = e.target.name; // Get the name of the input
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: base64String, // Set the base64 string to the corresponding field (rimg or limg)
+        }));
       };
       reader.readAsDataURL(file);
     }
@@ -67,6 +68,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
         customerName: selectedCustomer.clientName,
         customerId: selectedCustomer.id,
       };
+      console.log("Sofa Data to be Submitted:", dataToSubmit);
 
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Sofa`,
@@ -192,15 +194,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
             {/* Reference Image */}
             <div className="col-span-2">
               <label
-                htmlFor="referenceImage"
+                htmlFor="rimg"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Reference Image
               </label>
               <input
                 type="file"
-                id="referenceImage"
-                name="referenceImage"
+                id="rimg"
+                name="rimg"
                 accept="image/*"
                 onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -227,15 +229,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
             {/* Fabric Image */}
             <div className="col-span-2">
               <label
-                htmlFor="fabricImage"
+                htmlFor="image"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Fabric Image
               </label>
               <input
                 type="file"
-                id="fabricImage"
-                name="fabricImage"
+                id="image"
+                name="image"
                 accept="image/*"
                 onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -262,15 +264,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
             {/* Sofa Leg Image */}
             <div className="col-span-2">
               <label
-                htmlFor="sofaLegImage"
+                htmlFor="limg"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Sofa Leg Image
               </label>
               <input
                 type="file"
-                id="sofaLegImage"
-                name="sofaLegImage"
+                id="limg"
+                name="limg"
                 accept="image/*"
                 onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

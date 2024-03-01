@@ -8,6 +8,7 @@ const WallpaperProductsTable = ({ products, editProduct, deleteProduct }) => {
 
   return (
     <div className="max-w-screen mx-auto overflow-x-hidden p-4">
+      <h1 className="text-black p-2 text-2xl">Wallpaper</h1>
       <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
         <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
           <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
@@ -50,23 +51,22 @@ const WallpaperProductsTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                   {product.id}
                 </td>
-                <td className="px-4 py-2">{product.title}</td>
-                <td className="px-4 py-2">{product.description}</td>
-                <td className="px-4 py-2">{product.size}</td>
-                <td className="px-4 py-2">{product.numberOfRollsSqftYard}</td>
-                <td className="px-4 py-2">{product.catalogCodeNumber}</td>
+                <td className="px-4 py-2">{product.data.title}</td>
+                <td className="px-4 py-2">{product.data.description}</td>
+                <td className="px-4 py-2">{product.data.sizeOfWall}</td>
+                <td className="px-4 py-2">{product.data.noOfRolls}</td>
+                <td className="px-4 py-2">{product.data.catalogCode}</td>
                 <td className="px-4 py-2">
-                  {product.wallpaperImage ? (
+                  {product.data.image ? (
                     <img
-                      src={product.wallpaperImage}
-                      alt={`Wallpaper ${product.id}`}
-                      style={{ maxWidth: "100px" }}
+                      src={`data:image/jpeg;base64,${product.data.image}`}
+                      width="100"
                     />
                   ) : (
-                    "No Image Available"
+                    "No (W)Image Available"
                   )}
                 </td>
-                <td className="px-4 py-2">{product.remarks}</td>
+                <td className="px-4 py-2">{product.data.remarks}</td>
                 <td className="px-4 py-2">
                   <button
                     onClick={() => editProduct(product)}
