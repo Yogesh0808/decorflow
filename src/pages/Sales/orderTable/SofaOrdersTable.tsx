@@ -61,9 +61,9 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.size}</td>
                 <td className="px-4 py-2">{product.data.shapeModel}</td>
                 <td className="px-4 py-2">
-                  {product.data.imageData ? (
+                  {product.data.image ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.data.imageData}`}
+                      src={`data:image/jpeg;base64,${product.data.image}`}
                       width="100"
                     />
                   ) : (
