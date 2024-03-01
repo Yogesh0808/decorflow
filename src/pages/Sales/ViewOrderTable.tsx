@@ -115,36 +115,67 @@ const ViewOrderComponent = () => {
     const htmlContent = `
       <html>
         <head>
-          <title>Print Content</title>
+          <title>Invoicing Preview</title>
           <style>
-            /* Add your custom CSS styles here */
-            body {
-              font-family: Arial, sans-serif;
-            }
-            .invoice-header {
-              background-color: #f2f2f2;
-              padding: 10px;
-              border-bottom: 1px solid #ccc;
-            }
-            .invoice-header h1 {
-              margin: 0;
-              color: #333;
-            }
-            .invoice-header p {
-              margin: 5px 0;
-              color: #666;
-            }
-            .customer-details {
-              margin-top: 10px;
-            }
-            table,th {
-              border: 2px solid black;
-            }
-            tr,td {
-              border: 1px solid black;
-              background: whitesmoke;
-            }
-          </style>
+          body, h1, p, table {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header styles */
+        .invoice-header {
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .invoice-header h1 {
+            margin: 0;
+        }
+
+        .invoice-header p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        /* Customer details styles */
+        .customer-details {
+            margin-top: 10px;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius:5px;
+            margin: 0 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Image styles */
+        img {
+            max-width: 150px;
+            height: auto;
+        }
+        </style>
         </head>
         <body>
           ${printContent.innerHTML}
@@ -242,7 +273,7 @@ const ViewOrderComponent = () => {
       <div className="flex justify-end mt-4">
         <button
           onClick={handlePrint}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-600 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
         >
           Print & Download
         </button>
