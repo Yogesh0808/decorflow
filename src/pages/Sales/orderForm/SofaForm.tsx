@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface SofaFormProps {
   onCloseModal: () => void;
@@ -79,6 +81,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
 
       console.log("Form submitted successfully:", response.data);
       onCloseModal(); // Close modal after successful form submission
+      toast.success("Sofa Order has been submitted successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {

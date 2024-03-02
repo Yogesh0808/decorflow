@@ -14,6 +14,7 @@
     "url": "https://tailadmin.com"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^3.3.8",
     "apexcharts": "^3.41.0",
     "axios": "^1.6.7",
     "flatpickr": "^4.6.13",
@@ -36,6 +37,7 @@
     "@vitejs/plugin-react": "^4.0.3",
     "autoprefixer": "^10.4.14",
     "file-loader": "^6.2.0",
+    "parallax-js": "^3.1.0",
     "postcss": "^8.4.27",
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.4.1",

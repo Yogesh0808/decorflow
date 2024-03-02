@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface CurtainsFormProps {
   onCloseModal: () => void;
@@ -78,7 +80,8 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
       );
 
       console.log("Form submitted successfully:", response.data);
-      onCloseModal(); // Close modal after successful form submission
+      onCloseModal();
+      toast.success("Curtains Order has been submitted successfully!"); // Close modal after successful form submission
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {

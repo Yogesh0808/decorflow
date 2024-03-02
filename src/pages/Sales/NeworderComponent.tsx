@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import SofaForm from "./orderForm/SofaForm";
 import BlindsForm from "./orderForm/BlindsForm";
 import CurtainsForm from "./orderForm/CurtainsForm";
@@ -34,17 +36,8 @@ const CustomerTable = () => {
       },
     };
   };
-  /*const handleSubmit = (e) => {
-    e.preventDefault();
-    // Your logic for form submission goes here
-    setNotification('Form submitted successfully');
-    setShowModal(false); // Close modal after submission
-    // Reset form or do any other necessary actions
-    setFormData({
-      ...formData,
-      [selectedProduct]: '',
-    });
-  };*/
+
+  // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedCustomer) {
@@ -53,6 +46,7 @@ const CustomerTable = () => {
     }
     // Your logic for form submission goes here
     setNotification("Form submitted successfully");
+    toast.success(`${selectedProduct} has been added successfully`);
     setShowModal(false);
     setFormData({
       ...formData,
@@ -75,6 +69,8 @@ const CustomerTable = () => {
     Furniture:
       "https://ik.imagekit.io/tealcdn2023/assets/Decor.png?updatedAt=1708795608010",
   };
+
+  // Fetch customers
   const fetchCustomers = async () => {
     try {
       const response = await axios.get("/api/customer/names", getHeaders());
@@ -83,11 +79,14 @@ const CustomerTable = () => {
       console.error("Error fetching customers:", error.message);
     }
   };
+
+  // Function to handle selection of product category
   const handleCategorySelect = (product) => {
     setSelectedProduct(product);
     setShowModal(true); // Show modal when a card is clicked
   };
-  // Function to handle modal close
+
+  // Function to handle closing of modal
   const handleCloseModal = () => {
     setShowModal(false);
     setFormData({
@@ -95,6 +94,8 @@ const CustomerTable = () => {
       [selectedProduct]: "",
     });
   };
+
+  // Function to handle input change in form fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -102,13 +103,15 @@ const CustomerTable = () => {
       [name]: value,
     });
   };
+
+  // Fetch customers when the component mounts
   useEffect(() => {
-    // Fetch customers when the component mounts
     fetchCustomers();
   }, []);
+
+  // Function to handle form submission
   const handleFormSubmit = async (formData) => {
     try {
-      console.log("Handle Form Submission Called");
       const { clientName, cid } = selectedCustomer; // Destructure clientName and id from selectedCustomer
       const dataToSubmit = {
         ...formData,
@@ -125,6 +128,8 @@ const CustomerTable = () => {
       console.error("Error submitting form:", error);
     }
   };
+
+  // Function to render the form for selected product
   const renderProductForm = () => {
     switch (selectedProduct) {
       case "Curtains":
@@ -183,6 +188,7 @@ const CustomerTable = () => {
         return null;
     }
   };
+
   return (
     <div>
       {/* Show customer selection dropdown if no customer is selected */}
@@ -250,6 +256,17 @@ const CustomerTable = () => {
               ))}
             </div>
           </div>
+          <ToastContainer
+            position="top-right"
+            autoClose={4000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
               <div className="relative w-full max-w-md">
@@ -261,15 +278,28 @@ const CustomerTable = () => {
               </div>
             </div>
           )}
-          {/* Notification */}
-          {notification && (
-            <div className="absolute bottom-0 right-2 text-xl text-lime-600 bg-slate-100 p-4 rounded-xl">
-              {notification}
-            </div>
-          )}
         </>
       )}
+      {/* Notification */}
+      {notification && (
+        <div className="absolute bottom-0 right-2 text-xl text-lime-600 bg-slate-100 p-4 rounded-xl">
+          {notification}
+        </div>
+      )}
+      {/* Toast Container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };
+
 export default CustomerTable;

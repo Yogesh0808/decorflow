@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface BlindsFormProps {
   onCloseModal: () => void;
@@ -51,6 +53,7 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
 
       console.log("Form submitted successfully:", response.data);
       onCloseModal(); // Close modal after successful form submission
+      toast.success("Blinds Order submitted successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {

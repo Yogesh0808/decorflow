@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface WallpaperFormProps {
   onCloseModal: () => void;
@@ -74,6 +77,7 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
 
       console.log("Form submitted successfully:", response.data);
       onCloseModal(); // Close modal after successful form submission
+      toast.success("Wallpaper Order submitted successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {

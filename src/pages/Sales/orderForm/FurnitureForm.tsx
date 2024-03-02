@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface FurnitureFormProps {
   onCloseModal: () => void;
@@ -76,6 +78,9 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
 
       console.log("Form submitted successfully:", response.data);
       onCloseModal();
+
+      // Display toast notification
+      toast.success("Furniture Order submitted successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
