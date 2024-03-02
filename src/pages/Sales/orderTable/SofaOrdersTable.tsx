@@ -1,6 +1,27 @@
-import React from "react";
+import axios from "axios";
 
 const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
+  axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+  const handleDelete = async (productId) => {
+    try {
+      // Make DELETE request to delete the product
+      await axios.delete(`/api/products/${productId}`, getHeaders());
+      deleteProduct(productId);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
   if (!products || products.length === 0) {
     console.log("From Sofa:", products);
     return <div>No product data available</div>;
@@ -103,7 +124,7 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                     Edit
                   </button>
                   <button
-                    onClick={() => deleteProduct(product.id)}
+                    onClick={() => handleDelete(product.id)}
                     className="font-medium text-red-600 dark:text-red-500 hover:underline"
                   >
                     Delete

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import CurtainsOrdersTable from "./orderTable/CurtainsOrdersTable";
-import SofaOrdersTable from "./orderTable/SofaOrdersTable";
-import BlindOrdersTable from "./orderTable/BlindOrdersTable";
-import FurnitureOrdersTable from "./orderTable/FurnitureOrdersTable";
-import WallpaperOrdersTable from "./orderTable/WallpaperOrdersTable";
-import FlooringsOrdersTable from "./orderTable/FlooringsOrdersTable";
+import CurtainsOrdersTable from "./printTable/CurtainsOrdersTable";
+import SofaOrdersTable from "./printTable/SofaOrdersTable";
+import BlindOrdersTable from "./printTable/BlindOrdersTable";
+import FurnitureOrdersTable from "./printTable/FurnitureOrdersTable";
+import WallpaperOrdersTable from "./printTable/WallpaperOrdersTable";
+import FlooringsOrdersTable from "./printTable/FlooringsOrdersTable";
 import Logo from "../../images/logo/Logo.png";
+import Loader from "../../common/Loader/index";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
@@ -14,6 +15,7 @@ const printTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [generatingPDF, setGeneratingPDF] = useState(false);
 
   useEffect(() => {
@@ -44,6 +46,7 @@ const printTable = () => {
 
   const fetchProducts = async (customerId) => {
     try {
+      setLoading(true); // Set loading to true while fetching products
       const response = await axios.get(
         `/api/products/${customerId}`,
         getHeaders()
@@ -52,6 +55,8 @@ const printTable = () => {
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error.message);
+    } finally {
+      setLoading(false); // Set loading back to false after fetching completes
     }
   };
 
@@ -73,7 +78,21 @@ const printTable = () => {
   };
 
   const renderProductTables = () => {
+    if (loading) {
+      return (
+        <div className="text-center mt-4">
+          Loading...
+          <Loader />
+        </div>
+      );
+    }
+
     if (products.length === 0) {
+      return (
+        <div className="text-gray-600 text-xl text-center mt-4">
+          Oops! No product data available
+        </div>
+      );
     }
 
     const productTables = {};
@@ -112,75 +131,95 @@ const printTable = () => {
       <html>
         <head>
           <title>Invoicing Preview</title>
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
           <style>
           body, h1, p, table {
             margin: 10px;
             padding: 0;
-        }
+            border-radius: 5px;
+          }
 
-        /* Global styles */
-        body {
-            font-family: Arial, sans-serif;
+          /* Global styles */
+          body {
+            font-family: "Inter", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
             line-height: 1;
             color: #333;
-        }
+          }
 
-        /* Header styles */
-        .invoice-header {
-            background-color: #f2f2f2;
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
 
-        .invoice-header h1 {
-            margin: 0;
-        }
+          /* Header styles */
+          .invoice-header {
+              background-color: #f2f2f2;
+              padding: 10px;
+              border-bottom: 1px solid #ccc;
+          }
 
-        .invoice-header p {
-            margin: 5px 0;
-            color: #666;
-        }
+          .invoice-header h1 {
+              margin: 0;
+              text-transform: uppercase;
+          }
 
-        /* Customer details styles */
-        .customer-details {
-            margin-top: 10px;
-        }
+          .invoice-header p {
+              margin: 5px 0;
+              color: #666;
+              font-family: "Nunito",sans-serif;
+              font-weight: 300;
+          }
 
-        /* Table styles */
-        table {
-            width: 70%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            border-radius:5px;
-            margin: 0 20px;
-        }
+          /* Customer details styles */
+          .customer-details {
+              margin-top: 10px;
+          }
 
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
-        }
+          /* Table styles */
+          table {
+              width: 75%;
+              border-collapse: collapse;
+              margin-top: 20px;
+              border-radius:5px;
+              margin: 0 20px;
+          }
 
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
+          th, td {
+              border: 1px solid #ccc;
+              padding: 8px;
+              text-align: left;
+          }
 
-        /* Image styles */
-        img {
-            max-width: 150px;
-            height: auto;
-        }
-        </style>
-        </head>
-        <body>
-          ${printContent.innerHTML}
-        </body>
+          th {
+              background-color: #f2f2f2;
+              font-weight: bold;
+              padding: 10px auto;
+          }
+
+          /* Image styles */
+          img {
+              max-width: 160px;
+              height: auto;
+          }
+          </style>
+          </head>
+          <body>
+            ${printContent.innerHTML}
+          </body>
       </html>
     `;
     newWindow.document.write(htmlContent);
     newWindow.document.close();
-    newWindow.print();
+
+    setTimeout(() => {
+      try {
+        newWindow.print();
+        console.log("Printing initiated");
+      } catch (error) {
+        console.error("Error during printing:", error);
+      }
+      newWindow.close(); // Close the window after printing
+    }, 1000); // Delay printing to ensure proper loading
   };
 
   const handleGeneratePDF = async () => {
@@ -235,6 +274,9 @@ const printTable = () => {
                 border-radius: 5px;
                 margin: 0 20px;
               }
+              th{
+                padding: 15px auto;
+              }
   
               th, td {
                 border: 1px solid #ccc;
@@ -281,7 +323,7 @@ const printTable = () => {
     } catch (error) {
       console.error("Error generating PDF:", error.message);
     } finally {
-      setGeneratingPDF(false); // Set generatingPDF to false when PDF generation is completed
+      setGeneratingPDF(false);
     }
   };
 

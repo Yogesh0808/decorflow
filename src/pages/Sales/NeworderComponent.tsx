@@ -59,6 +59,7 @@ const CustomerTable = () => {
       [selectedProduct]: "",
     });
   };
+
   const productImages = {
     Curtains:
       "https://ik.imagekit.io/tealcdn2023/assets/curtains.png?updatedAt=1708796208451",

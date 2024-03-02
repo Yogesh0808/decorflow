@@ -6,6 +6,7 @@ import BlindOrdersTable from "./orderTable/BlindOrdersTable";
 import FurnitureOrdersTable from "./orderTable/FurnitureOrdersTable";
 import WallpaperOrdersTable from "./orderTable/WallpaperOrdersTable";
 import FlooringsOrdersTable from "./orderTable/FlooringsOrdersTable";
+import Loader from "../../common/Loader/index";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
@@ -13,10 +14,23 @@ const ViewOrderComponent = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchCustomers(); // Fetch customers when component mounts
   }, []);
+
+  const handleDelete = async (productId) => {
+    try {
+      // Make DELETE request to delete the product
+      await axios.delete(`/api/products/${productId}`);
+      // Update UI by removing the deleted product from the products list
+      deleteProduct(productId);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      // Handle error, show error message or retry option
+    }
+  };
 
   const fetchCustomers = async () => {
     try {
@@ -29,6 +43,7 @@ const ViewOrderComponent = () => {
 
   const fetchProducts = async (customerId) => {
     try {
+      setLoading(true); // Set loading to true while fetching products
       const response = await axios.get(
         `/api/products/${customerId}`,
         getHeaders()
@@ -37,6 +52,8 @@ const ViewOrderComponent = () => {
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error.message);
+    } finally {
+      setLoading(false); // Set loading back to false after fetching completes
     }
   };
 
@@ -60,11 +77,19 @@ const ViewOrderComponent = () => {
   };
 
   const renderProductTables = () => {
+    if (loading) {
+      return (
+        <div className="text-center mt-4">
+          Loading...
+          <Loader />
+        </div>
+      );
+    }
+
     if (products.length === 0) {
       return (
-        <div className="text-red-600 text-xl text-center mt-30">
-          Oops! :( <br />
-          No product data available
+        <div className="text-red-600 text-xl text-center mt-4">
+          Oops! No product data available
         </div>
       );
     }
@@ -78,20 +103,66 @@ const ViewOrderComponent = () => {
       productTables[category].push(product);
     });
 
+    const deleteProduct = async (productId) => {
+      try {
+        await axios.delete(`/api/products/${productId}`, getHeaders());
+        setProducts(products.filter((product) => product.id !== productId));
+        console.log("Product has been Deleted Sucessfully :))");
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    };
+
     return Object.entries(productTables).map(([category, products]) => {
       switch (category) {
         case "Curtains":
-          return <CurtainsOrdersTable key={category} products={products} />;
+          return (
+            <CurtainsOrdersTable
+              key={category}
+              products={products}
+              deleteProduct={deleteProduct}
+            />
+          );
         case "Sofa":
-          return <SofaOrdersTable key={category} products={products} />;
+          return (
+            <SofaOrdersTable
+              key={category}
+              products={products}
+              deleteProduct={deleteProduct}
+            />
+          );
         case "Blinds":
-          return <BlindOrdersTable key={category} products={products} />;
+          return (
+            <BlindOrdersTable
+              key={category}
+              products={products}
+              deleteProduct={deleteProduct}
+            />
+          );
         case "Furniture":
-          return <FurnitureOrdersTable key={category} products={products} />;
+          return (
+            <FurnitureOrdersTable
+              key={category}
+              products={products}
+              deleteProduct={deleteProduct}
+            />
+          );
         case "Wallpaper":
-          return <WallpaperOrdersTable key={category} products={products} />;
+          return (
+            <WallpaperOrdersTable
+              key={category}
+              products={products}
+              deleteProduct={deleteProduct}
+            />
+          );
         case "Flooring":
-          return <FlooringsOrdersTable key={category} products={products} />;
+          return (
+            <FlooringsOrdersTable
+              key={category}
+              products={products}
+              deleteProduct={deleteProduct}
+            />
+          );
         default:
           return null;
       }
