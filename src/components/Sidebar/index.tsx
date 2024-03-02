@@ -349,6 +349,31 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   View Order
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/printorder"
+                  className={({ isActive }) =>
+                    "group relative flex items-center gap-2.5 rounded-md px-4 font-normal text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                    (isActive && "!text-white")
+                  }
+                >
+                  <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white"
+                    ariaHidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinejoin="round"
+                      strokeWidth="1"
+                      d="M16.4 18H19c.6 0 1-.4 1-1v-5c0-.6-.4-1-1-1H5a1 1 0 0 0-1 1v5c0 .6.4 1 1 1h2.6m9.4-7V5c0-.6-.4-1-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4c0 .6-.4 1-1 1H8a1 1 0 0 1-1-1v-4Z"
+                    />
+                  </svg>
+                  Print Order
+                </NavLink>
+              </li>
             </ul>
           </div>
           {/* <----------YHD navs ends-------> */}

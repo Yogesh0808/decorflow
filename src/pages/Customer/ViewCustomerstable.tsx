@@ -193,14 +193,14 @@ function ViewCustomers() {
                 className="flex justify-center h-100 mx-auto"
                 alt="Illustration"
               />
-              <span className="text-lime-700 dark:text-sky-300 text-md">Go Ahead and Add Customer Details </span>
+              <span className="text-lime-500">Go Ahead and Add Some</span>
             </p>
             <div className="mt-10">
               <a
                 className="mt-4 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-600"
                 href="/Customer/New"
               >
-                Add Customer
+                Add
               </a>
             </div>
           </div>

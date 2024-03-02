@@ -10,7 +10,9 @@ const CurtainsOrdersTable = ({ products, editClient, deleteClient }) => {
 
   return (
     <div className="max-w-screen mx-auto overflow-x-hidden p-4">
-      <h1 className="text-black p-2 text-2xl">Curtains Orders</h1>
+      <h1 className="text-black p-2 text-2xl dark:text-whiter">
+        Curtains Orders
+      </h1>
       <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
         <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
           <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">

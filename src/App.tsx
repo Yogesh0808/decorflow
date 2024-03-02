@@ -17,6 +17,7 @@ import Alerts from "./pages/UiElements/Alerts";
 import Buttons from "./pages/UiElements/Buttons";
 import Neworder from "./pages/Sales/Neworder";
 import Vieworder from "./pages/Sales/Vieworder";
+import Printorder from "./pages/Sales/printorder";
 import AddCustomer from "./pages/Customer/AddCustomer";
 import ViewCustomer from "./pages/Customer/ViewCustomer";
 import NotFound from "./pages/NotFound";
@@ -89,6 +90,15 @@ function App() {
             <>
               <PageTitle title="View-Order | YHD" />
               <Vieworder />
+            </>
+          }
+        />
+        <Route
+          path="/printorder"
+          element={
+            <>
+              <PageTitle title="Printing Preview | YHD" />
+              <Printorder />
             </>
           }
         />
