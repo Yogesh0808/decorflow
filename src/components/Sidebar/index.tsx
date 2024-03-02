@@ -58,7 +58,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-gradient-to-tr from-slate-950 to-cyan-950 duration-500 ease-linear dark:bg-stone-900 lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-gradient-to-tr from-slate-950 to-cyan-950 duration-300 ease-linear dark:bg-stone-900 lg:static lg:translate-x-0 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -117,7 +117,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 px-4 py-2 font-normal rounded-xl text-bodydark1 duration-300 ease-in-out hover:bg-sky-950 dark:hover:bg-meta-4 ${
+                        className={`group relative flex items-center gap-2.5 px-4 py-2 font-normal rounded-xl text-bodydark1 duration-100 ease-in-out hover:bg-sky-950 dark:hover:bg-meta-4 ${
                           (pathname === "/" ||
                             pathname.includes("dashboard")) &&
                           "bg-sky-950 dark:bg-meta-4"

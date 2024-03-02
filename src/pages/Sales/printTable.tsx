@@ -14,9 +14,10 @@ const printTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [generatingPDF, setGeneratingPDF] = useState(false);
 
   useEffect(() => {
-    fetchCustomers(); // Fetch customers when component mounts
+    fetchCustomers();
   }, []);
 
   const fetchCustomers = async () => {
@@ -184,6 +185,7 @@ const printTable = () => {
 
   const handleGeneratePDF = async () => {
     try {
+      setGeneratingPDF(true);
       console.log("Generating PDF for you :)...");
       const printContent = document.querySelector(".print-content");
       const htmlContent = `
@@ -266,9 +268,9 @@ const printTable = () => {
         },
         responseType: "blob",
       });
+
       console.log("PDF generated successfully:", response.data);
 
-      // Create a temporary link element to download the PDF
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -278,6 +280,8 @@ const printTable = () => {
       document.body.removeChild(link);
     } catch (error) {
       console.error("Error generating PDF:", error.message);
+    } finally {
+      setGeneratingPDF(false); // Set generatingPDF to false when PDF generation is completed
     }
   };
 
@@ -377,15 +381,16 @@ const printTable = () => {
       <div className="flex justify-between mt-4">
         <button
           onClick={handlePrint}
-          className="bg-blue-600 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-800 hover:bg-blue-900 text-white py-2 px-4 rounded-xl"
         >
           Print & Download
         </button>
         <button
           onClick={handleGeneratePDF}
-          className="bg-green-600 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
+          className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded-xl"
+          disabled={generatingPDF}
         >
-          Generate PDF
+          {generatingPDF ? "Generating PDF..." : "Generate PDF"}
         </button>
       </div>
     </div>
