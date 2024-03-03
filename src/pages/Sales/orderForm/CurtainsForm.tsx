@@ -50,56 +50,14 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files && e.target.files[0];
-  if (file) {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      fabricImage: file,
-    }));
-  }
-};
-
-const submitFormData = async (formData: any) => {
-  try {
-    setLoading(true);
-
-    // Create FormData object
-    const formDataToSend = new FormData();
-    // Append other form data fields
-    Object.keys(formData).forEach((key) => {
-      formDataToSend.append(key, formData[key]);
-    });
-    // Append image file
-    formDataToSend.append('fabricImage', formData.fabricImage);
-
-    // Append customer information
-    formDataToSend.append('customerName', selectedCustomer.clientName);
-    formDataToSend.append('customerId', selectedCustomer.id);
-
-    console.log("Curtains Form Data:", formDataToSend);
-
-    const response = await axios.post(
-      `/api/products/${selectedCustomer.id}/Curtains`,
-      formDataToSend,
-      {
-        ...getHeaders(),
-        headers: {
-          ...getHeaders().headers,
-          // No need to set Content-Type here, Axios will automatically set it to multipart/form-data
-        },
-      }
-    );
-
-    console.log("Form submitted successfully:", response.data);
-    onCloseModal();
-    toast.success("Curtains Order has been submitted successfully!");
-  } catch (error) {
-    console.error("Error submitting form:", error);
-  } finally {
-    setLoading(false);
-  }
-};
-
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        fabricImage: file,
+      }));
+    }
+  };
 
   const submitFormData = async (formData: any) => {
     try {
@@ -112,13 +70,18 @@ const submitFormData = async (formData: any) => {
 
       console.log("Curtains Form Data:", dataToSubmit);
 
+      const formDataToSend = new FormData();
+      Object.keys(dataToSubmit).forEach((key) => {
+        formDataToSend.append(key, dataToSubmit[key]);
+      });
+      formDataToSend.append("fabricImage", dataToSubmit.fabricImage);
+
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Curtains`,
-        dataToSubmit,
+        formDataToSend,
         {
           ...getHeaders(),
           headers: {
-            "Content-Type": "multipart/form-data", // Set the content type to multipart/form-data
             ...getHeaders().headers,
           },
         }
@@ -126,7 +89,7 @@ const submitFormData = async (formData: any) => {
 
       console.log("Form submitted successfully:", response.data);
       onCloseModal();
-      toast.success("Curtains Order has been submitted successfully!"); // Close modal after successful form submission
+      toast.success("Curtains Order has been submitted successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
@@ -173,7 +136,7 @@ const submitFormData = async (formData: any) => {
         <form
           className="p-4 md:p-5"
           onSubmit={handleSubmit}
-          encType="multipart/form-data" // Set the enctype to multipart/form-data
+          encType="multipart/form-data"
         >
           <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
             <div className="col-span-2">
