@@ -89,8 +89,13 @@ const printTable = () => {
 
     if (products.length === 0) {
       return (
-        <div className="text-gray-600 text-xl text-center mt-4">
-          Oops! No product data available
+        <div className="flex flex-col items-center justify-center text-gray-900 text-xl mt-4">
+          <img
+            src="https://ik.imagekit.io/tealcdn2023/assets/No%20data-cuate.svg"
+            className="w-100"
+            alt="No data available"
+          />
+          <p>Oops! It seems there are no products available.</p>
         </div>
       );
     }

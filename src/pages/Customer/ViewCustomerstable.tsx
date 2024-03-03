@@ -186,21 +186,25 @@ function ViewCustomers() {
         ) : (
           // Show message if no data exists
           <div className="text-center mt-8">
-            <p className="text-2xl text-center text-neutral-900 dark:text-gray-400 dark:text-slate-100">
-              <span className="py-10 my-100">Oops! Data Not Found.</span>
-              <img
-                src="https://ik.imagekit.io/tealcdn2023/assets/undraw_landscape_photographer_blv1.svg?updatedAt=1709287801082"
-                className="flex justify-center h-100 mx-auto"
-                alt="Illustration"
-              />
-              <span className="text-lime-500">Go Ahead and Add Some</span>
+            <p className="text-xl text-center text-neutral-900 dark:text-gray-400 dark:text-slate-100">
+              <div className="flex flex-col items-center justify-center text-gray-900 text-xl mt-4">
+                <img
+                  src="https://ik.imagekit.io/tealcdn2023/assets/No%20data-cuate.svg"
+                  className="w-100"
+                  alt="No data available"
+                />
+                <p>Oops! It seems there are No Customers available.</p>
+              </div>
+              <span className="text-emerald-600 font-normal">
+                Don't worry, you can add them now!
+              </span>
             </p>
             <div className="mt-10">
               <a
                 className="mt-4 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-600"
                 href="/Customer/New"
               >
-                Add
+                Add Customer
               </a>
             </div>
           </div>
