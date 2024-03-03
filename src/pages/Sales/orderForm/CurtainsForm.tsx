@@ -50,14 +50,56 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && e.target.files[0];
-    if (file) {
-      setFormData({
-        ...formData,
-        fabricImage: file,
-      });
-    }
-  };
+  const file = e.target.files && e.target.files[0];
+  if (file) {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      fabricImage: file,
+    }));
+  }
+};
+
+const submitFormData = async (formData: any) => {
+  try {
+    setLoading(true);
+
+    // Create FormData object
+    const formDataToSend = new FormData();
+    // Append other form data fields
+    Object.keys(formData).forEach((key) => {
+      formDataToSend.append(key, formData[key]);
+    });
+    // Append image file
+    formDataToSend.append('fabricImage', formData.fabricImage);
+
+    // Append customer information
+    formDataToSend.append('customerName', selectedCustomer.clientName);
+    formDataToSend.append('customerId', selectedCustomer.id);
+
+    console.log("Curtains Form Data:", formDataToSend);
+
+    const response = await axios.post(
+      `/api/products/${selectedCustomer.id}/Curtains`,
+      formDataToSend,
+      {
+        ...getHeaders(),
+        headers: {
+          ...getHeaders().headers,
+          // No need to set Content-Type here, Axios will automatically set it to multipart/form-data
+        },
+      }
+    );
+
+    console.log("Form submitted successfully:", response.data);
+    onCloseModal();
+    toast.success("Curtains Order has been submitted successfully!");
+  } catch (error) {
+    console.error("Error submitting form:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const submitFormData = async (formData: any) => {
     try {
