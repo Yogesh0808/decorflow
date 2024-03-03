@@ -376,6 +376,66 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
             </ul>
           </div>
+          <div>
+            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2 uppercase">
+              Dispatch
+            </h3>
+
+            <ul className="mb-6 flex flex-col gap-1.5">
+              <li>
+                <NavLink
+                  to="/dispatch/entry"
+                  className={({ isActive }) =>
+                    "group relative flex items-center gap-2.5 rounded-md px-4 font-normal text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                    (isActive && "!text-white")
+                  }
+                >
+                  <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.3"
+                      d="M12 6h8m-8 6h8m-8 6h8M4 16a2 2 0 1 1 3.3 1.5L4 20h5M4 5l2-1v6m-2 0h4"
+                    />
+                  </svg>
+                  Order Entry
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dispatch/view"
+                  className={({ isActive }) =>
+                    "group relative flex items-center gap-2.5 rounded-md px-4 font-normal text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                    (isActive && "!text-white")
+                  }
+                >
+                  <svg
+                    className="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1"
+                      d="M15 4h3c.6 0 1 .4 1 1v15c0 .6-.4 1-1 1H6a1 1 0 0 1-1-1V5c0-.6.4-1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3h-4Z"
+                    />
+                  </svg>
+                  View Entry
+                </NavLink>
+              </li>
+            </ul>
+          </div>
           {/* <----------YHD navs ends-------> */}
           {/* Future Component Updates  Invoice/Add , View Order, UserProfile etc..*/}
           <div>

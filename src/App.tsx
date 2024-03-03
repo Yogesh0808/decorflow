@@ -19,6 +19,11 @@ import Printorder from "./pages/Sales/printorder";
 import AddCustomer from "./pages/Customer/AddCustomer";
 import ViewCustomer from "./pages/Customer/ViewCustomer";
 import NotFound from "./pages/NotFound";
+{
+  /* Dispatching Service */
+}
+import ViewEntry from "./pages/Dispatch/ViewEntry";
+import OrderEntry from "./pages/Dispatch/OrderEntry";
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -100,7 +105,25 @@ function App() {
             </>
           }
         />
-
+        {/* Dispatching Routing Starts Here:)) */}
+        <Route
+          path="/dispatch/entry"
+          element={
+            <>
+              <PageTitle title="OrderEntry | YHD" />
+              <OrderEntry />
+            </>
+          }
+        />
+        <Route
+          path="/dispatch/view"
+          element={
+            <>
+              <PageTitle title="OrderEntry | YHD" />
+              <ViewEntry />
+            </>
+          }
+        />
         <Route
           path="/profile"
           element={

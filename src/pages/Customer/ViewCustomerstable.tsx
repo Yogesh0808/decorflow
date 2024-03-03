@@ -124,10 +124,10 @@ function ViewCustomers() {
                     Salutation
                   </th>
                   <th scope="col" className="px-4 py-4">
-                    Client Name
+                    Name
                   </th>
                   <th scope="col" className="px-4 py-4">
-                    Client Type
+                    Type
                   </th>
                   <th scope="col" className="px-4 py-4">
                     Purpose

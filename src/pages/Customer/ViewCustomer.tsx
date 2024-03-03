@@ -1,6 +1,6 @@
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../../layout/DefaultLayout';
-import ViewCustomerstable from './ViewCustomerstable'; // Import the ViewCustomers component
+import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+import DefaultLayout from "../../layout/DefaultLayout";
+import ViewCustomerstable from "./ViewCustomerstable"; // Import the ViewCustomers component
 
 const ViewCustomer = () => {
   return (
@@ -8,7 +8,7 @@ const ViewCustomer = () => {
       <Breadcrumb pageName="ViewCustomer" />
 
       {/* <!-- ====== ViewCustomer Section Start ====== --> */}
-      <h2 className="font-light">New Order Section</h2>
+      <h2 className="font-light text-xl">Customer Section</h2>
       {/* <!-- ====== Calendar Section End ====== --> */}
 
       {/* Render the ViewCustomers component */}

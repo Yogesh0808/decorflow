@@ -233,3 +233,25 @@ span.flatpickr-weekday,
   background-color:#fff ; /* Red background for error toast */
   color: #f44336; /* White text color */
 }
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: fit-content;
+  font-family: inherit;
+  font-size: 20px;
+  background: radial-gradient(circle closest-side,#0c0020 94%,#0000) right/calc(200% - 1em) 100%;
+  animation: l24 1s infinite alternate linear;
+}
+.loader::before {
+  content: "Loading...";
+  line-height: 1em;
+  color: whitesmoke;
+  background: inherit;
+  background-image: radial-gradient(circle closest-side,#fff 94%,#000);
+  -webkit-background-clip:text;
+          background-clip:text;
+}
+
+@keyframes l24{
+  100%{background-position: left}
+}
