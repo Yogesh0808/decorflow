@@ -207,7 +207,6 @@ const AddCustomer = () => {
               className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
               onChange={handleInputChange}
               value={formData.emailAddress}
-              required
             />
           </div>
           <div className="flex flex-col">
