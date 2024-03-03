@@ -65,6 +65,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: "Basic " + btoa("abinesh:abi"),
           },
         }
       );
