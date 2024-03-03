@@ -28,17 +28,6 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
   });
   const [loading, setLoading] = useState(false);
 
-  const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
-    return {
-      headers: {
-        Authorization: basicAuth,
-      },
-    };
-  };
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -59,33 +48,27 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
     }
   };
 
-  const submitFormData = async (formData: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       setLoading(true);
-      const dataToSubmit = {
-        ...formData,
-        customerName: selectedCustomer.clientName,
-        customerId: selectedCustomer.id,
-      };
-
-      console.log("Curtains Form Data:", dataToSubmit);
 
       const formDataToSend = new FormData();
-      Object.keys(dataToSubmit).forEach((key) => {
-        formDataToSend.append(key, dataToSubmit[key]);
+      Object.keys(formData).forEach((key) => {
+        formDataToSend.append(key, formData[key]);
       });
-      formDataToSend.append("fabricImage", dataToSubmit.fabricImage);
-
+      formDataToSend.append("customerId", selectedCustomer.id);
+      formDataToSend.append("category", "Curtains");
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Curtains`,
         formDataToSend,
         {
-          ...getHeaders(),
           headers: {
-            ...getHeaders().headers,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
+      console.log(formDataToSend);
 
       console.log("Form submitted successfully:", response.data);
       onCloseModal();
@@ -95,11 +78,6 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await submitFormData(formData);
   };
 
   return (
