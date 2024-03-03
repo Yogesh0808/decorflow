@@ -1,46 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface BlindsFormProps {
   onCloseModal: () => void;
-  onSubmit: () => void;
+  selectedCustomer: { id: string; clientName: string };
 }
 
-const BlindsForm: React.FC<BlindsFormProps> = ({ onCloseModal, onSubmit }) => {
+const BlindsForm: React.FC<BlindsFormProps> = ({
+  onCloseModal,
+  selectedCustomer,
+}) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    size: '',
-    quantity: '',
-    typeOfBlinds: 'Roman Blinds',
-    catalogueName: '',
-    fabricCode: '',
+    title: "",
+    description: "",
+    size: "",
+    quantity: "",
+    typeOfBlinds: "Roman Blinds",
+    catalogueName: "",
+    fabricCode: "",
     fabricImage: null,
-    remarks: '', // New field for Remarks
+    remarks: "", // New field for Remarks
   });
+  const [loading, setLoading] = useState(false);
+
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+
+  const submitFormData = async (formData: any) => {
+    try {
+      setLoading(true);
+      const dataToSubmit = {
+        ...formData,
+        customerName: selectedCustomer.clientName,
+        customerId: selectedCustomer.id,
+      };
+
+      const response = await axios.post(
+        `/api/products/${selectedCustomer.id}/Blinds`,
+        dataToSubmit,
+        getHeaders()
+      );
+
+      console.log("Form submitted successfully:", response.data);
+      onCloseModal(); // Close modal after successful form submission
+      toast.success("Blinds Order submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
-    });
+    }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setFormData({
-      ...formData,
-      fabricImage: file,
-    });
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
+        setFormData({
+          ...formData,
+          image: base64String,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit();
+    await submitFormData(formData);
   };
 
   return (
@@ -241,20 +289,29 @@ const BlindsForm: React.FC<BlindsFormProps> = ({ onCloseModal, onSubmit }) => {
           <button
             type="submit"
             className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            disabled={loading}
           >
-            <svg
-              className="me-1 -ms-1 w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            Add new product
+            {loading ? (
+              <>
+                <div className="loader"></div>
+              </>
+            ) : (
+              <>
+                <svg
+                  className="me-1 -ms-1 w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+                Add new product
+              </>
+            )}
           </button>
         </form>
       </div>

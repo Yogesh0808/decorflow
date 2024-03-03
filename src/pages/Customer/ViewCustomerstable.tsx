@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import AddCustomer from "./AddCustomer";
 
 axios.defaults.baseURL = "http://localhost:8080/";
 
 const getHeaders = () => {
-  const username = 'abinesh';
-  const password = 'abi';
-  const basicAuth = 'Basic ' + btoa(username + ':' + password);
+  const username = "abinesh";
+  const password = "abi";
+  const basicAuth = "Basic " + btoa(username + ":" + password);
   return {
     headers: {
       Authorization: basicAuth,
@@ -16,19 +17,20 @@ const getHeaders = () => {
 
 function ViewCustomers() {
   const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true); // State to manage loading state
   const [showModal, setShowModal] = useState(false);
   const [editedClient, setEditedClient] = useState(null);
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState("");
   const [formData, setFormData] = useState({
-    id: '',
-    salutation: '',
-    clientName: '',
-    clientType: '',
-    purpose: '',
-    address: '',
-    phone: '',
-    emailAddress: '',
+    cid: "",
+    salutation: "",
+    clientName: "",
+    clientType: "",
+    purpose: "",
+    address: "",
+    phone: "",
+    emailAddress: "",
   });
 
   useEffect(() => {
@@ -37,27 +39,28 @@ function ViewCustomers() {
 
   const getClients = () => {
     axios
-      .get('/api/customer', getHeaders())
+      .get("/api/customer", getHeaders())
       .then((response) => {
         setClients(response.data);
+        setLoading(false); // Set loading to false when data is fetched
       })
       .catch((error) => {
-        console.error('Error fetching clients:', error);
+        console.error("Error fetching clients:", error);
       });
   };
 
   const deleteClient = (clientId) => {
-    if (window.confirm('Are you sure you want to delete this client?')) {
+    if (window.confirm("Are you sure you want to delete this client?")) {
       axios
         .delete(`/api/customer/${clientId}`, getHeaders())
         .then(() => {
-          console.log('Client deleted');
-          setToastMessage('Client Deleted successfully.');
+          console.log("Client deleted");
+          setToastMessage("Client Deleted successfully.");
           setShowToast(true);
           getClients();
         })
         .catch((error) => {
-          console.error('Error deleting client:', error);
+          console.error("Error deleting client:", error);
         });
     }
   };
@@ -75,21 +78,21 @@ function ViewCustomers() {
     axios
       .put(`/api/customer/${editedData.id}`, editedData, getHeaders())
       .then((response) => {
-        console.log('Edited client data:', editedData);
+        console.log("Edited client data:", editedData);
         setClients((prevClients) =>
           prevClients.map((client) => {
             if (client.id === editedData.id) {
               return editedData;
             }
             return client;
-          }),
+          })
         );
         setShowModal(false);
-        setToastMessage('Client Edited successfully.');
+        setToastMessage("Client Edited successfully.");
         setShowToast(true);
       })
       .catch((error) => {
-        console.error('Error saving edited client:', error);
+        console.error("Error saving edited client:", error);
       });
   };
 
@@ -98,7 +101,7 @@ function ViewCustomers() {
     if (showToast) {
       timer = setTimeout(() => {
         setShowToast(false);
-        setToastMessage('');
+        setToastMessage("");
       }, 3500);
     }
     return () => clearTimeout(timer);
@@ -107,91 +110,116 @@ function ViewCustomers() {
   return (
     <div className="max-w-screen overflow-x-auto">
       <div className="max-w-screen mx-auto overflow-x-hidden p-4">
-        <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
-          <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
-            <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
-              <tr>
-                <th scope="col" className="px-3 py-4">
-                  ID
-                </th>
-                <th scope="col" className="px-3 py-4">
-                  Salutation
-                </th>
-                <th scope="col" className="px-4 py-4">
-                  Client Name
-                </th>
-                <th scope="col" className="px-4 py-4">
-                  Client Type
-                </th>
-                <th scope="col" className="px-4 py-4">
-                  Purpose
-                </th>
-                <th scope="col" className="px-4 py-4">
-                  Address
-                </th>
-                <th scope="col" className="px-4 py-4">
-                  Phone
-                </th>
-                <th scope="col" className="px-4 py-4">
-                  Email Address
-                </th>
-                <th scope="col" className="px-4 py-4">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {clients.map((client) => (
-                <tr
-                  key={client.id}
-                  className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
-                >
-                  <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                    {client.id}
-                  </td>
-                  <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                    {client.salutation}
-                  </td>
-                  <td className="px-4 py-2">{client.clientName}</td>
-                  <td className="px-4 py-2">{client.clientType}</td>
-                  <td className="px-4 py-2">{client.purpose}</td>
-                  <td className="px-4 py-2">{client.address}</td>
-                  <td className="px-4 py-2">{client.phone}</td>
-                  <td className="px-4 py-2">{client.emailAddress}</td>
-                  <td className="px-4 py-2">
-                    <button
-                      onClick={() => editClient(client)}
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => deleteClient(client.id)}
-                      className="font-medium text-red-600 dark:text-red-500 hover:underline"
-                    >
-                      Delete
-                    </button>
-                  </td>
+        {loading ? ( // Show skeleton loading when data is loading
+          <SkeletonTable />
+        ) : clients.length ? ( // Show table if data exists
+          <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
+            <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
+              <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
+                <tr>
+                  <th scope="col" className="px-3 py-4">
+                    ID
+                  </th>
+                  <th scope="col" className="px-3 py-4">
+                    Salutation
+                  </th>
+                  <th scope="col" className="px-4 py-4">
+                    Name
+                  </th>
+                  <th scope="col" className="px-4 py-4">
+                    Type
+                  </th>
+                  <th scope="col" className="px-4 py-4">
+                    Purpose
+                  </th>
+                  <th scope="col" className="px-4 py-4">
+                    Address
+                  </th>
+                  <th scope="col" className="px-4 py-4">
+                    Phone
+                  </th>
+                  <th scope="col" className="px-4 py-4">
+                    Email Address
+                  </th>
+                  <th scope="col" className="px-4 py-4">
+                    Action
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {showModal && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-            <div className="bg-slate-200 w-full lg:max-w-md sm:max-w-64 rounded-xl p-6 dark:bg-slate-900">
-              {/*<h2 className="text-3xl text-center my-1">Edit Client</h2>*/}
-              <EditClientModal
-                client={editedClient}
-                saveEditedClient={saveEditedClient}
-                closeModal={closeModal}
-                formData={formData}
-                setFormData={setFormData}
+              </thead>
+              <tbody>
+                {clients.map((client) => (
+                  <tr
+                    key={client.id}
+                    className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
+                  >
+                    <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
+                      {client.cid}
+                    </td>
+                    <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
+                      {client.salutation}
+                    </td>
+                    <td className="px-4 py-2">{client.clientName}</td>
+                    <td className="px-4 py-2">{client.clientType}</td>
+                    <td className="px-4 py-2">{client.purpose}</td>
+                    <td className="px-4 py-2">{client.address}</td>
+                    <td className="px-4 py-2">{client.phone}</td>
+                    <td className="px-4 py-2">{client.emailAddress}</td>
+                    <td className="px-4 py-2">
+                      <button
+                        onClick={() => editClient(client)}
+                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => deleteClient(client.id)}
+                        className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          // Show message if no data exists
+          <div className="text-center mt-8">
+            <p className="text-2xl text-center text-neutral-900 dark:text-gray-400 dark:text-slate-100">
+              <span className="py-10 my-100">Oops! Data Not Found.</span>
+              <img
+                src="https://ik.imagekit.io/tealcdn2023/assets/undraw_landscape_photographer_blv1.svg?updatedAt=1709287801082"
+                className="flex justify-center h-100 mx-auto"
+                alt="Illustration"
               />
+              <span className="text-lime-500">Go Ahead and Add Some</span>
+            </p>
+            <div className="mt-10">
+              <a
+                className="mt-4 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-600"
+                href="/Customer/New"
+              >
+                Add
+              </a>
             </div>
           </div>
         )}
       </div>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+          <div className="bg-slate-200 w-full lg:max-w-md sm:max-w-64 rounded-xl p- dark:bg-slate-900">
+            {/*<h2 className="text-3xl text-center my-1">Edit Client</h2>*/}
+            <EditClientModal
+              client={editedClient}
+              saveEditedClient={saveEditedClient}
+              closeModal={closeModal}
+              formData={formData}
+              setFormData={setFormData}
+            />
+          </div>
+        </div>
+      )}
       {showToast && (
         <div
           id="toast-success"
@@ -227,19 +255,19 @@ function EditClientModal({
 }) {
   // State variables for edited client data
   const [editedSalutation, setEditedSalutation] = useState(
-    client?.salutation || '',
+    client?.salutation || ""
   );
   const [editedClientName, setEditedClientName] = useState(
-    client?.clientName || '',
+    client?.clientName || ""
   );
   const [editedClientType, setEditedClientType] = useState(
-    client?.clientType || '',
+    client?.clientType || ""
   );
-  const [editedPurpose, setEditedPurpose] = useState(client?.purpose || '');
-  const [editedAddress, setEditedAddress] = useState(client?.address || '');
-  const [editedPhone, setEditedPhone] = useState(client?.phone || '');
+  const [editedPurpose, setEditedPurpose] = useState(client?.purpose || "");
+  const [editedAddress, setEditedAddress] = useState(client?.address || "");
+  const [editedPhone, setEditedPhone] = useState(client?.phone || "");
   const [editedEmailAddress, setEditedEmailAddress] = useState(
-    client?.emailAddress || '',
+    client?.emailAddress || ""
   );
 
   // Function to handle saving the edited client data
@@ -266,13 +294,12 @@ function EditClientModal({
       };
       saveEditedClient(editedData);
     } else {
-      // Display an alert if any field is empty
-      alert('Please fill in all fields.');
+      alert("Please fill in all fields.");
     }
   };
 
   return (
-    <div className="p-6 sm:px-4 bg-slate-200 dark:bg-slate-900 rounded-lg">
+    <div className="p-8 sm:px-4 bg-slate-200 dark:bg-slate-900 rounded-lg">
       <div className="overflow-auto sm:max-h-49 lg:max-h-125 ">
         <h2 className="text-3xl text-center my-1">Edit Client</h2>
         <div className="mb-2 sm:mb-4 dark:text-slate-50">
@@ -398,4 +425,70 @@ function EditClientModal({
     </div>
   );
 }
+
+// SkeletonTable component to render skeleton loading effect
+const SkeletonTable = () => {
+  return (
+    <div className="animate-pulse">
+      <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
+        <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
+          <tr>
+            <th
+              scope="col"
+              className="px-3 py-4 bg-gray-400 dark:bg-slate-800"
+            ></th>
+            <th
+              scope="col"
+              className="px-3 py-4 bg-gray-300 dark:bg-slate-800"
+            ></th>
+            <th
+              scope="col"
+              className="px-4 py-4 bg-gray-300 dark:bg-slate-800"
+            ></th>
+            <th
+              scope="col"
+              className="px-4 py-4 bg-gray-300 dark:bg-slate-800"
+            ></th>
+            <th
+              scope="col"
+              className="px-4 py-4 bg-gray-300 dark:bg-slate-800"
+            ></th>
+            <th
+              scope="col"
+              className="px-4 py-4 bg-gray-300 dark:bg-slate-800"
+            ></th>
+            <th
+              scope="col"
+              className="px-4 py-4 bg-gray-300 dark:bg-slate-800"
+            ></th>
+            <th
+              scope="col"
+              className="px-4 py-4 bg-gray-400 dark:bg-slate-800"
+            ></th>
+            <th
+              scope="col"
+              className="px-4 py-4 bg-gray-400 dark:bg-slate-800"
+            ></th>
+          </tr>
+        </thead>
+        <tbody>
+          {[...Array(5)].map((_, index) => (
+            <tr key={index}>
+              <td className="py-2 bg-gray-300 dark:bg-slate-800"></td>
+              <td className="py-2 bg-gray-300 dark:bg-slate-800"></td>
+              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
+              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
+              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
+              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
+              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
+              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
+              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 export default ViewCustomers;

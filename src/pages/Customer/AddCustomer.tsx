@@ -1,14 +1,14 @@
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../../layout/DefaultLayout';
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+import DefaultLayout from "../../layout/DefaultLayout";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 axios.defaults.baseURL = "http://localhost:8080/";
 
 const getHeaders = () => {
-  const username = 'abinesh';
-  const password = 'abi';
-  const basicAuth = 'Basic ' + btoa(username + ':' + password);
+  const username = "abinesh";
+  const password = "abi";
+  const basicAuth = "Basic " + btoa(username + ":" + password);
   return {
     headers: {
       Authorization: basicAuth,
@@ -18,27 +18,27 @@ const getHeaders = () => {
 
 const AddCustomer = () => {
   const [formData, setFormData] = useState({
-    salutation: 'Mr',
-    clientName: '',
-    clientType: 'individual',
-    purpose: '',
-    phone: '',
-    emailAddress: '',
-    address: '',
+    salutation: "Mr",
+    clientName: "",
+    clientType: "individual",
+    purpose: "",
+    phone: "",
+    emailAddress: "",
+    address: "",
   });
 
   const [showToast, setShowToast] = useState(false);
 
   const saveClient = () => {
     axios
-      .post('/api/customer', formData, getHeaders())
+      .post("/api/customer", formData, getHeaders())
       .then((response) => {
-        console.log('Client saved:', response.data);
+        console.log("Client saved:", response.data);
         setShowToast(true); // Show the toast
         clearForm(); // Clear the form fields
       })
       .catch((error) => {
-        console.error('Error saving client:', error);
+        console.error("Error saving client:", error);
       });
   };
 
@@ -66,13 +66,13 @@ const AddCustomer = () => {
 
   const clearForm = () => {
     setFormData({
-      salutation: 'Mr',
-      clientName: '',
-      clientType: 'individual',
-      purpose: '',
-      phone: '',
-      emailAddress: '',
-      address: '',
+      salutation: "Mr",
+      clientName: "",
+      clientType: "individual",
+      purpose: "",
+      phone: "",
+      emailAddress: "",
+      address: "",
     });
   };
 
@@ -142,7 +142,7 @@ const AddCustomer = () => {
                 name="clientType"
                 value="Interior Designer"
                 onChange={handleInputChange}
-                checked={formData.clientType === 'Interior Designer'}
+                checked={formData.clientType === "Interior Designer"}
                 required
               />
               <label
@@ -157,7 +157,7 @@ const AddCustomer = () => {
                 name="clientType"
                 value="Architect"
                 onChange={handleInputChange}
-                checked={formData.clientType === 'Architect'}
+                checked={formData.clientType === "Architect"}
                 required
               />
               <label
@@ -172,7 +172,7 @@ const AddCustomer = () => {
                 name="clientType"
                 value="Client"
                 onChange={handleInputChange}
-                checked={formData.clientType === 'Client'}
+                checked={formData.clientType === "Client"}
                 required
               />
               <label htmlFor="client" className="focus:border-red-700 text-sm">
@@ -207,7 +207,6 @@ const AddCustomer = () => {
               className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
               onChange={handleInputChange}
               value={formData.emailAddress}
-              required
             />
           </div>
           <div className="flex flex-col">

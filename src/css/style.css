@@ -203,13 +203,55 @@ span.flatpickr-weekday,
   background-repeat: no-repeat;
   background-size: 20px;
 }
-.custom-input-date-1::-webkit-calendar-picker-indicator {
-  background-image: url(./images/icon/icon-calendar.svg);
-}
-.custom-input-date-2::-webkit-calendar-picker-indicator {
-  background-image: url(./images/icon/icon-arrow-down.svg);
-}
 
 [x-cloak] {
   display: none !important;
+}
+
+/* Customize the toast container */
+.Toastify__toast-container {
+  width: 300px;
+  position: fixed;
+  top: 25px;
+  right: 20px;
+}
+
+/* Customize the individual toast notifications */
+.Toastify__toast {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  border-radius: 10px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.Toastify__toast--success {
+  background-color: #f4fffb; /* Green background for success toast */
+  color: #1c2421; /* White text color */
+}
+
+.Toastify__toast--error {
+  background-color:#fff ; /* Red background for error toast */
+  color: #f44336; /* White text color */
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: fit-content;
+  font-family: inherit;
+  font-size: 20px;
+  background: radial-gradient(circle closest-side,#0c0020 94%,#0000) right/calc(200% - 1em) 100%;
+  animation: l24 1s infinite alternate linear;
+}
+.loader::before {
+  content: "Loading...";
+  line-height: 1em;
+  color: whitesmoke;
+  background: inherit;
+  background-image: radial-gradient(circle closest-side,#fff 94%,#000);
+  -webkit-background-clip:text;
+          background-clip:text;
+}
+
+@keyframes l24{
+  100%{background-position: left}
 }

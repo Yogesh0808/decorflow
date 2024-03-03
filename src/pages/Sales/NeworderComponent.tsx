@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import SofaForm from "./orderForm/SofaForm";
 import BlindsForm from "./orderForm/BlindsForm";
 import CurtainsForm from "./orderForm/CurtainsForm";
 import FlooringForm from "./orderForm/FlooringForm";
 import WallpaperForm from "./orderForm/WallpaperForm";
-import FurnitureForm from "./orderForm/FurnitureForm"; // Add this import
+import FurnitureForm from "./orderForm/FurnitureForm";
 
 axios.defaults.baseURL = "http://localhost:8080/";
 
@@ -24,7 +26,6 @@ const CustomerTable = () => {
     fabricImage: null,
   });
   const [customers, setCustomers] = useState([]);
-
   const getHeaders = () => {
     const username = "abinesh";
     const password = "abi";
@@ -36,18 +37,7 @@ const CustomerTable = () => {
     };
   };
 
-  /*const handleSubmit = (e) => {
-    e.preventDefault();
-    // Your logic for form submission goes here
-    setNotification('Form submitted successfully');
-    setShowModal(false); // Close modal after submission
-    // Reset form or do any other necessary actions
-    setFormData({
-      ...formData,
-      [selectedProduct]: '',
-    });
-  };*/
-
+  // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedCustomer) {
@@ -56,6 +46,7 @@ const CustomerTable = () => {
     }
     // Your logic for form submission goes here
     setNotification("Form submitted successfully");
+    toast.success(`${selectedProduct} has been added successfully`);
     setShowModal(false);
     setFormData({
       ...formData,
@@ -79,6 +70,7 @@ const CustomerTable = () => {
       "https://ik.imagekit.io/tealcdn2023/assets/Decor.png?updatedAt=1708795608010",
   };
 
+  // Fetch customers
   const fetchCustomers = async () => {
     try {
       const response = await axios.get("/api/customer/names", getHeaders());
@@ -88,12 +80,13 @@ const CustomerTable = () => {
     }
   };
 
+  // Function to handle selection of product category
   const handleCategorySelect = (product) => {
     setSelectedProduct(product);
     setShowModal(true); // Show modal when a card is clicked
   };
 
-  // Function to handle modal close
+  // Function to handle closing of modal
   const handleCloseModal = () => {
     setShowModal(false);
     setFormData({
@@ -102,6 +95,7 @@ const CustomerTable = () => {
     });
   };
 
+  // Function to handle input change in form fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -110,22 +104,21 @@ const CustomerTable = () => {
     });
   };
 
+  // Fetch customers when the component mounts
   useEffect(() => {
-    // Fetch customers when the component mounts
     fetchCustomers();
   }, []);
 
+  // Function to handle form submission
   const handleFormSubmit = async (formData) => {
     try {
-      console.log("Handle Form Submission Called");
-      const { clientName, id } = selectedCustomer; // Destructure clientName and id from selectedCustomer
+      const { clientName, cid } = selectedCustomer; // Destructure clientName and id from selectedCustomer
       const dataToSubmit = {
         ...formData,
         customerName: clientName,
-        customerId: id,
+        customerId: cid,
       }; // Include customerName and customerId in the data
       console.log("Submitted Data:", dataToSubmit); // Logging the object directly
-      // Pass data to CurtainsForm
       setShowModal(false);
       setFormData({
         ...formData,
@@ -136,6 +129,7 @@ const CustomerTable = () => {
     }
   };
 
+  // Function to render the form for selected product
   const renderProductForm = () => {
     switch (selectedProduct) {
       case "Curtains":
@@ -155,13 +149,17 @@ const CustomerTable = () => {
             onInputChange={(e) => handleInputChange(e)}
             onCloseModal={handleCloseModal}
             onSubmit={handleSubmit}
+            selectedCustomer={selectedCustomer}
           />
         );
       case "Blinds":
         return (
-          <BlindsForm onCloseModal={handleCloseModal} onSubmit={handleSubmit} />
+          <BlindsForm
+            onCloseModal={handleCloseModal}
+            onSubmit={handleSubmit}
+            selectedCustomer={selectedCustomer}
+          />
         );
-
       case "Wallpaper":
         return (
           <WallpaperForm
@@ -170,7 +168,6 @@ const CustomerTable = () => {
             selectedCustomer={selectedCustomer}
           />
         );
-
       case "Floorings":
         return (
           <FlooringForm
@@ -179,7 +176,6 @@ const CustomerTable = () => {
             selectedCustomer={selectedCustomer}
           />
         );
-
       case "Furniture":
         return (
           <FurnitureForm
@@ -188,7 +184,6 @@ const CustomerTable = () => {
             selectedCustomer={selectedCustomer}
           />
         );
-
       default:
         return null;
     }
@@ -212,12 +207,11 @@ const CustomerTable = () => {
           <option value="">Select Customer</option>
           {customers.map((customer, index) => (
             <option key={index} value={customer.id}>
-              {customer.clientName} - {customer.id}
+              {customer.clientName} - {customer.cid}
             </option>
           ))}
         </select>
       )}
-
       {/* Show cards and modal if a customer is selected */}
       {selectedCustomer && (
         <>
@@ -227,14 +221,12 @@ const CustomerTable = () => {
           >
             Back
           </button>
-
           {/* Cards */}
           {/* New Order For {client Name} */}
           <p className="text-center text-slate-700 dark:text-slate-50 text-2xl">
             New Order For {selectedCustomer && selectedCustomer.clientName} -{" "}
-            {selectedCustomer && selectedCustomer.id}
+            {selectedCustomer && selectedCustomer.cid}
           </p>
-
           <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100 dark:bg-gray-800">
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
               {[
@@ -264,6 +256,17 @@ const CustomerTable = () => {
               ))}
             </div>
           </div>
+          <ToastContainer
+            position="top-right"
+            autoClose={4000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
               <div className="relative w-full max-w-md">
@@ -275,15 +278,15 @@ const CustomerTable = () => {
               </div>
             </div>
           )}
-
-          {/* Notification */}
-          {notification && (
-            <div className="absolute bottom-0 right-2 text-xl text-lime-600 bg-slate-100 p-4 rounded-xl">
-              {notification}
-            </div>
-          )}
         </>
       )}
+      {/* Notification */}
+      {notification && (
+        <div className="absolute bottom-0 right-2 text-xl text-lime-600 bg-slate-100 p-4 rounded-xl">
+          {notification}
+        </div>
+      )}
+      {/* Toast Container */}
     </div>
   );
 };

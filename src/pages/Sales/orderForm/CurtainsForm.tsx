@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface CurtainsFormProps {
   onCloseModal: () => void;
@@ -24,6 +26,18 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
     tieOption: "",
     remarks: "",
   });
+  const [loading, setLoading] = useState(false);
+
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -38,41 +52,49 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData({
-          ...formData,
-          fabricImage: reader.result as string,
-        });
-      };
-      reader.readAsDataURL(file);
+      setFormData({
+        ...formData,
+        fabricImage: file,
+      });
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const submitFormData = async (formData: any) => {
     try {
+      setLoading(true);
       const dataToSubmit = {
         ...formData,
         customerName: selectedCustomer.clientName,
         customerId: selectedCustomer.id,
       };
-      console.log(dataToSubmit);
 
-      /*const response = await axios.post(
+      console.log("Curtains Form Data:", dataToSubmit);
+
+      const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Curtains`,
-        dataToSubmit
-      );*/
+        dataToSubmit,
+        {
+          ...getHeaders(),
+          headers: {
+            "Content-Type": "multipart/form-data", // Set the content type to multipart/form-data
+            ...getHeaders().headers,
+          },
+        }
+      );
 
-      // Handle success response
       console.log("Form submitted successfully:", response.data);
-
-      // Close modal or perform any other necessary actions
       onCloseModal();
+      toast.success("Curtains Order has been submitted successfully!"); // Close modal after successful form submission
     } catch (error) {
       console.error("Error submitting form:", error);
-      // Handle error
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await submitFormData(formData);
   };
 
   return (
@@ -106,7 +128,11 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         </button>
       </div>
       <div className="overflow-auto max-h-[30rem]">
-        <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+        <form
+          className="p-4 md:p-5"
+          onSubmit={handleSubmit}
+          encType="multipart/form-data" // Set the enctype to multipart/form-data
+        >
           <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
             <div className="col-span-2">
               <label
@@ -313,7 +339,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                 id="fabricImage"
                 name="fabricImage"
                 accept="image/*"
-                onChange={handleFileInputChange} // Add onChange event handler
+                onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
@@ -321,20 +347,49 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
           <button
             type="submit"
             className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            disabled={loading}
           >
-            <svg
-              className="me-1 -ms-1 w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            Add new product
+            {loading ? (
+              <>
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.373A8 8 0 0112 20v4c-6.627 0-12-5.373-12-12h4zm14-2A8 8 0 0120 12H24c0 6.627-5.373 12-12 12v-4z"
+                  ></path>
+                </svg>
+                <p>Please Wait...</p>
+              </>
+            ) : (
+              <>
+                <svg
+                  className="me-1 -ms-1 w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+                Add new product
+              </>
+            )}
           </button>
         </form>
       </div>

@@ -1,24 +1,29 @@
-import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Route, Routes, useLocation, useParams } from "react-router-dom";
 
-import Loader from './common/Loader';
-import PageTitle from './components/PageTitle';
-import SignIn from './pages/Authentication/SignIn';
-import SignUp from './pages/Authentication/SignUp';
-import Calendar from './pages/Calendar';
-import Chart from './pages/Chart';
-import ECommerce from './pages/Dashboard/ECommerce';
-import FormElements from './pages/Form/FormElements';
-import FormLayout from './pages/Form/FormLayout';
-import Profile from './pages/Profile';
-import Settings from './pages/Settings';
-import Tables from './pages/Tables';
-import Alerts from './pages/UiElements/Alerts';
-import Buttons from './pages/UiElements/Buttons';
-import Neworder from './pages/Sales/Neworder';
-import Vieworder from './pages/Sales/Vieworder';
-import AddCustomer from './pages/Customer/AddCustomer';
-import ViewCustomer from './pages/Customer/ViewCustomer';
+import Loader from "./common/Loader/index";
+import PageTitle from "./components/PageTitle";
+import Calendar from "./pages/Calendar";
+import Chart from "./pages/Chart";
+import ECommerce from "./pages/Dashboard/ECommerce";
+import FormElements from "./pages/Form/FormElements";
+import FormLayout from "./pages/Form/FormLayout";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
+import Tables from "./pages/Tables";
+import Alerts from "./pages/UiElements/Alerts";
+import Buttons from "./pages/UiElements/Buttons";
+import Neworder from "./pages/Sales/Neworder";
+import Vieworder from "./pages/Sales/Vieworder";
+import Printorder from "./pages/Sales/printorder";
+import AddCustomer from "./pages/Customer/AddCustomer";
+import ViewCustomer from "./pages/Customer/ViewCustomer";
+import NotFound from "./pages/NotFound";
+{
+  /* Dispatching Service */
+}
+import ViewEntry from "./pages/Dispatch/ViewEntry";
+import OrderEntry from "./pages/Dispatch/OrderEntry";
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -91,7 +96,34 @@ function App() {
             </>
           }
         />
-
+        <Route
+          path="/printorder"
+          element={
+            <>
+              <PageTitle title="Printing Preview | YHD" />
+              <Printorder />
+            </>
+          }
+        />
+        {/* Dispatching Routing Starts Here:)) */}
+        <Route
+          path="/dispatch/entry"
+          element={
+            <>
+              <PageTitle title="OrderEntry | YHD" />
+              <OrderEntry />
+            </>
+          }
+        />
+        <Route
+          path="/dispatch/view"
+          element={
+            <>
+              <PageTitle title="OrderEntry | YHD" />
+              <ViewEntry />
+            </>
+          }
+        />
         <Route
           path="/profile"
           element={
@@ -164,24 +196,7 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/auth/signin"
-          element={
-            <>
-              <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <SignIn />
-            </>
-          }
-        />
-        <Route
-          path="/auth/signup"
-          element={
-            <>
-              <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <SignUp />
-            </>
-          }
-        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
