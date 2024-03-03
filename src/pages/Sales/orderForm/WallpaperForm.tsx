@@ -58,24 +58,24 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
   const submitFormData = async (formData: any) => {
     try {
       setLoading(true);
-      const dataToSubmit = {
-        ...formData,
-        customerName: selectedCustomer.clientName,
-        customerId: selectedCustomer.id,
-      };
+      const dataToSubmit = new FormData();
+
+      // Append text fields
+      dataToSubmit.append("title", formData.title);
+      dataToSubmit.append("description", formData.description);
+      // Append file
+      if (formData.image) {
+        dataToSubmit.append("image", formData.image);
+      }
+      dataToSubmit.append("customerName", selectedCustomer.clientName);
+      dataToSubmit.append("customerId", selectedCustomer.id);
 
       console.log("Wallpaper Form Data:", dataToSubmit);
 
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Wallpaper`,
         dataToSubmit,
-        {
-          ...getHeaders(),
-          headers: {
-            "Content-Type": "multipart/form-data", // Set the content type to multipart/form-data
-            ...getHeaders().headers,
-          },
-        }
+        getHeaders()
       );
 
       console.log("Form submitted successfully:", response.data);
