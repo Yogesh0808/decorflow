@@ -333,7 +333,10 @@ const printTable = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div
+      className="container mx-auto p-4"
+      onChange={(e) => handleSelectCustomer(e.target.value)}
+    >
       <select
         value={selectedCustomer ? selectedCustomer.id : ""}
         onChange={(e) => handleSelectCustomer(e.target.value)}
