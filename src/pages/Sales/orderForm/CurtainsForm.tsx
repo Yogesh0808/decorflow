@@ -15,7 +15,8 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
   const [formData, setFormData] = useState<any>({
     title: "",
     description: "",
-    size: "",
+    height: "", // Change size to height
+    width: "", // New state for width
     widthOfFabric: "",
     noOfPieces: "",
     noOfPanels: "",
@@ -53,10 +54,14 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
     try {
       setLoading(true);
 
+      // Concatenate height and width into size
+      const size = `${formData.height} x ${formData.width}`;
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
+        if (key === "height" || key === "width") return; // Skip height and width
         formDataToSend.append(key, formData[key]);
       });
+      formDataToSend.append("size", size); // Append the concatenated size
       formDataToSend.append("customerId", selectedCustomer.id);
       formDataToSend.append("category", "Curtains");
       console.log("Form Data to Send:", formDataToSend);
@@ -136,7 +141,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                 placeholder="Enter title"
               />
             </div>
-            <div>
+            <div className="col-span-2">
               <label
                 htmlFor="description"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -154,21 +159,39 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                 placeholder="Write product description here"
               ></textarea>
             </div>
+
             <div>
               <label
-                htmlFor="size"
+                htmlFor="height"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Size
+                Height
               </label>
               <input
                 type="text"
-                value={formData.size}
-                id="size"
-                name="size"
-                onChange={(e) => handleInputChange(e)} // Add onChange event handler
+                id="height"
+                name="height"
+                value={formData.height}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter size"
+                placeholder="Enter height"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="width"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Width
+              </label>
+              <input
+                type="text"
+                id="width"
+                name="width"
+                value={formData.width}
+                onChange={handleInputChange}
+                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter width"
               />
             </div>
             <div>
