@@ -6,6 +6,7 @@ import BlindOrdersTable from "./orderTable/BlindOrdersTable";
 import FurnitureOrdersTable from "./orderTable/FurnitureOrdersTable";
 import WallpaperOrdersTable from "./orderTable/WallpaperOrdersTable";
 import FlooringsOrdersTable from "./orderTable/FlooringsOrdersTable";
+import MattressOrdersTable from "./orderTable/MattressOrdersTable";
 import Loader from "../../common/Loader/index";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
@@ -158,6 +159,14 @@ const ViewOrderComponent = () => {
         case "Flooring":
           return (
             <FlooringsOrdersTable
+              key={category}
+              products={products}
+              deleteProduct={deleteProduct}
+            />
+          );
+        case "Mattress":
+          return (
+            <MattressOrdersTable
               key={category}
               products={products}
               deleteProduct={deleteProduct}

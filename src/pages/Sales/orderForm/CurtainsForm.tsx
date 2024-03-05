@@ -28,17 +28,6 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
   });
   const [loading, setLoading] = useState(false);
 
-  const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
-    return {
-      headers: {
-        Authorization: basicAuth,
-      },
-    };
-  };
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -52,46 +41,45 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result?.toString().split(",")[1];
-        setFormData({
-          ...formData,
-          image: base64String,
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const submitFormData = async (formData: any) => {
-    try {
-      setLoading(true);
-      const dataToSubmit = {
-        ...formData,
-        customerName: selectedCustomer.clientName,
-        customerId: selectedCustomer.id,
-      };
-
-      const response = await axios.post(
-        `/api/products/${selectedCustomer.id}/Curtains`,
-        dataToSubmit,
-        getHeaders()
-      );
-
-      console.log("Form submitted successfully:", response.data);
-      onCloseModal();
-      toast.success("Curtains Order has been submitted successfully!"); // Close modal after successful form submission
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    } finally {
-      setLoading(false);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        fabricImage: file,
+      }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await submitFormData(formData);
+    try {
+      setLoading(true);
+
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        formDataToSend.append(key, formData[key]);
+      });
+      formDataToSend.append("customerId", selectedCustomer.id);
+      formDataToSend.append("category", "Curtains");
+      console.log("Form Data to Send:", formDataToSend);
+      const response = await axios.post(
+        `/api/products/${selectedCustomer.id}/Curtains`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Basic " + btoa("abinesh:abi"),
+          },
+        }
+      );
+      console.log(formDataToSend);
+
+      console.log("Form submitted successfully:", response.data);
+      onCloseModal();
+      toast.success("Curtains Order has been submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -125,7 +113,11 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         </button>
       </div>
       <div className="overflow-auto max-h-[30rem]">
-        <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+        <form
+          className="p-4 md:p-5"
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
+        >
           <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
             <div className="col-span-2">
               <label
@@ -332,7 +324,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                 id="fabricImage"
                 name="fabricImage"
                 accept="image/*"
-                onChange={handleFileInputChange} // Add onChange event handler
+                onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>

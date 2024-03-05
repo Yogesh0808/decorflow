@@ -193,10 +193,10 @@ function ViewCustomers() {
                   className="w-100"
                   alt="No data available"
                 />
-                <p>Oops! It seems there are No Customers available.</p>
+                <p>Oops! It seems there are no products available.</p>
               </div>
               <span className="text-emerald-600 font-normal">
-                Don't worry, you can add them now!
+                Don't worry, you can add some now!
               </span>
             </p>
             <div className="mt-10">
@@ -204,7 +204,7 @@ function ViewCustomers() {
                 className="mt-4 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-600"
                 href="/Customer/New"
               >
-                Add Customer
+                Add Products
               </a>
             </div>
           </div>

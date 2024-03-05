@@ -93,7 +93,7 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
 
   return (
     <div className="relative bg-white rounded-lg shadow dark:bg-slate-700">
-      <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 mt-20">
+      <div className="flex items-center justify-between p-6 md:p-5 border-b rounded-t dark:border-gray-600 mt-20">
         <h3 className="text-lg font-normal text-slate-800 dark:text-white">
           Blinds Order Form
         </h3>

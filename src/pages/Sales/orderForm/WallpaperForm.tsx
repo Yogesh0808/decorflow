@@ -48,26 +48,29 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
-        setFormData({
-          ...formData,
-          image: base64String, // Set the base64 string
-        });
-      };
-      reader.readAsDataURL(file);
+      setFormData({
+        ...formData,
+        fabricImage: file,
+      });
     }
   };
 
   const submitFormData = async (formData: any) => {
     try {
       setLoading(true);
-      const dataToSubmit = {
-        ...formData,
-        customerName: selectedCustomer.clientName,
-        customerId: selectedCustomer.id,
-      };
+      const dataToSubmit = new FormData();
+
+      // Append text fields
+      dataToSubmit.append("title", formData.title);
+      dataToSubmit.append("description", formData.description);
+      // Append file
+      if (formData.image) {
+        dataToSubmit.append("image", formData.image);
+      }
+      dataToSubmit.append("customerName", selectedCustomer.clientName);
+      dataToSubmit.append("customerId", selectedCustomer.id);
+
+      console.log("Wallpaper Form Data:", dataToSubmit);
 
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Wallpaper`,
@@ -76,8 +79,8 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
       );
 
       console.log("Form submitted successfully:", response.data);
-      onCloseModal(); // Close modal after successful form submission
-      toast.success("Wallpaper Order submitted successfully!");
+      onCloseModal();
+      toast.success("Curtains Order has been submitted successfully!"); // Close modal after successful form submission
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
@@ -121,7 +124,11 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
         </button>
       </div>
       <div className="overflow-auto max-h-[30rem]">
-        <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+        <form
+          className="p-4 md:p-5"
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
+        >
           <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
             <div className="col-span-2">
               <label

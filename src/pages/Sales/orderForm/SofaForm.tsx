@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 interface SofaFormProps {
   onCloseModal: () => void;
-  selectedCustomer: { cid: string; clientName: string };
+  selectedCustomer: { id: string; clientName: string }; // Corrected property name from cid to id
 }
 
 const SofaForm: React.FC<SofaFormProps> = ({
@@ -51,27 +51,23 @@ const SofaForm: React.FC<SofaFormProps> = ({
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
-        const name = e.target.name; // Get the name of the input
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          [name]: base64String, // Set the base64 string to the corresponding field (rimg or limg)
-        }));
-      };
-      reader.readAsDataURL(file);
+      const name = e.target.name;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: file,
+      }));
     }
   };
 
   const submitFormData = async (formData: any) => {
     try {
       setLoading(true);
-      const dataToSubmit = {
-        ...formData,
-        customerName: selectedCustomer.clientName,
-        customerId: selectedCustomer.id,
-      };
+      const dataToSubmit = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        dataToSubmit.append(key, value);
+      });
+      dataToSubmit.append("customerName", selectedCustomer.clientName);
+      dataToSubmit.append("customerId", selectedCustomer.id);
 
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Sofa`,
@@ -80,7 +76,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
       );
 
       console.log("Form submitted successfully:", response.data);
-      onCloseModal(); // Close modal after successful form submission
+      onCloseModal();
       toast.success("Sofa Order has been submitted successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -91,6 +87,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("Sofa Data:", formData);
     await submitFormData(formData);
   };
 

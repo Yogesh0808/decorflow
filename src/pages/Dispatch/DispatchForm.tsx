@@ -8,6 +8,7 @@ const DispatchForm = () => {
     quantity: "",
     quantityOrdered: "",
     companyName: "",
+    orderNum: "",
     docNumber: "",
     transitInformation: "",
   });
@@ -20,7 +21,6 @@ const DispatchForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    // Add your submission logic here
   };
 
   return (
@@ -108,6 +108,20 @@ const DispatchForm = () => {
             id="companyName"
             name="companyName"
             value={formData.companyName}
+            onChange={handleInputChange}
+            className="rounded-md py-2 px-3 focus:border-red-500 bg-sky-50"
+            required
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="orderNum" className="text-sm font-medium">
+            Order Number:
+          </label>
+          <input
+            type="text"
+            id="orderNum"
+            name="orderNum"
+            value={formData.orderNum}
             onChange={handleInputChange}
             className="rounded-md py-2 px-3 focus:border-red-500 bg-sky-50"
             required
