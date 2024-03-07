@@ -223,6 +223,56 @@ const AddCustomer = () => {
               required
             ></textarea>
           </div>
+
+          <div className="flex flex-col">
+            {formData.isCompanyOrder && (
+              <>
+                <label htmlFor="company-name" className="text-sm font-medium">
+                  Company Name
+                </label>
+
+                <input
+                  type="text"
+                  name="companyName"
+                  id="company-name"
+                  className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+                  onChange={handleInputChange}
+                  value={formData.companyName}
+                />
+              </>
+            )}
+          </div>
+
+          <div className="flex flex-col">
+            {formData.isCompanyOrder && (
+              <>
+                <label htmlFor="gst-number" className="text-sm font-medium">
+                  GST Number
+                </label>
+                <input
+                  type="text"
+                  name="gstNumber"
+                  id="gst-number"
+                  className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+                  onChange={handleInputChange}
+                  value={formData.gstNumber}
+                />
+              </>
+            )}
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="company-order"
+              name="isCompanyOrder"
+              className="rounded border-gray-300 p-2 text-teal-500 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 dark:border-neutral-500 dark:bg-slate-700 dark:focus:ring-neutral-400"
+              onChange={handleInputChange}
+              checked={formData.isCompanyOrder}
+            />
+            <label htmlFor="company-order" className="ml-2 text-sm">
+              GST Order
+            </label>
+          </div>
           <button
             type="submit"
             className="bg-red-700 text-white py-2 px-4 rounded-md hover:bg-red-800"
@@ -233,7 +283,7 @@ const AddCustomer = () => {
         {showToast && (
           <div
             id="toast-success"
-            className="absolute lg:top-32 sm:top-2 right-2 flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 bg-white rounded-lg shadow"
+            className="absolute lg:top-2 sm:top-2 sm:right-2 flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 bg-white rounded-lg shadow"
             role="alert"
           >
             <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg">

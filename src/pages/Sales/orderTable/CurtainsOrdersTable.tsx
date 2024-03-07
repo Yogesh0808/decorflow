@@ -13,6 +13,7 @@ const CurtainsOrdersTable = ({ products, editProduct, deleteProduct }) => {
       },
     };
   };
+  let serialNumber = 0;
   const handleDelete = async (productId) => {
     try {
       // Make DELETE request to delete the product
@@ -87,7 +88,7 @@ const CurtainsOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                  {product.id}
+                  {++serialNumber}
                 </td>
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                   {product.data.title}
@@ -101,9 +102,9 @@ const CurtainsOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.fabricName}</td>
                 <td className="px-4 py-2">{product.data.fabricCode}</td>
                 <td className="px-4 py-2">
-                  {product.data.image ? (
+                  {product.images.length > 0 ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.data.image}`}
+                      src={`data:image/jpeg;base64,${product.images[0].imageData}`}
                       width="100"
                     />
                   ) : (

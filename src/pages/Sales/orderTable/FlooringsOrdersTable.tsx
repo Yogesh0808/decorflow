@@ -13,6 +13,8 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
       },
     };
   };
+
+  let serialNumber = 0;
   const handleDelete = async (productId) => {
     try {
       // Make DELETE request to delete the product
@@ -70,7 +72,7 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                  {product.id}
+                  {++serialNumber}
                 </td>
                 <td className="px-3 py-2">{product.data.description}</td>
                 <td className="px-4 py-2">{product.data.sizeOfFloor}</td>
@@ -79,9 +81,9 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
                   {product.data.catalogCodeAndNumber}
                 </td>
                 <td className="px-4 py-2">
-                  {product.data.image ? (
+                  {product.images.length > 0 ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.data.image}`}
+                      src={`data:image/jpeg;base64,${product.images[0].imageData}`}
                       width="100"
                     />
                   ) : (

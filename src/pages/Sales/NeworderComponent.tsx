@@ -8,6 +8,7 @@ import CurtainsForm from "./orderForm/CurtainsForm";
 import FlooringForm from "./orderForm/FlooringForm";
 import WallpaperForm from "./orderForm/WallpaperForm";
 import FurnitureForm from "./orderForm/FurnitureForm";
+import MattressForm from "./orderForm/MattressForm";
 
 axios.defaults.baseURL = "http://localhost:8080/";
 
@@ -26,6 +27,7 @@ const CustomerTable = () => {
     fabricImage: null,
   });
   const [customers, setCustomers] = useState([]);
+
   const getHeaders = () => {
     const username = "abinesh";
     const password = "abi";
@@ -37,14 +39,12 @@ const CustomerTable = () => {
     };
   };
 
-  // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedCustomer) {
       console.error("Selected customer is undefined or null");
       return;
     }
-    // Your logic for form submission goes here
     setNotification("Form submitted successfully");
     toast.success(`${selectedProduct} has been added successfully`);
     setShowModal(false);
@@ -55,22 +55,17 @@ const CustomerTable = () => {
   };
 
   const productImages = {
-    Curtains:
-      "https://ik.imagekit.io/tealcdn2023/assets/curtains.png?updatedAt=1708796208451",
+    Curtains: "https://ik.imagekit.io/tealcdn2023/assets/curtains.png",
     Sofas: "https://cdn-icons-png.flaticon.com/512/5781/5781883.png",
-    Blinds:
-      "https://ik.imagekit.io/tealcdn2023/assets/blinds.png?updatedAt=1708795944875",
+    Blinds: "https://ik.imagekit.io/tealcdn2023/assets/blinds.png",
     Carpets:
       "https://cdn.iconscout.com/icon/premium/png-256-thumb/carpet-1469898-1243937.png?f=webp",
-    Floorings:
-      "https://ik.imagekit.io/tealcdn2023/assets/flooring.png?updatedAt=1708795833951",
-    Wallpaper:
-      "https://ik.imagekit.io/tealcdn2023/assets/wallpaper.png?updatedAt=1708795761824",
-    Furniture:
-      "https://ik.imagekit.io/tealcdn2023/assets/Decor.png?updatedAt=1708795608010",
+    Floorings: "https://ik.imagekit.io/tealcdn2023/assets/flooring.png",
+    Wallpaper: "https://ik.imagekit.io/tealcdn2023/assets/wallpaper.png",
+    Furniture: "https://ik.imagekit.io/tealcdn2023/assets/Decor.png",
+    Mattress: "https://ik.imagekit.io/tealcdn2023/assets/bed.png",
   };
 
-  // Fetch customers
   const fetchCustomers = async () => {
     try {
       const response = await axios.get("/api/customer/names", getHeaders());
@@ -80,13 +75,15 @@ const CustomerTable = () => {
     }
   };
 
-  // Function to handle selection of product category
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
+
   const handleCategorySelect = (product) => {
     setSelectedProduct(product);
-    setShowModal(true); // Show modal when a card is clicked
+    setShowModal(true);
   };
 
-  // Function to handle closing of modal
   const handleCloseModal = () => {
     setShowModal(false);
     setFormData({
@@ -95,7 +92,6 @@ const CustomerTable = () => {
     });
   };
 
-  // Function to handle input change in form fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -104,21 +100,15 @@ const CustomerTable = () => {
     });
   };
 
-  // Fetch customers when the component mounts
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
-
-  // Function to handle form submission
   const handleFormSubmit = async (formData) => {
     try {
-      const { clientName, cid } = selectedCustomer; // Destructure clientName and id from selectedCustomer
+      const { clientName, cid } = selectedCustomer;
       const dataToSubmit = {
         ...formData,
         customerName: clientName,
         customerId: cid,
-      }; // Include customerName and customerId in the data
-      console.log("Submitted Data:", dataToSubmit); // Logging the object directly
+      };
+      console.log("Submitted Data:", dataToSubmit);
       setShowModal(false);
       setFormData({
         ...formData,
@@ -129,7 +119,6 @@ const CustomerTable = () => {
     }
   };
 
-  // Function to render the form for selected product
   const renderProductForm = () => {
     switch (selectedProduct) {
       case "Curtains":
@@ -138,8 +127,8 @@ const CustomerTable = () => {
             formData={formData}
             onInputChange={(e) => handleInputChange(e)}
             onCloseModal={handleCloseModal}
-            onSubmit={(formData) => handleFormSubmit(formData)} // Pass customer name and ID to onSubmit
-            selectedCustomer={selectedCustomer} // Pass selectedCustomer to CurtainsForm
+            onSubmit={(formData) => handleFormSubmit(formData)}
+            selectedCustomer={selectedCustomer}
           />
         );
       case "Sofas":
@@ -184,6 +173,14 @@ const CustomerTable = () => {
             selectedCustomer={selectedCustomer}
           />
         );
+      case "Mattress":
+        return (
+          <MattressForm
+            onSubmit={handleFormSubmit}
+            onCloseModal={handleCloseModal}
+            selectedCustomer={selectedCustomer}
+          />
+        );
       default:
         return null;
     }
@@ -191,7 +188,6 @@ const CustomerTable = () => {
 
   return (
     <div>
-      {/* Show customer selection dropdown if no customer is selected */}
       {!selectedCustomer && (
         <select
           value={selectedCustomer ? selectedCustomer.id : ""}
@@ -212,7 +208,6 @@ const CustomerTable = () => {
           ))}
         </select>
       )}
-      {/* Show cards and modal if a customer is selected */}
       {selectedCustomer && (
         <>
           <button
@@ -221,8 +216,6 @@ const CustomerTable = () => {
           >
             Back
           </button>
-          {/* Cards */}
-          {/* New Order For {client Name} */}
           <p className="text-center text-slate-700 dark:text-slate-50 text-2xl">
             New Order For {selectedCustomer && selectedCustomer.clientName} -{" "}
             {selectedCustomer && selectedCustomer.cid}
@@ -236,11 +229,12 @@ const CustomerTable = () => {
                 "Floorings",
                 "Wallpaper",
                 "Furniture",
+                "Mattress",
               ].map((product, index) => (
                 <div
                   key={index}
                   onClick={() => handleCategorySelect(product)}
-                  className="rounded-lg bg-gradient-to-br from-cyan-500 to-blue-400 dark:bg-blue-950 shadow-lg overflow-hidden"
+                  className="rounded-lg bg-gradient-to-bl from-blue-300 via-sky-300 to-indigo-300 dark:from-blue-600 dark:via-sky-600 dark:to-indigo-500 shadow-md overflow-hidden cursor-pointer hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
                 >
                   <img
                     src={productImages[product]}
@@ -269,9 +263,9 @@ const CustomerTable = () => {
           />
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-              <div className="relative w-full max-w-md">
+              <div className="relative w-82 max-w-md mx-auto">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="rounded-lg overflow-hidden">
+                  <div className="rounded-lg overflow-hidden max-w-md w-full">
                     <div>{renderProductForm(selectedCustomer)}</div>
                   </div>
                 </div>
@@ -280,13 +274,11 @@ const CustomerTable = () => {
           )}
         </>
       )}
-      {/* Notification */}
       {notification && (
         <div className="absolute bottom-0 right-2 text-xl text-lime-600 bg-slate-100 p-4 rounded-xl">
           {notification}
         </div>
       )}
-      {/* Toast Container */}
     </div>
   );
 };

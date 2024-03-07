@@ -2,6 +2,7 @@ import axios from "axios";
 
 const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
   axios.defaults.baseURL = "http://localhost:8080/";
+  let serialNumber = 0;
   const getHeaders = () => {
     const username = "abinesh";
     const password = "abi";
@@ -78,15 +79,15 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                  {product.id}
+                  {++serialNumber}
                 </td>
                 <td className="px-3 py-2">{product.data.description}</td>
                 <td className="px-4 py-2">{product.data.size}</td>
                 <td className="px-4 py-2">{product.data.shapeModel}</td>
                 <td className="px-4 py-2">
-                  {product.data.rimg ? (
+                  {product.images[0].imageData ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.data.rimg}`}
+                      src={`data:image/jpeg;base64,${product.images[0].imageData}`}
                       width="100"
                     />
                   ) : (
@@ -95,20 +96,20 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 </td>
                 <td className="px-4 py-2">{product.data.fabricNameCode}</td>
                 <td className="px-4 py-2">
-                  {product.data.image ? (
+                  {product.images.length > 0 ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.data.image}`}
+                      src={`data:image/jpeg;base64,${product.images[1].imageData}`}
                       width="100"
                     />
                   ) : (
-                    "No (W)Image Available"
+                    "No Image Available"
                   )}
                 </td>
                 <td className="px-4 py-2">{product.data.sofaLeg}</td>
                 <td className="px-4 py-2">
-                  {product.limg ? (
+                  {product.images.length > 0 ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.data.limg}`}
+                      src={`data:image/jpeg;base64,${product.images[2].imageData}`}
                       width="100"
                     />
                   ) : (

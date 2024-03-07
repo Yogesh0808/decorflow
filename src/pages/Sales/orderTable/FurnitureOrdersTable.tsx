@@ -24,6 +24,7 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
     console.log("From Furniture:", products);
     return <div>No product data available</div>;
   }
+  let serialNumber = 0;
 
   return (
     <div className="max-w-screen mx-auto overflow-x-hidden p-4">
@@ -70,7 +71,7 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                  {product.id}
+                  {++serialNumber}
                 </td>
                 <td className="px-4 py-2">{product.data.title}</td>
                 <td className="px-4 py-2">{product.data.description}</td>
@@ -78,9 +79,9 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
                 <td className="px-4 py-2">{product.data.qty}</td>
                 <td className="px-4 py-2">{product.data.referenceCode}</td>
                 <td className="px-4 py-2">
-                  {product.imageData ? (
+                  {product.images.length > 0 ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.imageData}`}
+                      src={`data:image/jpeg;base64,${product.images[0].imageData}`}
                       width="100"
                     />
                   ) : (

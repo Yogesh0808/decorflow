@@ -22,7 +22,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
     modelOfStitching: "",
     fabricName: "",
     fabricCode: "",
-    fabricImage: null,
+    image: null,
     tieOption: "",
     remarks: "",
   });
@@ -43,12 +43,13 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
     if (file) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        fabricImage: file,
+        image: file,
       }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("Curtains handleSubmit Called!");
     e.preventDefault();
     try {
       setLoading(true);
@@ -59,6 +60,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
       });
       formDataToSend.append("customerId", selectedCustomer.id);
       formDataToSend.append("category", "Curtains");
+      console.log(formDataToSend);
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Curtains`,
         formDataToSend,
@@ -69,7 +71,6 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
           },
         }
       );
-      console.log(formDataToSend);
 
       console.log("Form submitted successfully:", response.data);
       onCloseModal();
@@ -128,9 +129,9 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
               <input
                 type="text"
                 id="title"
-                name="title" // Add a unique name for each input field
-                value={formData.title} // Set value prop dynamically
-                onChange={handleInputChange} // Assign the onChange handler
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter title"
               />
@@ -313,15 +314,15 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
             </div>
             <div>
               <label
-                htmlFor="fabricImage"
+                htmlFor="image"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Fabric Image
               </label>
               <input
                 type="file"
-                id="fabricImage"
-                name="fabricImage"
+                id="image"
+                name="image"
                 accept="image/*"
                 onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

@@ -27,6 +27,8 @@ const WallpaperProductsTable = ({ products, editProduct, deleteProduct }) => {
     return <div>No product data available</div>;
   }
 
+  let serialNumber = 0;
+
   return (
     <div className="max-w-screen mx-auto overflow-x-hidden p-4">
       <h1 className="text-black p-2 text-2xl dark:text-whiter">
@@ -72,7 +74,7 @@ const WallpaperProductsTable = ({ products, editProduct, deleteProduct }) => {
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                  {product.id}
+                  {++serialNumber}
                 </td>
                 <td className="px-4 py-2">{product.data.title}</td>
                 <td className="px-4 py-2">{product.data.description}</td>
@@ -80,13 +82,13 @@ const WallpaperProductsTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.noOfRolls}</td>
                 <td className="px-4 py-2">{product.data.catalogCode}</td>
                 <td className="px-4 py-2">
-                  {product.data.image ? (
+                  {product.images.length > 0 ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.data.image}`}
+                      src={`data:image/jpeg;base64,${product.images[0].imageData}`}
                       width="100"
                     />
                   ) : (
-                    "No (W)Image Available"
+                    "No Image Available"
                   )}
                 </td>
                 <td className="px-4 py-2">{product.data.remarks}</td>

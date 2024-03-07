@@ -6,12 +6,13 @@ import BlindOrdersTable from "./printTable/BlindOrdersTable";
 import FurnitureOrdersTable from "./printTable/FurnitureOrdersTable";
 import WallpaperOrdersTable from "./printTable/WallpaperOrdersTable";
 import FlooringsOrdersTable from "./printTable/FlooringsOrdersTable";
+import MattressOrdersTable from "./printTable/MattressOrdersTable";
 import Logo from "../../images/logo/Logo.png";
 import Loader from "../../common/Loader/index";
 
 axios.defaults.baseURL = "http://localhost:8080/";
 
-const printTable = () => {
+const PrintTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
@@ -89,8 +90,13 @@ const printTable = () => {
 
     if (products.length === 0) {
       return (
-        <div className="text-gray-600 text-xl text-center mt-4">
-          Oops! No product data available
+        <div className="flex flex-col items-center justify-center text-gray-900 text-xl mt-4">
+          <img
+            src="https://ik.imagekit.io/tealcdn2023/assets/No%20data-cuate.svg"
+            className="w-100"
+            alt="No data available"
+          />
+          <p>Oops! It seems there are no products available.</p>
         </div>
       );
     }
@@ -118,6 +124,8 @@ const printTable = () => {
           return <WallpaperOrdersTable key={category} products={products} />;
         case "Flooring":
           return <FlooringsOrdersTable key={category} products={products} />;
+        case "Mattress":
+          return <MattressOrdersTable key={category} products={products} />;
         default:
           return null;
       }
@@ -328,7 +336,10 @@ const printTable = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div
+      className="container mx-auto p-4"
+      onChange={(e) => handleSelectCustomer(e.target.value)}
+    >
       <select
         value={selectedCustomer ? selectedCustomer.id : ""}
         onChange={(e) => handleSelectCustomer(e.target.value)}
@@ -342,101 +353,103 @@ const printTable = () => {
         ))}
       </select>
 
-      <div className="bg-white dark:bg-slate-950 p-4 shadow-lg rounded-xl print-content">
-        <div className="flex justify-between mb-4">
-          <div>
-            <img
-              src="https://ik.imagekit.io/tealcdn2023/assets/Logo.png?updatedAt=1709360170200"
-              className="w-25"
-              alt={"Logo"}
-            ></img>
-            <h1 className="text-3xl font-semibold uppercase text-slate-800 dark:text-white">
-              Yash Home Decors
-            </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              #174, Pycrofts Road, Royapettah, Chennai - 600014
-            </p>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              Ph: +91-95000-05914
-            </p>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              GSTIN/UIN: 33CJWPM2113B1ZJ
-            </p>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              Tamil Nadu, Code: 33
-            </p>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              Email: yashdecoratives@gmail.com
-            </p>
-          </div>
+      {selectedCustomer && (
+        <div>
+          <div className="bg-white dark:bg-slate-950 p-4 shadow-lg rounded-xl print-content">
+            <div className="flex justify-between mb-4">
+              <div>
+                <img
+                  src="https://ik.imagekit.io/tealcdn2023/assets/Logo.png?updatedAt=1709360170200"
+                  className="w-25"
+                  alt={"Logo"}
+                ></img>
+                <h1 className="text-3xl font-semibold uppercase text-slate-800 dark:text-white">
+                  Yash Home Decors
+                </h1>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  #174, Pycrofts Road, Royapettah, Chennai - 600014
+                </p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  Ph: +91-95000-05914
+                </p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  GSTIN/UIN: 33CJWPM2113B1ZJ
+                </p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  Tamil Nadu, Code: 33
+                </p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  Email: yashdecoratives@gmail.com
+                </p>
+              </div>
 
-          <div>
-            <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
-              Order Details
-            </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Date: 19/02/2024
-            </p>
+              <div>
+                <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
+                  Order Details
+                </h2>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Date: 19/02/2024
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                Customer Details
+              </h2>
+              <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
+                <p>
+                  <span className="font-semibold">Customer Name:</span>{" "}
+                  {selectedCustomer.clientName}
+                </p>
+                <p>
+                  <span className="font-semibold">Customer ID:</span>{" "}
+                  {selectedCustomer.cid}
+                </p>
+                <p>
+                  <span className="font-semibold">Address:</span>{" "}
+                  {selectedCustomer.address}
+                </p>
+                <p>
+                  <span className="font-semibold">Client Type:</span>{" "}
+                  {selectedCustomer.clientType}
+                </p>
+                <p>
+                  <span className="font-semibold">Purpose:</span>{" "}
+                  {selectedCustomer.purpose}
+                </p>
+                <p>
+                  <span className="font-semibold">Phone:</span>{" "}
+                  {selectedCustomer.phone}
+                </p>
+                <p>
+                  <span className="font-semibold">Email:</span>{" "}
+                  {selectedCustomer.emailAddress}
+                </p>
+              </div>
+            </div>
+
+            {renderProductTables()}
+          </div>
+          <div className="flex justify-between mt-4">
+            <button
+              onClick={handlePrint}
+              className="bg-blue-800 hover:bg-blue-900 text-white py-2 px-4 rounded-xl"
+            >
+              Print & Download
+            </button>
+            <button
+              onClick={handleGeneratePDF}
+              className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded-xl"
+              disabled={generatingPDF}
+            >
+              {generatingPDF ? "Generating PDF..." : "Generate PDF"}
+            </button>
           </div>
         </div>
-
-        {selectedCustomer && (
-          <div className="mt-4">
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
-              Customer Details
-            </h2>
-            <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
-              <p>
-                <span className="font-semibold">Customer Name:</span>{" "}
-                {selectedCustomer.clientName}
-              </p>
-              <p>
-                <span className="font-semibold">Customer ID:</span>{" "}
-                {selectedCustomer.cid}
-              </p>
-              <p>
-                <span className="font-semibold">Address:</span>{" "}
-                {selectedCustomer.address}
-              </p>
-              <p>
-                <span className="font-semibold">Client Type:</span>{" "}
-                {selectedCustomer.clientType}
-              </p>
-              <p>
-                <span className="font-semibold">Purpose:</span>{" "}
-                {selectedCustomer.purpose}
-              </p>
-              <p>
-                <span className="font-semibold">Phone:</span>{" "}
-                {selectedCustomer.phone}
-              </p>
-              <p>
-                <span className="font-semibold">Email:</span>{" "}
-                {selectedCustomer.emailAddress}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {renderProductTables()}
-      </div>
-      <div className="flex justify-between mt-4">
-        <button
-          onClick={handlePrint}
-          className="bg-blue-800 hover:bg-blue-900 text-white py-2 px-4 rounded-xl"
-        >
-          Print & Download
-        </button>
-        <button
-          onClick={handleGeneratePDF}
-          className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded-xl"
-          disabled={generatingPDF}
-        >
-          {generatingPDF ? "Generating PDF..." : "Generate PDF"}
-        </button>
-      </div>
+      )}
     </div>
   );
 };
 
-export default printTable;
+export default PrintTable;
