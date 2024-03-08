@@ -1,51 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
-import edit from "../../../images/icon/edit.svg";
-import trash from "../../../images/icon/trash.svg";
-import EditProductModal from "./edit";
 
-const CurtainsOrdersTable = ({ products, deleteProduct }) => {
-  const [editProduct, setEditProduct] = useState(null);
-
-  const handleEdit = (product) => {
-    setEditProduct(product);
+const CurtainsOrdersTable = ({ products, editProduct, deleteProduct }) => {
+  axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
   };
-
-  const handleCloseEditModal = () => {
-    setEditProduct(null);
-  };
-
-  const handleSaveEdit = async (updatedProductData) => {
-    try {
-      // Make PUT request to update the product
-      await axios.put(`/api/products/${editProduct.id}`, updatedProductData);
-      // Update the products array with the updated product data
-      const updatedProducts = products.map((product) =>
-        product.id === editProduct.id
-          ? { ...product, data: updatedProductData }
-          : product
-      );
-      // You might need to implement this method to update the state in your parent component
-      // updateProducts(updatedProducts);
-    } catch (error) {
-      console.error("Error updating product:", error);
-    } finally {
-      handleCloseEditModal();
-    }
-  };
-
   const handleDelete = async (productId) => {
     try {
       // Make DELETE request to delete the product
-      await axios.delete(`/api/products/${productId}`);
+      await axios.delete(`/api/products/${productId}`, getHeaders());
       deleteProduct(productId);
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
-
-  let serialNumber = 0;
-
   if (!products || products.length === 0) {
     console.log("From Curtains:", products);
     return <div>No product data available</div>;
@@ -111,7 +87,7 @@ const CurtainsOrdersTable = ({ products, deleteProduct }) => {
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                  {++serialNumber}
+                  {product.id}
                 </td>
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                   {product.data.title}
@@ -138,23 +114,16 @@ const CurtainsOrdersTable = ({ products, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.tieOption}</td>
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => handleEdit(product)}
+                    onClick={() => editProduct(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
-                    <img
-                      src={edit}
-                      className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
-                    ></img>
+                    Edit
                   </button>
                   <button
                     onClick={() => handleDelete(product.id)}
                     className="font-medium text-red-600 dark:text-red-500 hover:underline"
                   >
-                    <img
-                      src={trash}
-                      className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer ml-2"
-                      alt="Trash Icon"
-                    ></img>
+                    Delete
                   </button>
                 </td>
               </tr>
@@ -162,13 +131,6 @@ const CurtainsOrdersTable = ({ products, deleteProduct }) => {
           </tbody>
         </table>
       </div>
-      {editProduct && (
-        <EditProductModal
-          product={editProduct}
-          onClose={handleCloseEditModal}
-          onSave={handleSaveEdit}
-        />
-      )}
     </div>
   );
 };
