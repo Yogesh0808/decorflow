@@ -1,5 +1,7 @@
 import React from "react";
 import axios from "axios";
+import edit from "../../../images/icon/edit.svg";
+import trash from "../../../images/icon/trash.svg";
 
 const CurtainsOrdersTable = ({ products, editProduct, deleteProduct }) => {
   axios.defaults.baseURL = "https://cors-h05i.onrender.com";
@@ -13,6 +15,7 @@ const CurtainsOrdersTable = ({ products, editProduct, deleteProduct }) => {
       },
     };
   };
+  let serialNumber = 0;
   const handleDelete = async (productId) => {
     try {
       // Make DELETE request to delete the product
@@ -87,7 +90,7 @@ const CurtainsOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                  {product.id}
+                  {++serialNumber}
                 </td>
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                   {product.data.title}
@@ -117,13 +120,20 @@ const CurtainsOrdersTable = ({ products, editProduct, deleteProduct }) => {
                     onClick={() => editProduct(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
-                    Edit
+                    <img
+                      src={edit}
+                      className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                    ></img>
                   </button>
                   <button
                     onClick={() => handleDelete(product.id)}
                     className="font-medium text-red-600 dark:text-red-500 hover:underline"
                   >
-                    Delete
+                    <img
+                      src={trash}
+                      className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer ml-2"
+                      alt="Trash Icon"
+                    ></img>
                   </button>
                 </td>
               </tr>
