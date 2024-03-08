@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import edit from "../../images/icon/edit.svg";
-import trash from "../../images/icon/user-x.svg";
+import trash from "../../images/icon/trash.svg";
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
 const getHeaders = () => {
@@ -42,7 +42,7 @@ function ViewCustomers() {
       .get("/api/customer", getHeaders())
       .then((response) => {
         setClients(response.data);
-        setLoading(false); // Set loading to false when data is fetched
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching clients:", error);
@@ -110,9 +110,9 @@ function ViewCustomers() {
   return (
     <div className="max-w-screen overflow-x-auto">
       <div className="max-w-screen mx-auto overflow-x-hidden p-4">
-        {loading ? ( // Show skeleton loading when data is loading
+        {loading ? (
           <SkeletonTable />
-        ) : clients.length ? ( // Show table if data exists
+        ) : clients.length ? (
           <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
             <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
               <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">

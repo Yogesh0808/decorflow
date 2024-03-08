@@ -1,30 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import edit from "../../../images/icon/edit.svg";
 import trash from "../../../images/icon/trash.svg";
+import EditProductModal from "./edit";
 
-const CurtainsOrdersTable = ({ products, editProduct, deleteProduct }) => {
-  axios.defaults.baseURL = "https://cors-h05i.onrender.com";
-  const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
-    return {
-      headers: {
-        Authorization: basicAuth,
-      },
-    };
+const CurtainsOrdersTable = ({ products, deleteProduct }) => {
+  const [editProduct, setEditProduct] = useState(null);
+
+  const handleEdit = (product) => {
+    setEditProduct(product);
   };
-  let serialNumber = 0;
+
+  const handleCloseEditModal = () => {
+    setEditProduct(null);
+  };
+
+  const handleSaveEdit = async (updatedProductData) => {
+    try {
+      // Make PUT request to update the product
+      await axios.put(`/api/products/${editProduct.id}`, updatedProductData);
+      // Update the products array with the updated product data
+      const updatedProducts = products.map((product) =>
+        product.id === editProduct.id
+          ? { ...product, data: updatedProductData }
+          : product
+      );
+      // You might need to implement this method to update the state in your parent component
+      // updateProducts(updatedProducts);
+    } catch (error) {
+      console.error("Error updating product:", error);
+    } finally {
+      handleCloseEditModal();
+    }
+  };
+
   const handleDelete = async (productId) => {
     try {
       // Make DELETE request to delete the product
-      await axios.delete(`/api/products/${productId}`, getHeaders());
+      await axios.delete(`/api/products/${productId}`);
       deleteProduct(productId);
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
+
+  let serialNumber = 0;
+
   if (!products || products.length === 0) {
     console.log("From Curtains:", products);
     return <div>No product data available</div>;
@@ -117,7 +138,7 @@ const CurtainsOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.tieOption}</td>
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => editProduct(product)}
+                    onClick={() => handleEdit(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
                     <img
@@ -141,6 +162,13 @@ const CurtainsOrdersTable = ({ products, editProduct, deleteProduct }) => {
           </tbody>
         </table>
       </div>
+      {editProduct && (
+        <EditProductModal
+          product={editProduct}
+          onClose={handleCloseEditModal}
+          onSave={handleSaveEdit}
+        />
+      )}
     </div>
   );
 };

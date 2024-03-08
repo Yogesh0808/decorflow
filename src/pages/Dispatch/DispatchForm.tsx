@@ -121,7 +121,7 @@ const DispatchForm = () => {
             <select
               name="customerName"
               id="customerName"
-              className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+              className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-800 dark:bg-slate-900"
               onChange={handleCustomerChange}
               value={selectedCustomer}
               required
@@ -142,7 +142,7 @@ const DispatchForm = () => {
               type="text"
               name="areaOfRoom"
               id="areaOfRoom"
-              className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+              className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-900"
               onChange={handleInputChange}
               value={formData.areaOfRoom}
               required
@@ -159,7 +159,7 @@ const DispatchForm = () => {
             name="catalogName"
             value={formData.catalogName}
             onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-sky-50"
+            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
             required
           />
         </div>
@@ -173,7 +173,7 @@ const DispatchForm = () => {
             name="quantity"
             value={formData.quantity}
             onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-sky-50"
+            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
             required
           />
         </div>
@@ -187,7 +187,7 @@ const DispatchForm = () => {
             name="quantityOrdered"
             value={formData.quantityOrdered}
             onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-sky-50"
+            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
             required
           />
         </div>
@@ -201,7 +201,7 @@ const DispatchForm = () => {
             name="companyName"
             value={formData.companyName}
             onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-sky-50"
+            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
             required
           />
         </div>
@@ -215,7 +215,7 @@ const DispatchForm = () => {
             name="orderNum"
             value={formData.orderNum}
             onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-sky-50"
+            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
             required
           />
         </div>
@@ -229,7 +229,7 @@ const DispatchForm = () => {
             name="docNumber"
             value={formData.docNumber}
             onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-sky-50"
+            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
             required
           />
         </div>
@@ -243,7 +243,7 @@ const DispatchForm = () => {
             name="transitInformation"
             value={formData.transitInformation}
             onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-sky-50"
+            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
             required
           />
         </div>
