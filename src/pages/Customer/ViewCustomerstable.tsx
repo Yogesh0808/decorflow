@@ -212,7 +212,7 @@ function ViewCustomers() {
                 className="mt-4 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-600"
                 href="/Customer/New"
               >
-                Add Products
+                Add Customers
               </a>
             </div>
           </div>
@@ -234,7 +234,7 @@ function ViewCustomers() {
       {showToast && (
         <div
           id="toast-success"
-          className="absolute bottom-1 right-2 flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 bg-gradient-to-br from-green-100 via-green-200 rounded-lg shadow"
+          className="absolute top-0 right-0 flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 bg-gradient-to-br from-green-100 via-green-200 rounded-lg shadow"
           role="alert"
         >
           <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-700 bg-green-300 rounded-lg">

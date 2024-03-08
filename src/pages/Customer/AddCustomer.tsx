@@ -84,7 +84,7 @@ const AddCustomer = () => {
     <DefaultLayout>
       <Breadcrumb pageName="NewCustomer" />
 
-      <div className="max-w-lg mx-auto p-6 space-y-6 text-neutral-700 dark:text-neutral-100">
+      <div className="max-w-lg mx-auto p-6 space-y-6 text-neutral-700 dark:text-neutral-100 relative">
         <h1 className="text-3xl font-normal mb-4">New Customer Form</h1>
         <form onSubmit={handleFormSubmit} className="space-y-4">
           <div className="flex space-x-4">
@@ -283,7 +283,7 @@ const AddCustomer = () => {
         {showToast && (
           <div
             id="toast-success"
-            className="absolute top-2 right-2 flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 bg-white rounded-lg shadow"
+            className="absolute top-0 right-0 flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 bg-white rounded-lg shadow"
             role="alert"
           >
             <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg">
