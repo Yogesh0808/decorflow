@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import AddCustomer from "./AddCustomer";
-
+import edit from "../../images/icon/edit.svg";
+import trash from "../../images/icon/user-x.svg";
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
 const getHeaders = () => {
@@ -167,15 +167,24 @@ function ViewCustomers() {
                     <td className="px-4 py-2">
                       <button
                         onClick={() => editClient(client)}
+                        width="18"
+                        height="18"
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
-                        Edit
+                        <img
+                          src={edit}
+                          className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                        ></img>
                       </button>
                       <button
                         onClick={() => deleteClient(client.id)}
-                        className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                        className="font-medium text-red-600 dark:text-red-500 hover:underline ml-2"
                       >
-                        Delete
+                        <img
+                          src={trash}
+                          className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                          alt="Trash Icon"
+                        />
                       </button>
                     </td>
                   </tr>
@@ -184,7 +193,6 @@ function ViewCustomers() {
             </table>
           </div>
         ) : (
-          // Show message if no data exists
           <div className="text-center mt-8">
             <p className="text-xl text-center text-neutral-900 dark:text-gray-400 dark:text-slate-100">
               <div className="flex flex-col items-center justify-center text-gray-900 text-xl mt-4">
@@ -213,7 +221,6 @@ function ViewCustomers() {
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
           <div className="bg-slate-200 w-full lg:max-w-md sm:max-w-64 rounded-xl p- dark:bg-slate-900">
-            {/*<h2 className="text-3xl text-center my-1">Edit Client</h2>*/}
             <EditClientModal
               client={editedClient}
               saveEditedClient={saveEditedClient}

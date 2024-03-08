@@ -1,4 +1,6 @@
 import React from "react";
+import edit from "../../../images/icon/edit.svg";
+import trash from "../../../images/icon/trash.svg";
 
 interface FurnitureProductsTableProps {
   products: {
@@ -24,6 +26,7 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
     console.log("From Furniture:", products);
     return <div>No product data available</div>;
   }
+  let serialNumber = 0;
 
   return (
     <div className="max-w-screen mx-auto overflow-x-hidden p-4">
@@ -70,7 +73,7 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                  {product.id}
+                  {++serialNumber}
                 </td>
                 <td className="px-4 py-2">{product.data.title}</td>
                 <td className="px-4 py-2">{product.data.description}</td>
@@ -78,9 +81,9 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
                 <td className="px-4 py-2">{product.data.qty}</td>
                 <td className="px-4 py-2">{product.data.referenceCode}</td>
                 <td className="px-4 py-2">
-                  {product.imageData ? (
+                  {product.images.length > 0 ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.imageData}`}
+                      src={`data:image/jpeg;base64,${product.images[0].imageData}`}
                       width="100"
                     />
                   ) : (
@@ -93,13 +96,20 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
                     onClick={() => editProduct(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
-                    Edit
+                    <img
+                      src={edit}
+                      className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                    ></img>
                   </button>
                   <button
                     onClick={() => deleteProduct(product.id)}
                     className="font-medium text-red-600 dark:text-red-500 hover:underline"
                   >
-                    Delete
+                    <img
+                      src={trash}
+                      className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer ml-2"
+                      alt="Trash Icon"
+                    ></img>
                   </button>
                 </td>
               </tr>

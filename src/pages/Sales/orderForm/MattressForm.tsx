@@ -24,77 +24,63 @@ const MattressForm: React.FC<MattressFormProps> = ({
     pillowRemarks: "",
     bedProtectorSize: "",
     bedProtectorColor: "",
-    specificationImage: null,
+    image: null,
     deliveryTime: "",
   });
   const [loading, setLoading] = useState(false);
 
-  const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
-    return {
-      headers: {
-        Authorization: basicAuth,
-      },
-    };
-  };
-
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, type } = e.target;
+    const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: type === "checkbox" ? e.target.checked : value,
+      [name]: value,
     }));
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
-        setFormData({
-          ...formData,
-          image: base64String,
-        });
-      };
-      reader.readAsDataURL(file);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: file,
+      }));
     }
   };
 
-  const submitFormData = async (formData: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("Mattress handleSubmit Called!");
+    e.preventDefault();
     try {
       setLoading(true);
-      const dataToSubmit = {
-        ...formData,
-        customerName: selectedCustomer.clientName,
-        customerId: selectedCustomer.id,
-      };
 
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        formDataToSend.append(key, formData[key]);
+      });
+      formDataToSend.append("customerId", selectedCustomer.id);
+      formDataToSend.append("category", "Mattress");
+      console.log(formDataToSend);
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Mattress`,
-        dataToSubmit,
-        getHeaders()
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Basic " + btoa("abinesh:abi"),
+          },
+        }
       );
 
       console.log("Form submitted successfully:", response.data);
       onCloseModal();
-      toast.success("Mattress Order submitted successfully!");
+      toast.success("Mattress Order has been submitted successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await submitFormData(formData);
   };
 
   return (
@@ -299,15 +285,15 @@ const MattressForm: React.FC<MattressFormProps> = ({
             </div>
             <div className="col-span-2">
               <label
-                htmlFor="specificationImage"
+                htmlFor="image"
                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Specification Image
               </label>
               <input
                 type="file"
-                id="specificationImage"
-                name="specificationImage"
+                id="image"
+                name="image"
                 onChange={handleFileInputChange}
                 accept="image/*"
                 required

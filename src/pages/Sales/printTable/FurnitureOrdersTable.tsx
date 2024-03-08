@@ -76,9 +76,9 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
                 <td className="px-4 py-2">{product.data.qty}</td>
                 <td className="px-4 py-2">{product.data.referenceCode}</td>
                 <td className="px-4 py-2">
-                  {product.imageData ? (
+                  {product.images.length > 0 ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.imageData}`}
+                      src={`data:image/jpeg;base64,${product.images[0].imageData}`}
                       width="100"
                     />
                   ) : (

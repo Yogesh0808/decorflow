@@ -17,9 +17,9 @@ const SofaForm: React.FC<SofaFormProps> = ({
     description: "",
     size: "",
     shapeModel: "L-Shaped",
-    rimg: null,
-    fabricNameCode: "",
     image: null,
+    fabricNameCode: "",
+    fimg: null,
     sofaLeg: "",
     limg: null,
     remarks: "",
@@ -202,15 +202,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
             {/* Reference Image */}
             <div className="col-span-2">
               <label
-                htmlFor="rimg"
+                htmlFor="image"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Reference Image
               </label>
               <input
                 type="file"
-                id="rimg"
-                name="rimg"
+                id="image"
+                name="image"
                 accept="image/*"
                 onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -237,15 +237,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
             {/* Fabric Image */}
             <div className="col-span-2">
               <label
-                htmlFor="image"
+                htmlFor="fimg"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Fabric Image
               </label>
               <input
                 type="file"
-                id="image"
-                name="image"
+                id="fimg"
+                name="fimg"
                 accept="image/*"
                 onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

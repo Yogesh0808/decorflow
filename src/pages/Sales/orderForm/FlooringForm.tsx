@@ -20,22 +20,11 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
     sizeOfFloor: "",
     numberOfSqft: "",
     catalogCodeAndNumber: "",
-    flooringImage: null,
+    image: null,
     remarks: "",
     id: "",
   });
   const [loading, setLoading] = useState(false);
-
-  const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
-    return {
-      headers: {
-        Authorization: basicAuth,
-      },
-    };
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -50,46 +39,45 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
-        setFormData({
-          ...formData,
-          image: base64String,
-        });
-      };
-      reader.readAsDataURL(file);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: file,
+      }));
     }
   };
 
-  const submitFormData = async (formData: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("Floorings handleSubmit Called!");
+    e.preventDefault();
     try {
       setLoading(true);
-      const dataToSubmit = {
-        ...formData,
-        customerName: selectedCustomer.clientName,
-        customerId: selectedCustomer.id,
-      };
 
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        formDataToSend.append(key, formData[key]);
+      });
+      formDataToSend.append("customerId", selectedCustomer.id);
+      formDataToSend.append("category", "Flooring");
+      console.log(formDataToSend);
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Flooring`,
-        dataToSubmit,
-        getHeaders()
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Basic " + btoa("abinesh:abi"),
+          },
+        }
       );
 
       console.log("Form submitted successfully:", response.data);
       onCloseModal();
-      toast.success("Flooring Order submitted successfully!");
+      toast.success("Floorings Order has been submitted successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await submitFormData(formData);
   };
 
   return (
@@ -226,14 +214,14 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
             </div>
             <div className="col-span-2">
               <label
-                htmlFor="flooringImage"
+                htmlFor="image"
                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Flooring Image
               </label>
               <input
                 type="file"
-                name="flooringImage"
+                name="image"
                 onChange={handleFileInputChange}
                 accept="image/*"
                 required

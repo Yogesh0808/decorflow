@@ -1,17 +1,36 @@
-import React from "react";
+import axios from "axios";
 
-const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
-  let serialNumber = 0;
+const MattressOrdersTable = ({ products, editProduct, deleteProduct }) => {
+  axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+  let serialNo = 0;
+  const handleDelete = async (productId) => {
+    try {
+      // Make DELETE request to delete the product
+      await axios.delete(`/api/products/${productId}`, getHeaders());
+      deleteProduct(productId);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
 
   if (!products || products.length === 0) {
-    console.log("From Sofa:", products);
     return <div>No product data available</div>;
   }
 
   return (
     <div className="max-w-screen mx-auto overflow-x-hidden p-4">
       <h1 className="text-black p-2 text-2xl dark:text-slate-50">
-        Sofa Orders
+        Mattress Orders
       </h1>
       <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
         <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
@@ -21,31 +40,37 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 Order ID
               </th>
               <th scope="col" className="px-3 py-4">
+                Title
+              </th>
+              <th scope="col" className="px-3 py-4">
                 Description
               </th>
               <th scope="col" className="px-4 py-4">
                 Size
               </th>
               <th scope="col" className="px-4 py-4">
-                Shape and Model
+                Thickness
               </th>
               <th scope="col" className="px-4 py-4">
-                Reference Image
+                Specification Image
               </th>
               <th scope="col" className="px-4 py-4">
-                Fabric Name & Code
+                Pillows
               </th>
               <th scope="col" className="px-4 py-4">
-                Fabric Image
+                Complimentary Pillows
               </th>
               <th scope="col" className="px-4 py-4">
-                Sofa Leg
+                Pillow Remarks
               </th>
               <th scope="col" className="px-4 py-4">
-                Sofa Leg Image
+                Bed Protector Size
               </th>
               <th scope="col" className="px-4 py-4">
-                Remarks
+                Bed Protector Color
+              </th>
+              <th scope="col" className="px-4 py-4">
+                Delivery Time
               </th>
             </tr>
           </thead>
@@ -56,22 +81,12 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                  {++serialNumber}
+                  {++serialNo}
                 </td>
+                <td className="px-3 py-2">{product.data.title}</td>
                 <td className="px-3 py-2">{product.data.description}</td>
                 <td className="px-4 py-2">{product.data.size}</td>
-                <td className="px-4 py-2">{product.data.shapeModel}</td>
-                <td className="px-4 py-2">
-                  {product.data.rimg ? (
-                    <img
-                      src={`data:image/jpeg;base64,${product.data.rimg}`}
-                      width="100"
-                    />
-                  ) : (
-                    "No (W)Image Available"
-                  )}
-                </td>
-                <td className="px-4 py-2">{product.data.fabricNameCode}</td>
+                <td className="px-4 py-2">{product.data.thickness}</td>
                 <td className="px-4 py-2">
                   {product.images.length > 0 ? (
                     <img
@@ -82,18 +97,14 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                     "No Image Available"
                   )}
                 </td>
-                <td className="px-4 py-2">{product.data.sofaLeg}</td>
+                <td className="px-4 py-2">{product.data.pillows}</td>
                 <td className="px-4 py-2">
-                  {product.limg ? (
-                    <img
-                      src={`data:image/jpeg;base64,${product.data.limg}`}
-                      width="100"
-                    />
-                  ) : (
-                    "No Image Available"
-                  )}
+                  {product.data.pillowsComplimentary ? "Yes" : "No"}
                 </td>
-                <td className="px-4 py-2">{product.data.remarks}</td>
+                <td className="px-4 py-2">{product.data.pillowRemarks}</td>
+                <td className="px-4 py-2">{product.data.bedProtectorSize}</td>
+                <td className="px-4 py-2">{product.data.bedProtectorColor}</td>
+                <td className="px-4 py-2">{product.data.deliveryTime}</td>
               </tr>
             ))}
           </tbody>
@@ -103,4 +114,4 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
   );
 };
 
-export default SofaOrdersTable;
+export default MattressOrdersTable;

@@ -24,17 +24,6 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
   });
   const [loading, setLoading] = useState(false);
 
-  const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
-    return {
-      headers: {
-        Authorization: basicAuth,
-      },
-    };
-  };
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -48,49 +37,45 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      setFormData({
-        ...formData,
-        fabricImage: file,
-      });
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: file,
+      }));
     }
   };
 
-  const submitFormData = async (formData: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("Wallpaper handleSubmit Called!");
+    e.preventDefault();
     try {
       setLoading(true);
-      const dataToSubmit = new FormData();
 
-      // Append text fields
-      dataToSubmit.append("title", formData.title);
-      dataToSubmit.append("description", formData.description);
-      // Append file
-      if (formData.image) {
-        dataToSubmit.append("image", formData.image);
-      }
-      dataToSubmit.append("customerName", selectedCustomer.clientName);
-      dataToSubmit.append("customerId", selectedCustomer.id);
-
-      console.log("Wallpaper Form Data:", dataToSubmit);
-
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        formDataToSend.append(key, formData[key]);
+      });
+      formDataToSend.append("customerId", selectedCustomer.id);
+      formDataToSend.append("category", "Wallpaper");
+      console.log(formDataToSend);
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Wallpaper`,
-        dataToSubmit,
-        getHeaders()
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Basic " + btoa("abinesh:abi"),
+          },
+        }
       );
 
       console.log("Form submitted successfully:", response.data);
       onCloseModal();
-      toast.success("Curtains Order has been submitted successfully!"); // Close modal after successful form submission
+      toast.success("Wallpaper Order has been submitted successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await submitFormData(formData);
   };
 
   return (

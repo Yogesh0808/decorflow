@@ -3,180 +3,123 @@ import axios from "axios";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
-const getHeaders = () => {
-  const username = "abinesh";
-  const password = "abi";
-  const basicAuth = "Basic " + btoa(username + ":" + password);
-  return {
-    headers: {
-      Authorization: basicAuth,
-    },
-  };
-};
-
-function DispatchTable() {
-  const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(true); // State to manage loading state
+const DispatchView = () => {
+  const [selectedCustomer, setSelectedCustomer] = useState("");
+  const [formData, setFormData] = useState(null);
+  const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
-    getClients();
+    fetchCustomers();
   }, []);
 
-  const getClients = () => {
-    axios
-      .get("/api/customer", getHeaders())
-      .then((response) => {
-        setClients(response.data);
-        setLoading(false); // Set loading to false when data is fetched
-      })
-      .catch((error) => {
-        console.error("Error fetching clients:", error);
-      });
+  const fetchCustomers = async () => {
+    try {
+      const response = await axios.get("/api/customer/names", getHeaders());
+      setCustomers(response.data);
+    } catch (error) {
+      console.error("Error fetching customers:", error.message);
+    }
+  };
+
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+
+  const handleCustomerChange = (e) => {
+    setSelectedCustomer(e.target.value);
+    fetchFormData(e.target.value);
+  };
+
+  const fetchFormData = async (customerId) => {
+    try {
+      const response = await axios.get(
+        `/api/dispatch/${customerId}`,
+        getHeaders()
+      );
+      setFormData(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching form data:", error.message);
+    }
   };
 
   return (
-    <div className="max-w-screen overflow-x-auto">
-      <div className="max-w-screen mx-auto overflow-x-hidden p-4">
-        {loading ? ( // Show skeleton loading when data is loading
-          <SkeletonTable />
-        ) : clients.length ? ( // Show table if data exists
-          <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
-            <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
-              <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
-                <tr>
-                  <th scope="col" className="px-3 py-4">
-                    Customer Name
-                  </th>
-                  <th scope="col" className="px-3 py-4">
-                    Area of Room
-                  </th>
-                  <th scope="col" className="px-4 py-4">
-                    Catalog Name
-                  </th>
-                  <th scope="col" className="px-4 py-4">
-                    Quantity
-                  </th>
-                  <th scope="col" className="px-4 py-4">
-                    Quantity Ordered
-                  </th>
-                  <th scope="col" className="px-4 py-4">
-                    Company Name
-                  </th>
-                  <th scope="col" className="px-4 py-4">
-                    Document Number
-                  </th>
-                  <th scope="col" className="px-4 py-4">
-                    Transit Information
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {clients.map((client) => (
-                  <tr
-                    key={client.id}
-                    className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
-                  >
-                    <td className="px-3 py-2">{client.customerName}</td>
-                    <td className="px-3 py-2">{client.areaOfRoom}</td>
-                    <td className="px-4 py-2">{client.catalogName}</td>
-                    <td className="px-4 py-2">{client.quantity}</td>
-                    <td className="px-4 py-2">{client.quantityOrdered}</td>
-                    <td className="px-4 py-2">{client.companyName}</td>
-                    <td className="px-4 py-2">{client.docNumber}</td>
-                    <td className="px-4 py-2">{client.transitInformation}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          // Show message if no data exists
-          <div className="text-center mt-8">
-            <p className="text-2xl text-center text-neutral-900 dark:text-gray-400 dark:text-slate-100">
-              <div className="flex flex-col items-center justify-center text-gray-900 text-xl mt-4">
-                <img
-                  src="https://ik.imagekit.io/tealcdn2023/assets/No%20data-cuate.svg"
-                  className="w-100"
-                  alt="No data available"
-                />
-                <p>Oops! It seems there are no products available.</p>
-              </div>
+    <div className="max-w-screen mx-auto p-6 space-y-6 text-neutral-700 dark:text-neutral-100">
+      <h1 className="text-3xl font-normal mb-4">Dispatch View</h1>
+      <div className="flex space-x-4">
+        <div className="flex flex-col w-1/2">
+          <label htmlFor="customerName" className="text-sm font-medium">
+            Select Customer
+          </label>
+          <select
+            name="customerName"
+            id="customerName"
+            className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+            onChange={handleCustomerChange}
+            value={selectedCustomer}
+            required
+          >
+            <option value="">Select Customer</option>
+            {customers.map((customer, index) => (
+              <option key={index} value={customer.id}>
+                {customer.clientName} - {customer.cid}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
-              <span className="text-lime-500">Go Ahead and Add Some</span>
-            </p>
-            <div className="mt-10">
-              <a
-                className="mt-4 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-600"
-                href="/Customer/New"
-              >
-                Add
-              </a>
+      {formData &&
+        Array.isArray(formData) &&
+        formData.map((item, index) => (
+          <div key={index} className="mt-8">
+            <div className="bg-sky-100 text-blue-900 dark:bg-slate-900 dark:text-slate-100 p-4 rounded-lg shadow-lg">
+              <h2 className="text-xl font-semibold mb-4">
+                Dispatch Details for {item.customerName}
+              </h2>
+              <p>
+                <span className="font-semibold">Area of Room:</span>{" "}
+                {item.areaOfRoom}
+              </p>
+              <p>
+                <span className="font-semibold">Catalog Name:</span>{" "}
+                {item.catalogName}
+              </p>
+              <p>
+                <span className="font-semibold">Quantity:</span> {item.quantity}
+              </p>
+              <p>
+                <span className="font-semibold">Quantity Ordered:</span>{" "}
+                {item.quantityOrdered}
+              </p>
+              <p>
+                <span className="font-semibold">Company Name:</span>{" "}
+                {item.companyName}
+              </p>
+              <p>
+                <span className="font-semibold">Order Number:</span>{" "}
+                {item.orderNum}
+              </p>
+              <p>
+                <span className="font-semibold">Doc Number:</span>{" "}
+                {item.docNumber}
+              </p>
+              <p>
+                <span className="font-semibold">Transit Information:</span>{" "}
+                {item.transitInformation}
+              </p>
             </div>
           </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// SkeletonTable component to render skeleton loading effect
-const SkeletonTable = () => {
-  return (
-    <div className="animate-pulse">
-      <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
-        <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
-          <tr>
-            <th
-              scope="col"
-              className="px-3 py-4 bg-gray-400 dark:bg-slate-800"
-            ></th>
-            <th
-              scope="col"
-              className="px-3 py-4 bg-gray-300 dark:bg-slate-800"
-            ></th>
-            <th
-              scope="col"
-              className="px-4 py-4 bg-gray-300 dark:bg-slate-800"
-            ></th>
-            <th
-              scope="col"
-              className="px-4 py-4 bg-gray-300 dark:bg-slate-800"
-            ></th>
-            <th
-              scope="col"
-              className="px-4 py-4 bg-gray-300 dark:bg-slate-800"
-            ></th>
-            <th
-              scope="col"
-              className="px-4 py-4 bg-gray-300 dark:bg-slate-800"
-            ></th>
-            <th
-              scope="col"
-              className="px-4 py-4 bg-gray-300 dark:bg-slate-800"
-            ></th>
-            <th
-              scope="col"
-              className="px-4 py-4 bg-gray-400 dark:bg-slate-800"
-            ></th>
-          </tr>
-        </thead>
-        <tbody>
-          {[...Array(5)].map((_, index) => (
-            <tr key={index}>
-              <td className="py-2 bg-gray-300 dark:bg-slate-800"></td>
-              <td className="py-2 bg-gray-300 dark:bg-slate-800"></td>
-              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
-              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
-              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
-              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
-              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
-              <td className="px-4 py-2 bg-gray-300 dark:bg-slate-800"></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        ))}
     </div>
   );
 };
 
-export default DispatchTable;
+export default DispatchView;

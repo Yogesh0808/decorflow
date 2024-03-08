@@ -12,7 +12,7 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
   onCloseModal,
   selectedCustomer,
 }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     title: "",
     description: "",
     size: "",
@@ -20,46 +20,10 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
     typeOfBlinds: "Roman Blinds",
     catalogueName: "",
     fabricCode: "",
-    fabricImage: null,
-    remarks: "", // New field for Remarks
+    image: null,
+    remarks: "",
   });
   const [loading, setLoading] = useState(false);
-
-  const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
-    return {
-      headers: {
-        Authorization: basicAuth,
-      },
-    };
-  };
-
-  const submitFormData = async (formData: any) => {
-    try {
-      setLoading(true);
-      const dataToSubmit = {
-        ...formData,
-        customerName: selectedCustomer.clientName,
-        customerId: selectedCustomer.id,
-      };
-
-      const response = await axios.post(
-        `/api/products/${selectedCustomer.id}/Blinds`,
-        dataToSubmit,
-        getHeaders()
-      );
-
-      console.log("Form submitted successfully:", response.data);
-      onCloseModal(); // Close modal after successful form submission
-      toast.success("Blinds Order submitted successfully!");
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -71,24 +35,51 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string
-        setFormData({
-          ...formData,
-          image: base64String,
-        });
-      };
-      reader.readAsDataURL(file);
+      const name = e.target.name;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: file,
+      }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await submitFormData(formData);
+    try {
+      setLoading(true);
+
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        formDataToSend.append(key, formData[key]);
+      });
+      formDataToSend.append("customerId", selectedCustomer.id);
+      formDataToSend.append("category", "Blinds");
+
+      // Append the file data
+      formDataToSend.append("image", formData.image);
+
+      const response = await axios.post(
+        `/api/products/${selectedCustomer.id}/Blinds`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Basic " + btoa("abinesh:abi"),
+          },
+        }
+      );
+
+      console.log("Form submitted successfully:", response.data);
+      onCloseModal();
+      toast.success("Blinds Order has been submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -122,7 +113,11 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
         </button>
       </div>
       <div className="overflow-auto max-h-[30rem]">
-        <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+        <form
+          className="p-4 md:p-5"
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
+        >
           <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
             <div className="col-span-2">
               <label
@@ -254,17 +249,17 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
             </div>
             <div>
               <label
-                htmlFor="fabricImage"
+                htmlFor="image"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Fabric Image
               </label>
               <input
                 type="file"
-                id="fabricImage"
-                name="fabricImage"
+                id="image"
+                name="image"
                 accept="image/*"
-                onChange={handleFileChange}
+                onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>

@@ -23,17 +23,6 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
   });
   const [loading, setLoading] = useState(false);
 
-  const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
-    return {
-      headers: {
-        Authorization: basicAuth,
-      },
-    };
-  };
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -47,40 +36,40 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result?.toString().split(",")[1];
-        setFormData({
-          ...formData,
-          image: base64String,
-        });
-      };
-      reader.readAsDataURL(file);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: file,
+      }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("Furniture handleSubmit Called!");
     e.preventDefault();
-    setLoading(true);
     try {
-      const dataToSubmit = {
-        ...formData,
-        customerName: selectedCustomer.clientName,
-        customerId: selectedCustomer.id,
-      };
-      console.log("Data to be sent:", dataToSubmit);
+      setLoading(true);
 
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        formDataToSend.append(key, formData[key]);
+      });
+      formDataToSend.append("customerId", selectedCustomer.id);
+      formDataToSend.append("category", "Furniture");
+      console.log(formDataToSend);
       const response = await axios.post(
         `/api/products/${selectedCustomer.id}/Furniture`,
-        dataToSubmit,
-        getHeaders()
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Basic " + btoa("abinesh:abi"),
+          },
+        }
       );
 
       console.log("Form submitted successfully:", response.data);
       onCloseModal();
-
-      // Display toast notification
-      toast.success("Furniture Order submitted successfully!");
+      toast.success("Furniture Order has been submitted successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
