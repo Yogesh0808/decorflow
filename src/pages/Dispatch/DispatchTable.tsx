@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import EditDispatchModal from "./EditDispatchModal";
+import trash from "../../images/icon/trash.svg";
+import edit from "../../images/icon/edit.svg";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
@@ -7,6 +10,10 @@ const DispatchView = () => {
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const [formData, setFormData] = useState(null);
   const [customers, setCustomers] = useState([]);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showEditModal, setShowEditModal] = useState(false); // State variable to manage the visibility of the edit modal
+  const [editedFormData, setEditedFormData] = useState(null);
 
   useEffect(() => {
     fetchCustomers();
@@ -32,6 +39,15 @@ const DispatchView = () => {
     };
   };
 
+  const editFormData = (formData) => {
+    setEditedFormData(formData);
+    setShowEditModal(true);
+  };
+
+  const closeModal = () => {
+    setShowEditModal(false);
+  };
+
   const handleCustomerChange = (e) => {
     setSelectedCustomer(e.target.value);
     fetchFormData(e.target.value);
@@ -47,6 +63,58 @@ const DispatchView = () => {
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching form data:", error.message);
+    }
+  };
+  useEffect(() => {
+    let timer;
+    if (showToast) {
+      timer = setTimeout(() => {
+        setShowToast(false);
+        setToastMessage("");
+      }, 3000);
+    }
+    return () => clearTimeout(timer);
+  }, [showToast]);
+
+  const saveEditedData = (editedData, customerId) => {
+    console.log("Saving edited data:", editedData);
+    axios
+      .put(`/api/dispatch/${editedData.id}`, editedData, getHeaders())
+      .then((response) => {
+        console.log("Data saved successfully:", response.data);
+        setShowEditModal(false);
+        setFormData((prevFormData) =>
+          prevFormData.map((item) =>
+            item.id === editedData.id ? { ...item, ...editedData } : item
+          )
+        );
+        setToastMessage("Dispatch updated successfully.");
+        setShowToast(true);
+      })
+      .catch((error) => {
+        console.error("Error saving data:", error);
+      });
+  };
+
+  const deleteFormData = (formDataId) => {
+    if (window.confirm("Are you Sure you want to Delete this Entry?")) {
+      axios
+        .delete(`/api/dispatch/${formDataId}`, getHeaders())
+        .then(() => {
+          const updatedFormData = formData.filter(
+            (item) => item.id !== formDataId
+          );
+          setFormData(updatedFormData);
+          if (updatedFormData.length === 0) {
+            setSelectedCustomer("");
+          }
+          setToastMessage("Dispatch deleted successfully.");
+          setShowToast(true);
+        })
+        .catch((error) => {
+          console.error("Error deleting data:", error);
+        });
+      console.log("Delete data with ID:", formDataId);
     }
   };
 
@@ -115,9 +183,52 @@ const DispatchView = () => {
                 <span className="font-semibold">Transit Information:</span>{" "}
                 {item.transitInformation}
               </p>
+              <div className="flex justify-between items-center mt-5">
+                <button
+                  onClick={() => editFormData(item)}
+                  className="hover:bg-blue-800 hover:text-white flex text-blue-600 px-3 p-2 border rounded-xl items-center mx-2"
+                >
+                  Edit <img src={edit}></img>
+                </button>
+                <button
+                  onClick={() => deleteFormData(item.id)}
+                  className="hover:bg-red-700 hover:text-white flex text-red-600 p-2 border rounded-xl items-center mx-2"
+                >
+                  Delete <img src={trash} className=""></img>
+                </button>
+              </div>
             </div>
           </div>
         ))}
+      {showEditModal && (
+        <EditDispatchModal
+          formData={editedFormData}
+          saveEditedData={saveEditedData}
+          closeModal={closeModal}
+        />
+      )}
+      {showToast && (
+        <div
+          id="toast-success"
+          className="absolute top-0 right-0 flex items-center w-xl max-w-xs p-2 px-4 mr-4 mb-4 text-gray-500 bg-emerald-100 rounded-lg shadow"
+          role="alert"
+        >
+          <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-900 bg-emerald-300 rounded-lg">
+            <svg
+              className="w-5 h-5"
+              aria-hidden="true"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 0a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM8 14a2 2 0 1 1 4 0H8zm1-6a1 1 0 0 1 2 0v4a1 1 0 1 1-2 0V8z"
+              />
+            </svg>
+          </div>
+          <p className="ml-2 text-slate-800 font-normal">{toastMessage}</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -110,31 +110,34 @@ const DispatchForm = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-6 space-y-6 text-neutral-700 dark:text-neutral-100 relative">
-      <h1 className="text-3xl font-normal mb-4">Dispatch Form</h1>
+    <div className="max-w-lg mx-auto mt-10 p-6 space-y-6 text-neutral-700 dark:text-neutral-100 dark:bg- dark:bg-slate-950 rounded-xl relative">
+      <h1 className="text-3xl font-normal text-center uppercase mb-4">
+        Dispatch Form
+      </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex space-x-4">
-          <div className="flex flex-col w-1/2">
-            <label htmlFor="customerName" className="text-sm font-medium">
-              Customer Name
-            </label>
-            <select
-              name="customerName"
-              id="customerName"
-              className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-800 dark:bg-slate-900"
-              onChange={handleCustomerChange}
-              value={selectedCustomer}
-              required
-            >
-              <option value="">Select Customer</option>
-              {customers.map((customer, index) => (
-                <option key={index} value={customer.id}>
-                  {customer.clientName} - {customer.cid}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col w-1/2">
+        <div className="flex flex-col">
+          <label htmlFor="customerName" className="text-sm font-medium">
+            Customer Name
+          </label>
+          <select
+            name="customerName"
+            id="customerName"
+            className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-800 dark:bg-slate-900"
+            onChange={handleCustomerChange}
+            value={selectedCustomer}
+            required
+          >
+            <option value="">Select Customer</option>
+            {customers.map((customer, index) => (
+              <option key={index} value={customer.id}>
+                {customer.clientName} - {customer.cid}
+              </option>
+            ))}
+          </select>
+        </div>
+        <hr></hr>
+        <div className="border border-blue-900 sm:m-2 lg:m-8 p-6 shadow-xl rounded-xl bg-blue-100 text-blue-900 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+          <div className="flex flex-col">
             <label htmlFor="areaOfRoom" className="text-sm font-medium">
               Area of Room
             </label>
@@ -148,104 +151,123 @@ const DispatchForm = () => {
               required
             />
           </div>
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="catalogName" className="text-sm font-medium">
-            Catalog Name:
-          </label>
-          <input
-            type="text"
-            id="catalogName"
-            name="catalogName"
-            value={formData.catalogName}
-            onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
-            required
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="quantity" className="text-sm font-medium">
-            Quantity:
-          </label>
-          <input
-            type="number"
-            id="quantity"
-            name="quantity"
-            value={formData.quantity}
-            onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
-            required
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="quantityOrdered" className="text-sm font-medium">
-            Quantity Ordered:
-          </label>
-          <input
-            type="text"
-            id="quantityOrdered"
-            name="quantityOrdered"
-            value={formData.quantityOrdered}
-            onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
-            required
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="companyName" className="text-sm font-medium">
-            Company Name:
-          </label>
-          <input
-            type="text"
-            id="companyName"
-            name="companyName"
-            value={formData.companyName}
-            onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
-            required
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="orderNum" className="text-sm font-medium">
-            Order Number:
-          </label>
-          <input
-            type="text"
-            id="orderNum"
-            name="orderNum"
-            value={formData.orderNum}
-            onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
-            required
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="docNumber" className="text-sm font-medium">
-            Doc Number:
-          </label>
-          <input
-            type="text"
-            id="docNumber"
-            name="docNumber"
-            value={formData.docNumber}
-            onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
-            required
-          />
-        </div>
-        <div className="flex flex-col">
-          <label htmlFor="transitInformation" className="text-sm font-medium">
-            Transit Information:
-          </label>
-          <input
-            type="text"
-            id="transitInformation"
-            name="transitInformation"
-            value={formData.transitInformation}
-            onChange={handleInputChange}
-            className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
-            required
-          />
+
+          <div className="flex flex-col">
+            <label htmlFor="catalogName" className="text-sm font-medium">
+              Catalog Name:
+            </label>
+            <input
+              type="text"
+              id="catalogName"
+              name="catalogName"
+              value={formData.catalogName}
+              onChange={handleInputChange}
+              className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="quantity" className="text-sm font-medium">
+              Quantity:
+            </label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              value={formData.quantity}
+              onChange={handleInputChange}
+              className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="quantityOrdered" className="text-sm font-medium">
+              Quantity Ordered:
+            </label>
+            <input
+              type="text"
+              id="quantityOrdered"
+              name="quantityOrdered"
+              value={formData.quantityOrdered}
+              onChange={handleInputChange}
+              className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="companyName" className="text-sm font-medium">
+              Company Name:
+            </label>
+            <input
+              type="text"
+              id="companyName"
+              name="companyName"
+              value={formData.companyName}
+              onChange={handleInputChange}
+              className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="orderNum" className="text-sm font-medium">
+              Order Number:
+            </label>
+            <input
+              type="text"
+              id="orderNum"
+              name="orderNum"
+              value={formData.orderNum}
+              onChange={handleInputChange}
+              className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="docNumber" className="text-sm font-medium">
+              Doc Number:
+            </label>
+            <input
+              type="text"
+              id="docNumber"
+              name="docNumber"
+              value={formData.docNumber}
+              onChange={handleInputChange}
+              className="rounded-md py-2 px-3 focus:border-red-500 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="transitInformation" className="text-sm font-medium">
+              Transit Information:
+            </label>
+            <hr className="divide-red-50"></hr>
+            <div className="flex items-center">
+              <label htmlFor="received" className="mr-4">
+                Received
+                <input
+                  type="radio"
+                  id="received"
+                  name="transitInformation"
+                  value="Received"
+                  checked={formData.transitInformation === "Received"}
+                  onChange={handleInputChange}
+                  className="ml-1"
+                />
+              </label>
+              <label htmlFor="notReceived">
+                Not Received
+                <input
+                  type="radio"
+                  id="notReceived"
+                  name="transitInformation"
+                  value="Not Received"
+                  checked={formData.transitInformation === "Not Received"}
+                  onChange={handleInputChange}
+                  className="ml-1"
+                />
+              </label>
+            </div>
+          </div>
         </div>
         <button
           type="submit"
