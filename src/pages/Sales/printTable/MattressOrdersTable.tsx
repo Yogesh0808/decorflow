@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const MattressOrdersTable = ({ products, editProduct, deleteProduct }) => {
-  axios.defaults.baseURL = "http://localhost:8080/";
+  axios.defaults.baseURL = "https://cors-h05i.onrender.com";
   const getHeaders = () => {
     const username = "abinesh";
     const password = "abi";

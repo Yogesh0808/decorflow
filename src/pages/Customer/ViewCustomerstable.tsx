@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
-axios.defaults.baseURL = "http://localhost:8080/";
+import edit from "../../images/icon/edit.svg";
+import trash from "../../images/icon/trash.svg";
+axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
 const getHeaders = () => {
   const username = "abinesh";
@@ -36,16 +37,14 @@ function ViewCustomers() {
     getClients();
   }, []);
 
-  const getClients = () => {
-    axios
-      .get("/api/customer", getHeaders())
-      .then((response) => {
-        setClients(response.data);
-        setLoading(false); // Set loading to false when data is fetched
-      })
-      .catch((error) => {
-        console.error("Error fetching clients:", error);
-      });
+  const getClients = async () => {
+    try {
+      const response = await axios.get("/api/customer", getHeaders());
+      setClients(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
   };
 
   const deleteClient = (clientId) => {
@@ -56,6 +55,7 @@ function ViewCustomers() {
           console.log("Client deleted");
           setToastMessage("Client Deleted successfully.");
           setShowToast(true);
+          // Move the getClients() call inside the .then() block
           getClients();
         })
         .catch((error) => {
@@ -79,14 +79,11 @@ function ViewCustomers() {
       .then((response) => {
         console.log("Edited client data:", editedData);
         setClients((prevClients) =>
-          prevClients.map((client) => {
-            if (client.id === editedData.id) {
-              return editedData;
-            }
-            return client;
-          })
+          prevClients.map((client) =>
+            client.id === editedData.id ? editedData : client
+          )
         );
-        setShowModal(false);
+        setShowModal(false); // Close the modal after editing
         setToastMessage("Client Edited successfully.");
         setShowToast(true);
       })
@@ -109,9 +106,9 @@ function ViewCustomers() {
   return (
     <div className="max-w-screen overflow-x-auto">
       <div className="max-w-screen mx-auto overflow-x-hidden p-4">
-        {loading ? ( // Show skeleton loading when data is loading
+        {loading ? (
           <SkeletonTable />
-        ) : clients.length ? ( // Show table if data exists
+        ) : clients.length ? (
           <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
             <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
               <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
@@ -166,15 +163,24 @@ function ViewCustomers() {
                     <td className="px-4 py-2">
                       <button
                         onClick={() => editClient(client)}
+                        width="18"
+                        height="18"
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
-                        Edit
+                        <img
+                          src={edit}
+                          className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                        ></img>
                       </button>
                       <button
                         onClick={() => deleteClient(client.id)}
-                        className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                        className="font-medium text-red-600 dark:text-red-500 hover:underline ml-2"
                       >
-                        Delete
+                        <img
+                          src={trash}
+                          className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                          alt="Trash Icon"
+                        />
                       </button>
                     </td>
                   </tr>
@@ -183,7 +189,6 @@ function ViewCustomers() {
             </table>
           </div>
         ) : (
-          // Show message if no data exists
           <div className="text-center mt-8">
             <p className="text-xl text-center text-neutral-900 dark:text-gray-400 dark:text-slate-100">
               <div className="flex flex-col items-center justify-center text-gray-900 text-xl mt-4">
@@ -203,7 +208,7 @@ function ViewCustomers() {
                 className="mt-4 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-600"
                 href="/Customer/New"
               >
-                Add Products
+                Add Customers
               </a>
             </div>
           </div>
@@ -212,7 +217,6 @@ function ViewCustomers() {
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
           <div className="bg-slate-200 w-full lg:max-w-md sm:max-w-64 rounded-xl p- dark:bg-slate-900">
-            {/*<h2 className="text-3xl text-center my-1">Edit Client</h2>*/}
             <EditClientModal
               client={editedClient}
               saveEditedClient={saveEditedClient}
@@ -226,7 +230,7 @@ function ViewCustomers() {
       {showToast && (
         <div
           id="toast-success"
-          className="absolute bottom-1 right-2 flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 bg-gradient-to-br from-green-100 via-green-200 rounded-lg shadow"
+          className="absolute top-0 right-0 flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 bg-gradient-to-br from-green-100 via-green-200 rounded-lg shadow"
           role="alert"
         >
           <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-700 bg-green-300 rounded-lg">
@@ -317,7 +321,7 @@ function EditClientModal({
             id="salutation"
             value={editedSalutation}
             onChange={(e) => setEditedSalutation(e.target.value)}
-            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
+            className="..."
           />
         </div>
         <div className="mb-2 sm:mb-4">

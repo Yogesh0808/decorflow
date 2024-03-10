@@ -9,7 +9,7 @@ import FlooringsOrdersTable from "./orderTable/FlooringsOrdersTable";
 import MattressOrdersTable from "./orderTable/MattressOrdersTable";
 import Loader from "../../common/Loader/index";
 
-axios.defaults.baseURL = "http://localhost:8080/";
+axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
 const ViewOrderComponent = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -20,6 +20,46 @@ const ViewOrderComponent = () => {
   useEffect(() => {
     fetchCustomers(); // Fetch customers when component mounts
   }, []);
+
+  const editProduct = (productId, editedData) => {
+    const index = products.findIndex((product) => product.id === productId);
+
+    if (index !== -1) {
+      setProducts((prevProducts) => {
+        const updatedProducts = [...prevProducts];
+        updatedProducts[index] = {
+          ...updatedProducts[index],
+          data: { ...updatedProducts[index].data, ...editedData },
+        };
+        return updatedProducts;
+      });
+    }
+  };
+
+  const updateProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`/api/products/${selectedCustomer.id}`);
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async (productId, editedData) => {
+    try {
+      // Make PUT request to update the product
+      await axios.put(`/api/products/${productId}`, editedData);
+      // Handle successful save
+      closeEditModal(); // Close the modal after saving
+      fetchProducts(selectedCustomer.id); // Refetch products to update the view
+    } catch (error) {
+      console.error("Error saving edited order:", error);
+      // Handle error
+    }
+  };
 
   const handleDelete = async (productId) => {
     try {
@@ -162,6 +202,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Mattress":

@@ -1,12 +1,12 @@
 import axios from "axios";
+import edit from "../../../images/icon/edit.svg";
+import trash from "../../../images/icon/trash.svg";
 
 const MattressOrdersTable = ({ products, editProduct, deleteProduct }) => {
-  axios.defaults.baseURL = "http://localhost:8080/";
+  axios.defaults.baseURL = "https://cors-h05i.onrender.com";
   let serialNumber = 0;
   const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
+    const basicAuth = "Basic " + btoa("abinesh" + ":" + "abi");
     return {
       headers: {
         Authorization: basicAuth,
@@ -114,13 +114,16 @@ const MattressOrdersTable = ({ products, editProduct, deleteProduct }) => {
                     onClick={() => editProduct(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
-                    Edit
+                    <img src={edit}></img>
                   </button>
                   <button
                     onClick={() => handleDelete(product.id)}
-                    className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                    className="font-medium text-red-600 dark:text-red-500 hover:underline ml-1"
                   >
-                    Delete
+                    <img
+                      src={trash}
+                      className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                    ></img>
                   </button>
                 </td>
               </tr>

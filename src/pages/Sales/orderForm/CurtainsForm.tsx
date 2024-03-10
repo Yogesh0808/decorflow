@@ -38,14 +38,53 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
     }));
   };
 
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileInputChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        image: file,
-      }));
+      try {
+        const compressedImage = await compressImage(file);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          image: compressedImage,
+        }));
+      } catch (error) {
+        console.error("Error compressing image:", error);
+      }
     }
+  };
+
+  const compressImage = (file: File) => {
+    return new Promise<File>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d")!;
+          canvas.width = 700; // Adjust width as needed
+          canvas.height = 800; // Adjust height as needed
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                reject(new Error("Failed to compress image."));
+                return;
+              }
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg", // Adjust mime type as needed
+              });
+              resolve(compressedFile);
+            },
+            "image/jpeg",
+            0.6
+          ); // Adjust quality as needed
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

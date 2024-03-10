@@ -10,7 +10,7 @@ import MattressOrdersTable from "./printTable/MattressOrdersTable";
 import Logo from "../../images/logo/Logo.png";
 import Loader from "../../common/Loader/index";
 
-axios.defaults.baseURL = "http://localhost:8080/";
+axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
 const PrintTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);

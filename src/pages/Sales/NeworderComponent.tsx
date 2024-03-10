@@ -10,13 +10,14 @@ import WallpaperForm from "./orderForm/WallpaperForm";
 import FurnitureForm from "./orderForm/FurnitureForm";
 import MattressForm from "./orderForm/MattressForm";
 
-axios.defaults.baseURL = "http://localhost:8080/";
+axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
 const CustomerTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [notification, setNotification] = useState("");
+  const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -163,6 +164,7 @@ const CustomerTable = () => {
             onSubmit={handleFormSubmit}
             onCloseModal={handleCloseModal}
             selectedCustomer={selectedCustomer}
+            setProducts={setProducts}
           />
         );
       case "Furniture":
