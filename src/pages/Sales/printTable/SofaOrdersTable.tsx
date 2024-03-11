@@ -21,6 +21,9 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 Order ID
               </th>
               <th scope="col" className="px-3 py-4">
+                Title
+              </th>
+              <th scope="col" className="px-3 py-4">
                 Description
               </th>
               <th scope="col" className="px-4 py-4">
@@ -58,13 +61,14 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                   {++serialNumber}
                 </td>
+                <td className="px-3 py-2">{product.data.title}</td>
                 <td className="px-3 py-2">{product.data.description}</td>
                 <td className="px-4 py-2">{product.data.size}</td>
                 <td className="px-4 py-2">{product.data.shapeModel}</td>
                 <td className="px-4 py-2">
-                  {product.data.rimg ? (
+                  {product.images[0].imageData ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.data.rimg}`}
+                      src={`data:image/jpeg;base64,${product.images[0].imageData}`}
                       width="100"
                     />
                   ) : (
@@ -75,7 +79,7 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">
                   {product.images.length > 0 ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.images[0].imageData}`}
+                      src={`data:image/jpeg;base64,${product.images[1].imageData}`}
                       width="100"
                     />
                   ) : (
@@ -84,9 +88,9 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 </td>
                 <td className="px-4 py-2">{product.data.sofaLeg}</td>
                 <td className="px-4 py-2">
-                  {product.limg ? (
+                  {product.images.length > 0 ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.data.limg}`}
+                      src={`data:image/jpeg;base64,${product.images[2].imageData}`}
                       width="100"
                     />
                   ) : (

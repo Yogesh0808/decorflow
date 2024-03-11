@@ -61,6 +61,9 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 Order ID
               </th>
               <th scope="col" className="px-3 py-4">
+                Title
+              </th>
+              <th scope="col" className="px-3 py-4">
                 Description
               </th>
               <th scope="col" className="px-4 py-4">
@@ -101,6 +104,7 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                   {++serialNumber}
                 </td>
+                <td className="px-3 py-2">{product.data.title}</td>
                 <td className="px-3 py-2">{product.data.description}</td>
                 <td className="px-4 py-2">{product.data.size}</td>
                 <td className="px-4 py-2">{product.data.shapeModel}</td>

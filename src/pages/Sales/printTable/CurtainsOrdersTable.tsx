@@ -77,9 +77,9 @@ const CurtainsOrdersTable = ({ products, editClient, deleteClient }) => {
                 <td className="px-4 py-2">{product.data.fabricName}</td>
                 <td className="px-4 py-2">{product.data.fabricCode}</td>
                 <td className="px-4 py-2">
-                  {product.data.image ? (
+                  {product.images.length > 0 ? (
                     <img
-                      src={`data:image/jpeg;base64,${product.data.image}`}
+                      src={`data:image/jpeg;base64,${product.images[0].imageData}`}
                       width="100"
                     />
                   ) : (
