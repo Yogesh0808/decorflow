@@ -16,10 +16,52 @@ const ViewOrderComponent = () => {
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
 
   useEffect(() => {
     fetchCustomers(); // Fetch customers when component mounts
   }, []);
+
+  const editProduct = (productId, editedData) => {
+    const index = products.findIndex((product) => product.id === productId);
+
+    if (index !== -1) {
+      setProducts((prevProducts) => {
+        const updatedProducts = [...prevProducts];
+        updatedProducts[index] = {
+          ...updatedProducts[index],
+          data: { ...updatedProducts[index].data, ...editedData },
+        };
+        return updatedProducts;
+      });
+    }
+  };
+
+  const updateProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`/api/products/${selectedCustomer.id}`);
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async (productId, editedData) => {
+    try {
+      // Make PUT request to update the product
+      await axios.put(`/api/products/${productId}`, editedData);
+      // Handle successful save
+      closeEditModal(); // Close the modal after saving
+      fetchProducts(selectedCustomer.id); // Refetch products to update the view
+    } catch (error) {
+      console.error("Error saving edited order:", error);
+      // Handle error
+    }
+  };
 
   const handleDelete = async (productId) => {
     try {
@@ -122,6 +164,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Sofa":
@@ -130,6 +173,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Blinds":
@@ -138,6 +182,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Furniture":
@@ -146,6 +191,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Wallpaper":
@@ -154,6 +200,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Flooring":
@@ -162,6 +209,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Mattress":
@@ -170,6 +218,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         default:

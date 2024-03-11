@@ -17,6 +17,7 @@ const CustomerTable = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [notification, setNotification] = useState("");
+  const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -163,6 +164,7 @@ const CustomerTable = () => {
             onSubmit={handleFormSubmit}
             onCloseModal={handleCloseModal}
             selectedCustomer={selectedCustomer}
+            setProducts={setProducts}
           />
         );
       case "Furniture":

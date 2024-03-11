@@ -37,16 +37,14 @@ function ViewCustomers() {
     getClients();
   }, []);
 
-  const getClients = () => {
-    axios
-      .get("/api/customer", getHeaders())
-      .then((response) => {
-        setClients(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching clients:", error);
-      });
+  const getClients = async () => {
+    try {
+      const response = await axios.get("/api/customer", getHeaders());
+      setClients(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
   };
 
   const deleteClient = (clientId) => {
@@ -57,6 +55,7 @@ function ViewCustomers() {
           console.log("Client deleted");
           setToastMessage("Client Deleted successfully.");
           setShowToast(true);
+          // Move the getClients() call inside the .then() block
           getClients();
         })
         .catch((error) => {
@@ -80,14 +79,11 @@ function ViewCustomers() {
       .then((response) => {
         console.log("Edited client data:", editedData);
         setClients((prevClients) =>
-          prevClients.map((client) => {
-            if (client.id === editedData.id) {
-              return editedData;
-            }
-            return client;
-          })
+          prevClients.map((client) =>
+            client.id === editedData.id ? editedData : client
+          )
         );
-        setShowModal(false);
+        setShowModal(false); // Close the modal after editing
         setToastMessage("Client Edited successfully.");
         setShowToast(true);
       })
@@ -325,7 +321,7 @@ function EditClientModal({
             id="salutation"
             value={editedSalutation}
             onChange={(e) => setEditedSalutation(e.target.value)}
-            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
+            className="..."
           />
         </div>
         <div className="mb-2 sm:mb-4">

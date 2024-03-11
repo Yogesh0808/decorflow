@@ -1,12 +1,38 @@
+import React, { useState } from "react";
 import axios from "axios";
 import edit from "../../../images/icon/edit.svg";
 import trash from "../../../images/icon/trash.svg";
+import EditMattressOrderForm from "./Modal/EditMattressForm";
 
 const MattressOrdersTable = ({ products, editProduct, deleteProduct }) => {
-  axios.defaults.baseURL = "https://cors-h05i.onrender.com";
-  let serialNumber = 0;
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
+
+  const openEditModal = (product) => {
+    setSelectedProductForEdit(product);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setSelectedProductForEdit(null);
+    setIsEditModalOpen(false);
+  };
+
+  const saveEditedOrder = async (productId, editedData) => {
+    try {
+      const updatedProduct = { ...selectedProductForEdit, data: editedData };
+      editProduct(productId, updatedProduct.data); // Update the product data in the parent state
+    } catch (error) {
+      console.error("Error saving edited order:", error);
+    } finally {
+      closeEditModal();
+    }
+  };
+
   const getHeaders = () => {
-    const basicAuth = "Basic " + btoa("abinesh" + ":" + "abi");
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
     return {
       headers: {
         Authorization: basicAuth,
@@ -15,8 +41,8 @@ const MattressOrdersTable = ({ products, editProduct, deleteProduct }) => {
   };
 
   const handleDelete = async (productId) => {
-    console.log("Deleting product with ID:", productId); // Log the product ID
     try {
+      // Make DELETE request to delete the product
       await axios.delete(`/api/products/${productId}`, getHeaders());
       deleteProduct(productId);
     } catch (error) {
@@ -27,6 +53,8 @@ const MattressOrdersTable = ({ products, editProduct, deleteProduct }) => {
   if (!products || products.length === 0) {
     return <div>No product data available</div>;
   }
+
+  let serialNumber = 0;
 
   return (
     <div className="max-w-screen mx-auto overflow-x-hidden p-4">
@@ -111,10 +139,13 @@ const MattressOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.deliveryTime}</td>
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => editProduct(product)}
+                    onClick={() => openEditModal(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
-                    <img src={edit}></img>
+                    <img
+                      src={edit}
+                      className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                    />
                   </button>
                   <button
                     onClick={() => handleDelete(product.id)}
@@ -123,7 +154,7 @@ const MattressOrdersTable = ({ products, editProduct, deleteProduct }) => {
                     <img
                       src={trash}
                       className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
-                    ></img>
+                    />
                   </button>
                 </td>
               </tr>
@@ -131,6 +162,16 @@ const MattressOrdersTable = ({ products, editProduct, deleteProduct }) => {
           </tbody>
         </table>
       </div>
+      {isEditModalOpen && (
+        <EditMattressOrderForm
+          onSave={(editedData) =>
+            saveEditedOrder(selectedProductForEdit.id, editedData)
+          }
+          onCloseModal={closeEditModal}
+          selectedProduct={selectedProductForEdit}
+          editProduct={editProduct}
+        />
+      )}
     </div>
   );
 };

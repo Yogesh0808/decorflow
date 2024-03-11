@@ -1,9 +1,15 @@
 import axios from "axios";
 import edit from "../../../images/icon/edit.svg";
 import trash from "../../../images/icon/trash.svg";
+import { useState } from "react";
+import EditSofaOrderForm from "./Modal/EditSofaForm";
 
 const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
   axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
+
   let serialNumber = 0;
   const getHeaders = () => {
     const username = "abinesh";
@@ -15,6 +21,7 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
       },
     };
   };
+
   const handleDelete = async (productId) => {
     try {
       // Make DELETE request to delete the product
@@ -29,6 +36,17 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
     console.log("From Sofa:", products);
     return <div>No product data available</div>;
   }
+
+  const handleEditModalOpen = (product) => {
+    setSelectedProductForEdit(product);
+    setIsEditModalOpen(true);
+  };
+
+  // Function to handle closing the edit modal
+  const handleEditModalClose = () => {
+    setIsEditModalOpen(false);
+    setSelectedProductForEdit(null);
+  };
 
   return (
     <div className="max-w-screen mx-auto overflow-x-hidden p-4">
@@ -121,12 +139,13 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.remarks}</td>
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => editProduct(product)}
+                    onClick={() => handleEditModalOpen(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
                     <img
                       src={edit}
                       className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                      alt="Edit Icon"
                     ></img>
                   </button>
                   <button
@@ -145,6 +164,12 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
           </tbody>
         </table>
       </div>
+      {isEditModalOpen && (
+        <EditSofaOrderForm
+          selectedProduct={selectedProductForEdit.data}
+          onCloseModal={handleEditModalClose}
+        />
+      )}
     </div>
   );
 };

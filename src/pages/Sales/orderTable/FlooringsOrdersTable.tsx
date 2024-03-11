@@ -1,10 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import edit from "../../../images/icon/edit.svg";
 import trash from "../../../images/icon/trash.svg";
+import EditFlooringOrderForm from "./Modal/EditFlooringForm";
 
-const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
-  axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+const FlooringOrdersTable = ({ products, deleteProduct, editProduct }) => {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
+
+  const openEditModal = (product) => {
+    setSelectedProductForEdit(product);
+    setIsEditModalOpen(true);
+  };
+
+  let serialNumber = 0;
+
+  const closeEditModal = () => {
+    setSelectedProductForEdit(null);
+    setIsEditModalOpen(false);
+  };
+
+  const saveEditedOrder = async (productId, editedData) => {
+    try {
+      // Logic for saving edited order
+      const updatedProduct = { ...selectedProductForEdit, data: editedData };
+      editProduct(productId, updatedProduct.data); // Update the product data in the parent state
+    } catch (error) {
+      console.error("Error saving edited order:", error);
+    } finally {
+      closeEditModal();
+    }
+  };
+
   const getHeaders = () => {
     const username = "abinesh";
     const password = "abi";
@@ -16,7 +43,6 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
     };
   };
 
-  let serialNumber = 0;
   const handleDelete = async (productId) => {
     try {
       // Make DELETE request to delete the product
@@ -28,7 +54,6 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
   };
 
   if (!products || products.length === 0) {
-    console.log("From Flooring:", products);
     return <div>No product data available</div>;
   }
 
@@ -43,6 +68,9 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
             <tr>
               <th scope="col" className="px-3 py-4">
                 Order ID
+              </th>
+              <th scope="col" className="px-3 py-4">
+                Title
               </th>
               <th scope="col" className="px-3 py-4">
                 Description
@@ -76,6 +104,7 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                   {++serialNumber}
                 </td>
+                <td className="px-3 py-2">{product.data.title}</td>
                 <td className="px-3 py-2">{product.data.description}</td>
                 <td className="px-4 py-2">{product.data.sizeOfFloor}</td>
                 <td className="px-4 py-2">{product.data.numberOfSqft}</td>
@@ -95,7 +124,7 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.remarks}</td>
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => editProduct(product)}
+                    onClick={() => openEditModal(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
                     <img
@@ -119,6 +148,16 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
           </tbody>
         </table>
       </div>
+      {isEditModalOpen && (
+        <EditFlooringOrderForm
+          onSave={(editedData) =>
+            saveEditedOrder(selectedProductForEdit.id, editedData)
+          }
+          onCloseModal={closeEditModal}
+          selectedProduct={selectedProductForEdit}
+          editProduct={editProduct}
+        />
+      )}
     </div>
   );
 };
