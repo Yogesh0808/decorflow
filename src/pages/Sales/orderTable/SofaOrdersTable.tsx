@@ -1,10 +1,34 @@
 import axios from "axios";
 import edit from "../../../images/icon/edit.svg";
 import trash from "../../../images/icon/trash.svg";
+import { useState } from "react";
+import EditSofaOrderForm from "./Modal/EditSofaForm";
 
 const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   axios.defaults.baseURL = "https://cors-h05i.onrender.com";
-  let serialNumber = 0;
+
+  const openEditModal = (product) => {
+    setSelectedProductForEdit(product);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setSelectedProductForEdit(null);
+    setIsEditModalOpen(false);
+  };
+
+  const saveEditedOrder = async (productId, editedData) => {
+    try {
+      const updatedProduct = { ...selectedProductForEdit, data: editedData };
+      editProduct(productId, updatedProduct.data); // Update the product data in the parent state
+    } catch (error) {
+      console.error("Error saving edited order:", error);
+    } finally {
+      closeEditModal();
+    }
+  };
+
   const getHeaders = () => {
     const username = "abinesh";
     const password = "abi";
@@ -15,6 +39,7 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
       },
     };
   };
+
   const handleDelete = async (productId) => {
     try {
       // Make DELETE request to delete the product
@@ -26,9 +51,10 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
   };
 
   if (!products || products.length === 0) {
-    console.log("From Sofa:", products);
     return <div>No product data available</div>;
   }
+
+  let serialNumber = 0;
 
   return (
     <div className="max-w-screen mx-auto overflow-x-hidden p-4">
@@ -41,6 +67,9 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
             <tr>
               <th scope="col" className="px-3 py-4">
                 Order ID
+              </th>
+              <th scope="col" className="px-3 py-4">
+                Title
               </th>
               <th scope="col" className="px-3 py-4">
                 Description
@@ -83,25 +112,33 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                   {++serialNumber}
                 </td>
+                <td className="px-3 py-2">{product.data.title}</td>
                 <td className="px-3 py-2">{product.data.description}</td>
                 <td className="px-4 py-2">{product.data.size}</td>
                 <td className="px-4 py-2">{product.data.shapeModel}</td>
                 <td className="px-4 py-2">
-                  {product.images[0].imageData ? (
+                  {product.images &&
+                  product.images.length > 0 &&
+                  product.images[0].imageData ? (
                     <img
                       src={`data:image/jpeg;base64,${product.images[0].imageData}`}
                       width="100"
+                      alt="Reference Image"
                     />
                   ) : (
-                    "No (W)Image Available"
+                    "No Image Available"
                   )}
                 </td>
                 <td className="px-4 py-2">{product.data.fabricNameCode}</td>
                 <td className="px-4 py-2">
-                  {product.images.length > 0 ? (
+                  {product.images &&
+                  product.images.length > 0 &&
+                  product.images[1] &&
+                  product.images[1].imageData ? (
                     <img
                       src={`data:image/jpeg;base64,${product.images[1].imageData}`}
                       width="100"
+                      alt="Fabric Image"
                     />
                   ) : (
                     "No Image Available"
@@ -109,10 +146,14 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 </td>
                 <td className="px-4 py-2">{product.data.sofaLeg}</td>
                 <td className="px-4 py-2">
-                  {product.images.length > 0 ? (
+                  {product.images &&
+                  product.images.length > 0 &&
+                  product.images[2] &&
+                  product.images[2].imageData ? (
                     <img
                       src={`data:image/jpeg;base64,${product.images[2].imageData}`}
                       width="100"
+                      alt="Sofa Leg Image"
                     />
                   ) : (
                     "No Image Available"
@@ -121,12 +162,13 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.remarks}</td>
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => editProduct(product)}
+                    onClick={() => handleEditModalOpen(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
                     <img
                       src={edit}
                       className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                      alt="Edit Icon"
                     ></img>
                   </button>
                   <button
@@ -145,6 +187,14 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
           </tbody>
         </table>
       </div>
+      {isEditModalOpen && (
+        <EditSofaOrderForm
+          onSave={saveEditedOrder}
+          onCloseModal={closeEditModal}
+          selectedProduct={selectedProductForEdit}
+          editProduct={editProduct}
+        />
+      )}
     </div>
   );
 };

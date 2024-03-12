@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import edit from "../../../images/icon/edit.svg";
 import trash from "../../../images/icon/trash.svg";
-import EditFlooringOrderForm from "./EditFlooring";
+import EditFlooringOrderForm from "./Modal/EditFlooringForm";
 
 const FlooringOrdersTable = ({ products, deleteProduct, editProduct }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -32,9 +32,22 @@ const FlooringOrdersTable = ({ products, deleteProduct, editProduct }) => {
     }
   };
 
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+
   const handleDelete = async (productId) => {
     try {
-      // Logic for deleting product
+      // Make DELETE request to delete the product
+      await axios.delete(`/api/products/${productId}`, getHeaders());
+      deleteProduct(productId);
     } catch (error) {
       console.error("Error deleting product:", error);
     }
@@ -142,7 +155,7 @@ const FlooringOrdersTable = ({ products, deleteProduct, editProduct }) => {
           }
           onCloseModal={closeEditModal}
           selectedProduct={selectedProductForEdit}
-          editProduct={editProduct} // Pass editProduct function
+          editProduct={editProduct}
         />
       )}
     </div>

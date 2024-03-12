@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import edit from "../../../images/icon/edit.svg";
 import trash from "../../../images/icon/trash.svg";
+import EditBlindOrderForm from "./Modal/EditBlindsForm";
 
-const BlindOrdersTable = ({ products, editProduct, deleteProduct }) => {
-  axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+const BlindOrdersTable = ({ products, deleteProduct, editProduct }) => {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
+
+  const openEditModal = (product) => {
+    setSelectedProductForEdit(product);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+  };
+
+  let serialNumber = 0;
+
+  const saveEditedOrder = async (productId, editedData) => {
+    try {
+      const updatedProduct = { ...selectedProductForEdit, data: editedData };
+      editProduct(productId, updatedProduct.data); // Update the product data in the parent state
+    } catch (error) {
+      console.error("Error saving edited order:", error);
+    } finally {
+      closeEditModal();
+    }
+  };
+
   const getHeaders = () => {
     const username = "abinesh";
     const password = "abi";
@@ -16,17 +41,17 @@ const BlindOrdersTable = ({ products, editProduct, deleteProduct }) => {
     };
   };
 
-  let serialNumber = 0;
   const handleDelete = async (productId) => {
     try {
+      // Make DELETE request to delete the product
       await axios.delete(`/api/products/${productId}`, getHeaders());
       deleteProduct(productId);
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
+
   if (!products || products.length === 0) {
-    console.log("From Blinds:", products);
     return <div>No product data available</div>;
   }
 
@@ -97,23 +122,24 @@ const BlindOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.remarks}</td>
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => editProduct(product)}
+                    onClick={() => openEditModal(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
                     <img
                       src={edit}
                       className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
-                    ></img>
+                      alt="Edit Icon"
+                    />
                   </button>
                   <button
                     onClick={() => handleDelete(product.id)}
-                    className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                    className="font-medium text-red-600 dark:text-red-500 hover:underline ml-2"
                   >
                     <img
                       src={trash}
                       className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
                       alt="Trash Icon"
-                    ></img>
+                    />
                   </button>
                 </td>
               </tr>
@@ -121,6 +147,16 @@ const BlindOrdersTable = ({ products, editProduct, deleteProduct }) => {
           </tbody>
         </table>
       </div>
+      {isEditModalOpen && (
+        <EditBlindOrderForm
+          onSave={(editedData) =>
+            saveEditedOrder(selectedProductForEdit.id, editedData)
+          }
+          onCloseModal={closeEditModal}
+          selectedProduct={selectedProductForEdit}
+          editProduct={editProduct}
+        />
+      )}
     </div>
   );
 };

@@ -16,6 +16,8 @@ const ViewOrderComponent = () => {
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
 
   useEffect(() => {
     fetchCustomers(); // Fetch customers when component mounts
@@ -162,6 +164,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Sofa":
@@ -170,6 +173,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Blinds":
@@ -178,6 +182,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Furniture":
@@ -186,6 +191,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Wallpaper":
@@ -194,6 +200,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         case "Flooring":
@@ -211,6 +218,7 @@ const ViewOrderComponent = () => {
               key={category}
               products={products}
               deleteProduct={deleteProduct}
+              editProduct={editProduct}
             />
           );
         default:

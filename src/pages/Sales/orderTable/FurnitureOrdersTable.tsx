@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import edit from "../../../images/icon/edit.svg";
 import trash from "../../../images/icon/trash.svg";
+import EditFurnitureOrderForm from "./Modal/EditFurnitureForm";
 
 interface FurnitureProductsTableProps {
   products: {
@@ -8,7 +9,7 @@ interface FurnitureProductsTableProps {
     title: string;
     description: string;
     size: string;
-    quantity: number;
+    qty: number;
     referenceCode: string;
     referenceImage: string;
     remarks: string;
@@ -22,10 +23,56 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
   editProduct,
   deleteProduct,
 }) => {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProductForEdit, setSelectedProductForEdit] =
+    useState<any>(null);
+
+  const openEditModal = (product: any) => {
+    setSelectedProductForEdit(product);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setSelectedProductForEdit(null);
+    setIsEditModalOpen(false);
+  };
+
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+
+  const handleDelete = async (productId) => {
+    try {
+      // Make DELETE request to delete the product
+      await axios.delete(`/api/products/${productId}`, getHeaders());
+      deleteProduct(productId);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
+  const saveEditedOrder = (editedData: any) => {
+    try {
+      // Logic for saving edited order
+      editProduct(selectedProductForEdit.id, editedData);
+    } catch (error) {
+      console.error("Error saving edited order:", error);
+    } finally {
+      closeEditModal();
+    }
+  };
+
   if (!products || products.length === 0) {
-    console.log("From Furniture:", products);
     return <div>No product data available</div>;
   }
+
   let serialNumber = 0;
 
   return (
@@ -35,6 +82,7 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
       </h1>
       <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
         <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
+          {/* Table Header */}
           <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
             <tr>
               <th scope="col" className="px-3 py-4">
@@ -66,6 +114,7 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
               </th>
             </tr>
           </thead>
+          {/* Table Body */}
           <tbody>
             {products.map((product) => (
               <tr
@@ -93,23 +142,24 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
                 <td className="px-4 py-2">{product.data.remarks}</td>
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => editProduct(product)}
+                    onClick={() => openEditModal(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
                     <img
                       src={edit}
                       className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
-                    ></img>
+                      alt="Edit Icon"
+                    />
                   </button>
                   <button
                     onClick={() => deleteProduct(product.id)}
-                    className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                    className="font-medium text-red-600 dark:text-red-500 hover:underline ml-2"
                   >
                     <img
                       src={trash}
-                      className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer ml-2"
+                      className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
                       alt="Trash Icon"
-                    ></img>
+                    />
                   </button>
                 </td>
               </tr>
@@ -117,6 +167,15 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
           </tbody>
         </table>
       </div>
+      {/* Edit Modal */}
+      {isEditModalOpen && (
+        <EditFurnitureOrderForm
+          onSave={saveEditedOrder}
+          onCloseModal={closeEditModal}
+          selectedProduct={selectedProductForEdit}
+          editProduct={editProduct}
+        />
+      )}
     </div>
   );
 };

@@ -18,6 +18,7 @@ const PrintTable = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [generatingPDF, setGeneratingPDF] = useState(false);
+  const [printType, setPrintType] = useState("all");
 
   useEffect(() => {
     fetchCustomers();
@@ -130,6 +131,10 @@ const PrintTable = () => {
           return null;
       }
     });
+  };
+
+  const handlePrintType = (type) => {
+    setPrintType(type);
   };
 
   const handlePrint = () => {
@@ -353,101 +358,130 @@ const PrintTable = () => {
         ))}
       </select>
 
-      {selectedCustomer && (
-        <div>
-          <div className="bg-white dark:bg-slate-950 p-4 shadow-lg rounded-xl print-content">
-            <div className="flex justify-between mb-4">
-              <div>
-                <img
-                  src="https://ik.imagekit.io/tealcdn2023/assets/Logo.png?updatedAt=1709360170200"
-                  className="w-25"
-                  alt={"Logo"}
-                ></img>
-                <h1 className="text-3xl font-semibold uppercase text-slate-800 dark:text-white">
-                  Yash Home Decors
-                </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  #174, Pycrofts Road, Royapettah, Chennai - 600014
-                </p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Ph: +91-95000-05914
-                </p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  GSTIN/UIN: 33CJWPM2113B1ZJ
-                </p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Tamil Nadu, Code: 33
-                </p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Email: yashdecoratives@gmail.com
-                </p>
+      <div className="flex items-center mb-4 text-black-2">
+        <label className="mr-4">
+          <input
+            type="radio"
+            name="printType"
+            value="all"
+            checked={printType === "all"}
+            onChange={() => handlePrintType("all")}
+            className="mr-2 form-radio h-4 w-4 text-gray-600 transition duration-150 ease-in-out"
+          />
+          <span className="text-sm">Customer</span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="printType"
+            value="tailor"
+            checked={printType === "tailor"}
+            onChange={() => handlePrintType("tailor")}
+            className="mr-2 form-radio h-4 w-4 text-gray-600 transition duration-150 ease-in-out"
+          />
+          <span className="text-sm">Tailor / Order Copy</span>
+        </label>
+      </div>
+
+      <div>
+        {selectedCustomer && (
+          <div>
+            <div className="bg-white dark:bg-slate-950 p-4 shadow-lg rounded-xl print-content">
+              <div className="flex justify-between mb-4">
+                <div>
+                  <img
+                    src="https://ik.imagekit.io/tealcdn2023/assets/Logo.png?updatedAt=1709360170200"
+                    className="w-25"
+                    alt="Logo"
+                  />
+                  <h1 className="text-3xl font-semibold uppercase text-slate-800 dark:text-white">
+                    Yash Home Decors
+                  </h1>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    #174, Pycrofts Road, Royapettah, Chennai - 600014
+                  </p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    Ph: +91-95000-05914
+                  </p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    GSTIN/UIN: 33CJWPM2113B1ZJ
+                  </p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    Tamil Nadu, Code: 33
+                  </p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    Email: yashdecoratives@gmail.com
+                  </p>
+                </div>
+
+                <div>
+                  <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
+                    Order Details
+                  </h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Date: 19/02/2024
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
-                  Order Details
-                </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Date: 19/02/2024
-                </p>
-              </div>
+              {printType === "all" && (
+                <div className="mt-4">
+                  <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                    Customer Details
+                  </h2>
+                  <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
+                    <p>
+                      <span className="font-semibold">Customer Name:</span>{" "}
+                      {selectedCustomer.clientName}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Customer ID:</span>{" "}
+                      {selectedCustomer.cid}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Address:</span>{" "}
+                      {selectedCustomer.address}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Client Type:</span>{" "}
+                      {selectedCustomer.clientType}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Purpose:</span>{" "}
+                      {selectedCustomer.purpose}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Phone:</span>{" "}
+                      {selectedCustomer.phone}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Email:</span>{" "}
+                      {selectedCustomer.emailAddress}
+                    </p>
+                  </div>
+                </div>
+              )}
+              {renderProductTables()}
             </div>
 
-            <div className="mt-4">
-              <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
-                Customer Details
-              </h2>
-              <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
-                <p>
-                  <span className="font-semibold">Customer Name:</span>{" "}
-                  {selectedCustomer.clientName}
-                </p>
-                <p>
-                  <span className="font-semibold">Customer ID:</span>{" "}
-                  {selectedCustomer.cid}
-                </p>
-                <p>
-                  <span className="font-semibold">Address:</span>{" "}
-                  {selectedCustomer.address}
-                </p>
-                <p>
-                  <span className="font-semibold">Client Type:</span>{" "}
-                  {selectedCustomer.clientType}
-                </p>
-                <p>
-                  <span className="font-semibold">Purpose:</span>{" "}
-                  {selectedCustomer.purpose}
-                </p>
-                <p>
-                  <span className="font-semibold">Phone:</span>{" "}
-                  {selectedCustomer.phone}
-                </p>
-                <p>
-                  <span className="font-semibold">Email:</span>{" "}
-                  {selectedCustomer.emailAddress}
-                </p>
-              </div>
+            <div className="flex justify-between mt-4">
+              <button
+                onClick={handlePrint}
+                className="bg-blue-800 hover:bg-blue-900 text-white py-2 px-4 rounded-xl"
+              >
+                Print & Download
+              </button>
+              <button
+                onClick={handleGeneratePDF}
+                className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded-xl"
+                disabled={generatingPDF}
+              >
+                {generatingPDF ? "Generating PDF..." : "Generate PDF"}
+              </button>
             </div>
-
-            {renderProductTables()}
           </div>
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={handlePrint}
-              className="bg-blue-800 hover:bg-blue-900 text-white py-2 px-4 rounded-xl"
-            >
-              Print & Download
-            </button>
-            <button
-              onClick={handleGeneratePDF}
-              className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded-xl"
-              disabled={generatingPDF}
-            >
-              {generatingPDF ? "Generating PDF..." : "Generate PDF"}
-            </button>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
