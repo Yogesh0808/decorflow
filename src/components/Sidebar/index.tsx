@@ -66,14 +66,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 sidebarOpen ? "translate-x-0" : "-translate-x-full"
             }`}>
             {/* <!-- SIDEBAR HEADER --> */}
-            <div className="flex items-center justify-start gap-2 px-6 py-5.5 lg:py-6.5">
-                <NavLink to="/" className="h-1/2 lg:h-full flex">
+            <div className="flex flex-col items-center justify-center gap-2 px-6 py-5.5 mt-3 lg:py-6.5">
+                <NavLink
+                    to="/"
+                    className="h-1/2 lg:h-full flex flex-col items-center justify-center">
                     <img
                         src={Logo}
                         alt="Logo"
                         className="max-h-full max-w-24"
                     />
-                    <h3 className="text-xl text-slate-200 align-center py-3">
+                    <h3 className="text-xl text-slate-200 align-center py-2">
                         Yash Home Decors
                     </h3>
                 </NavLink>
@@ -83,7 +85,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     onClick={() => setSidebarOpen(!sidebarOpen)}
                     aria-controls="sidebar"
                     aria-expanded={sidebarOpen}
-                    className="block lg:hidden ">
+                    className="block lg:hidden mt-6">
                     <svg
                         className="fill-current"
                         width="20"
