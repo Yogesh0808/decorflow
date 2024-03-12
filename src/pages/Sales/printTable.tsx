@@ -10,7 +10,7 @@ import MattressOrdersTable from "./printTable/MattressOrdersTable";
 import Logo from "../../images/logo/Logo.png";
 import Loader from "../../common/Loader/index";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+axios.defaults.baseURL = "http://localhost:8080/";
 
 const PrintTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -135,6 +135,18 @@ const PrintTable = () => {
 
   const handlePrintType = (type) => {
     setPrintType(type);
+  };
+
+  const handlePrintTypeChange = async (type) => {
+    setPrintType(type);
+
+    if (type === "all") {
+      // Fetch customer details and products when switching to 'all' print type
+      await handleSelectCustomer(selectedCustomer.id);
+    } else {
+      // Reset selectedCustomer to null when switching to 'tailor' print type
+      setSelectedCustomer(null);
+    }
   };
 
   const handlePrint = () => {
@@ -365,7 +377,7 @@ const PrintTable = () => {
             name="printType"
             value="all"
             checked={printType === "all"}
-            onChange={() => handlePrintType("all")}
+            onChange={() => handlePrintTypeChange("all")}
             className="mr-2 form-radio h-4 w-4 text-gray-600 transition duration-150 ease-in-out"
           />
           <span className="text-sm">Customer</span>
@@ -376,7 +388,7 @@ const PrintTable = () => {
             name="printType"
             value="tailor"
             checked={printType === "tailor"}
-            onChange={() => handlePrintType("tailor")}
+            onChange={() => handlePrintTypeChange("tailor")}
             className="mr-2 form-radio h-4 w-4 text-gray-600 transition duration-150 ease-in-out"
           />
           <span className="text-sm">Tailor / Order Copy</span>

@@ -1,12 +1,12 @@
+import React, { useState } from "react";
 import axios from "axios";
 import edit from "../../../images/icon/edit.svg";
 import trash from "../../../images/icon/trash.svg";
-import { useState } from "react";
 import EditSofaOrderForm from "./Modal/EditSofaForm";
 
-const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
+const SofaOrdersTable = ({ products, deleteProduct, editProduct }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
 
   const openEditModal = (product) => {
     setSelectedProductForEdit(product);
@@ -162,7 +162,7 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 <td className="px-4 py-2">{product.data.remarks}</td>
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => handleEditModalOpen(product)}
+                    onClick={() => openEditModal(product)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
                     <img
@@ -189,9 +189,11 @@ const SofaOrdersTable = ({ products, editProduct, deleteProduct }) => {
       </div>
       {isEditModalOpen && (
         <EditSofaOrderForm
-          onSave={saveEditedOrder}
+          onSave={(editedData) =>
+            saveEditedOrder(selectedProductForEdit.id, editedData)
+          }
           onCloseModal={closeEditModal}
-          selectedProduct={selectedProductForEdit}
+          selectedProduct={selectedProductForEdit} // Pass selectedProductForEdit as a prop
           editProduct={editProduct}
         />
       )}

@@ -10,7 +10,7 @@ import WallpaperForm from "./orderForm/WallpaperForm";
 import FurnitureForm from "./orderForm/FurnitureForm";
 import MattressForm from "./orderForm/MattressForm";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+axios.defaults.baseURL = "http://localhost:8080/";
 
 const CustomerTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);

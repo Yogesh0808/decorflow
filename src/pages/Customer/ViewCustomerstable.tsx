@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import edit from "../../images/icon/edit.svg";
 import trash from "../../images/icon/trash.svg";
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+axios.defaults.baseURL = "http://localhost:8080/";
 
 const getHeaders = () => {
   const username = "abinesh";

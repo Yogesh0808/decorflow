@@ -3,7 +3,7 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+axios.defaults.baseURL = "http://localhost:8080/";
 
 const getHeaders = () => {
   const username = "abinesh";

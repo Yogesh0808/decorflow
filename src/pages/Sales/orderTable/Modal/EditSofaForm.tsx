@@ -3,7 +3,7 @@ import axios from "axios";
 
 interface EditSofaOrderFormProps {
   onCloseModal: () => void;
-  selectedProduct: any; // Corrected property name from cid to id
+  selectedProduct: any;
 }
 
 const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
@@ -11,16 +11,16 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
   selectedProduct,
 }) => {
   const [formData, setFormData] = useState<any>({
-    title: selectedProduct.title,
-    description: selectedProduct.description,
-    size: selectedProduct.size,
-    shapeModel: selectedProduct.shapeModel,
+    title: selectedProduct.data.title,
+    description: selectedProduct.data.description,
+    size: selectedProduct.data.size,
+    shapeModel: selectedProduct.data.shapeModel,
     image: null,
-    fabricNameCode: selectedProduct.fabricNameCode,
+    fabricNameCode: selectedProduct.data.fabricNameCode,
     fimg: null,
-    sofaLeg: selectedProduct.sofaLeg,
+    sofaLeg: selectedProduct.data.sofaLeg,
     limg: null,
-    remarks: selectedProduct.remarks,
+    remarks: selectedProduct.data.remarks,
   });
 
   const [loading, setLoading] = useState(false);
@@ -101,7 +101,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
     <div className="relative bg-rose-50 rounded-lg shadow dark:bg-slate-700">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
         <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
-          Edit Sofa Order
+          Sofa Order Form
         </h3>
         <button
           type="button"
@@ -129,7 +129,6 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
       </div>
       <div className="overflow-auto max-h-[30rem]">
         <form className="p-4 md:p-5" onSubmit={handleSubmit}>
-          {/* Form fields */}
           <div className="grid gap-4 mb-4 grid-cols-2">
             {/* Title */}
             <div className="col-span-2">
@@ -143,7 +142,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                 type="text"
                 id="title"
                 name="title"
-                value={selectedProduct.title}
+                value={formData.title}
                 onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter title"
@@ -161,13 +160,12 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                 id="description"
                 name="description"
                 rows={4}
-                value={selectedProduct.description}
+                value={formData.description}
                 onChange={handleInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write product description here"
               ></textarea>
             </div>
-            {/* Size */}
             <div className="col-span-2">
               <label
                 htmlFor="size"
@@ -179,13 +177,12 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                 type="text"
                 id="size"
                 name="size"
-                value={selectedProduct.size}
+                value={formData.size}
                 onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter size"
               />
             </div>
-            {/* Shape and Model */}
             <div className="col-span-2">
               <label
                 htmlFor="shapeModel"
@@ -196,7 +193,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
               <select
                 id="shapeModel"
                 name="shapeModel"
-                value={selectedProduct.shapeModel}
+                value={formData.shapeModel}
                 onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               >
@@ -205,7 +202,6 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                 <option value="Squared">Squared</option>
               </select>
             </div>
-            {/* Reference Image */}
             <div className="col-span-2">
               <label
                 htmlFor="image"
@@ -234,13 +230,12 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                 type="text"
                 id="fabricNameCode"
                 name="fabricNameCode"
-                value={selectedProduct.fabricNameCode}
+                value={formData.fabricNameCode}
                 onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter fabric name and code"
               />
             </div>
-            {/* Fabric Image */}
             <div className="col-span-2">
               <label
                 htmlFor="fimg"
@@ -257,6 +252,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
+            {/* Sofa Leg */}
             <div className="col-span-2">
               <label
                 htmlFor="sofaLeg"
@@ -268,7 +264,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                 type="text"
                 id="sofaLeg"
                 name="sofaLeg"
-                value={selectedProduct.sofaLeg}
+                value={formData.sofaLeg}
                 onChange={handleInputChange}
                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter sofa leg details"
@@ -291,7 +287,6 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
-            {/* Remarks */}
             <div className="col-span-2">
               <label
                 htmlFor="remarks"
@@ -303,7 +298,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                 id="remarks"
                 name="remarks"
                 rows={4}
-                value={selectedProduct.remarks}
+                value={formData.remarks}
                 onChange={handleInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Add any additional remarks here"

@@ -9,7 +9,7 @@ import FlooringsOrdersTable from "./orderTable/FlooringsOrdersTable";
 import MattressOrdersTable from "./orderTable/MattressOrdersTable";
 import Loader from "../../common/Loader/index";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+axios.defaults.baseURL = "http://localhost:8080/";
 
 const ViewOrderComponent = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
