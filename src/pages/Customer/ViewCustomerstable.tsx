@@ -127,7 +127,7 @@ function ViewCustomers({ filterValue }: any) {
                 {loading ? (
                     <SkeletonTable />
                 ) : clients.length ? (
-                    <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
+                    <div className="overflow-y-auto overflow-x-auto rounded-xl">
                         <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
                             <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
                                 <tr>
