@@ -22,7 +22,7 @@ import ViewCustomer from "./pages/Customer/ViewCustomer";
 import NotFound from "./pages/NotFound";
 import ViewEntry from "./pages/Dispatch/ViewEntry";
 import OrderEntry from "./pages/Dispatch/OrderEntry";
-import NewInvoice from "./pages/Invoice/newinvoice";
+import NewInvoice from "./pages/Invoice/NewInvoice";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
