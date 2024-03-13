@@ -76,8 +76,8 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
             onCloseModal();
             toast.success("Blinds Order has been submitted successfully!", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
@@ -88,8 +88,8 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
             console.error("Error submitting form:", error);
             toast.error("Blinds Order has been cancelled", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,

@@ -115,8 +115,8 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
             onCloseModal();
             toast.success("Curtains Order has been submitted successfully!", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
@@ -127,8 +127,8 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
             console.error("Error submitting form:", error);
             toast.error("Curtains Order has been cancelled", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,

@@ -111,8 +111,8 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
             onCloseModal();
             toast.success("Wallpaper Order has been submitted successfully!", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
@@ -123,8 +123,8 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
             console.error("Error submitting form:", error);
             toast.error("Wallpaper Order has been cancelled", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,

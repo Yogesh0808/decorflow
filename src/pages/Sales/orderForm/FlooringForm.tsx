@@ -120,8 +120,8 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
             onCloseModal();
             toast.success("Floorings Order has been submitted successfully!", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
@@ -132,8 +132,8 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
             console.error("Error submitting form:", error);
             toast.error("Floorings Order has been cancelled", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
@@ -313,6 +313,7 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
                                 name="image"
                                 onChange={handleFileInputChange}
                                 accept="image/*"
+                                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 required
                             />
                         </div>

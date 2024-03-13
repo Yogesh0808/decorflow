@@ -10,6 +10,7 @@ import WallpaperForm from "./orderForm/WallpaperForm";
 import FurnitureForm from "./orderForm/FurnitureForm";
 import MattressForm from "./orderForm/MattressForm";
 import SkeletonRow from "./SkeletonRow";
+import HeadboardForm from "./orderForm/HeadboardForm";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
@@ -67,6 +68,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
         Wallpaper: "https://ik.imagekit.io/tealcdn2023/assets/wallpaper.png",
         Furniture: "https://ik.imagekit.io/tealcdn2023/assets/Decor.png",
         Mattress: "https://ik.imagekit.io/tealcdn2023/assets/bed.png",
+        Headboard: "https://ik.imagekit.io/tealcdn2023/assets/Headboard.png",
     };
 
     const fetchCustomers = async () => {
@@ -140,7 +142,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
     const renderProductForm = () => {
         switch (selectedProduct) {
             case "Curtains":
-                return (
+                sting: return (
                     <CurtainsForm
                         formData={formData}
                         onInputChange={(e) => handleInputChange(e)}
@@ -199,6 +201,14 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                         selectedCustomer={selectedCustomer}
                     />
                 );
+            case "Headboard":
+                return (
+                    <HeadboardForm
+                        onSubmit={handleFormSubmit}
+                        onCloseModal={handleCloseModal}
+                        selectedCustomer={selectedCustomer}
+                    />
+                );
             default:
                 return null;
         }
@@ -213,8 +223,12 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                     ) : filterValue ? (
                         <>
                             <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
-                                <li className="p-3 font-bold">Client ID</li>
-                                <li className="p-3 font-bold">Client Name</li>
+                                <li className="p-3 font-bold w-1/6 text-center">
+                                    Client ID
+                                </li>
+                                <li className="p-3 font-bold w-5/6 text-center">
+                                    Client Name
+                                </li>
                             </ul>
                             {filteredData.map((customer: any, index) => (
                                 <ul
@@ -223,8 +237,10 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                     onClick={() => {
                                         setSelectedCustomer(customer);
                                     }}>
-                                    <li className="p-3">{customer.cid}</li>
-                                    <li className="p-3">
+                                    <li className="p-3 w-1/6 text-center">
+                                        {customer.cid}
+                                    </li>
+                                    <li className="p-3 w-5/6 text-center">
                                         {customer.clientName}
                                     </li>
                                 </ul>
@@ -233,8 +249,12 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                     ) : (
                         <>
                             <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
-                                <li className="p-3 font-bold">Client ID</li>
-                                <li className="p-3 font-bold">Client Name</li>
+                                <li className="p-3 font-bold w-1/6 text-center">
+                                    Client ID
+                                </li>
+                                <li className=" w-5/6 text-center p-3 font-bold">
+                                    Client Name
+                                </li>
                             </ul>
                             {customers.map((customer: any, index) => (
                                 <ul
@@ -243,8 +263,10 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                     onClick={() => {
                                         setSelectedCustomer(customer);
                                     }}>
-                                    <li className="p-3">{customer.cid}</li>
-                                    <li className="p-3">
+                                    <li className="p-3 w-1/6 text-center">
+                                        {customer.cid}
+                                    </li>
+                                    <li className=" w-5/6 text-center p-3">
                                         {customer.clientName}
                                     </li>
                                 </ul>
@@ -267,7 +289,8 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                     </button>
                     <p className="text-center text-slate-700 dark:text-slate-50 text-2xl">
                         New Order For{" "}
-                        {selectedCustomer && selectedCustomer.clientName} -{" "}
+                        {selectedCustomer && selectedCustomer.clientName}
+                        {" - "}
                         {selectedCustomer && selectedCustomer.cid}
                     </p>
                     <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100 dark:bg-gray-800">
@@ -280,6 +303,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                 "Wallpaper",
                                 "Furniture",
                                 "Mattress",
+                                "Headboard",
                             ].map((product, index) => (
                                 <div
                                     key={index}
@@ -293,7 +317,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                         className="w-full lg:h-32 sm:h-28 p-4"
                                     />
                                     <div className="p-4">
-                                        <p className="text-center text-blue-800 bg-blue-50 dark:text-white dark:bg-blue-800 rounded-xl py-1 text-xl font-normal">
+                                        <p className="text-center text-blue-800 bg-blue-50 dark:text-white dark:bg-blue-800 rounded-xl p-1.5 text-xl font-normal">
                                             {product}
                                         </p>
                                     </div>

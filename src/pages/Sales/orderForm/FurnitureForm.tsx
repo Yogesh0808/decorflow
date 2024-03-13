@@ -110,8 +110,8 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
             onCloseModal();
             toast.success("Furniture Order has been submitted successfully!", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
@@ -122,8 +122,8 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
             console.error("Error submitting form:", error);
             toast.error("Furniture Order has been cancelled", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,

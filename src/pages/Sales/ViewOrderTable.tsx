@@ -211,8 +211,12 @@ const ViewOrderComponent = ({
                     ) : filterValue ? (
                         <>
                             <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
-                                <li className="p-3 font-bold">Client ID</li>
-                                <li className="p-3 font-bold">Client Name</li>
+                                <li className="p-3 font-bold w-1/6 text-center">
+                                    Client ID
+                                </li>
+                                <li className="p-3 font-bold w-5/6 text-center">
+                                    Client Name
+                                </li>
                             </ul>
                             {filteredData.map((customer: any, index) => (
                                 <ul
@@ -222,8 +226,10 @@ const ViewOrderComponent = ({
                                         setSelectedCustomer(customer);
                                         handleSelectCustomer(customer.id);
                                     }}>
-                                    <li className="p-3">{customer.cid}</li>
-                                    <li className="p-3">
+                                    <li className="p-3 w-1/6 text-center">
+                                        {customer.cid}
+                                    </li>
+                                    <li className="p-3 w-5/6 text-center">
                                         {customer.clientName}
                                     </li>
                                 </ul>
@@ -232,8 +238,12 @@ const ViewOrderComponent = ({
                     ) : (
                         <>
                             <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
-                                <li className="p-3 font-bold">Client ID</li>
-                                <li className="p-3 font-bold">Client Name</li>
+                                <li className="p-3 font-bold w-1/6 text-center">
+                                    Client ID
+                                </li>
+                                <li className="p-3 font-bold w-5/6 text-center">
+                                    Client Name
+                                </li>
                             </ul>
                             {customers.map((customer: any, index) => (
                                 <ul
@@ -243,8 +253,10 @@ const ViewOrderComponent = ({
                                         setSelectedCustomer(customer);
                                         handleSelectCustomer(customer.id);
                                     }}>
-                                    <li className="p-3">{customer.cid}</li>
-                                    <li className="p-3">
+                                    <li className="p-3 w-1/6 text-center">
+                                        {customer.cid}
+                                    </li>
+                                    <li className="p-3 w-5/6 text-center">
                                         {customer.clientName}
                                     </li>
                                 </ul>

@@ -79,8 +79,8 @@ const SofaForm: React.FC<SofaFormProps> = ({
             onCloseModal();
             toast.success("Sofa Order has been submitted successfully!", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
@@ -91,8 +91,8 @@ const SofaForm: React.FC<SofaFormProps> = ({
             console.error("Error submitting form:", error);
             toast.error("Sofa Order has been cancelled", {
                 position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
+                autoClose: 3000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
