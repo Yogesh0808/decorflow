@@ -13,7 +13,6 @@ const printorder = () => {
       </h1>
       <p></p>
       <PrintTable />
-      {/* <!-- ====== Calendar Section End ====== --> */}
     </DefaultLayout>
   );
 };

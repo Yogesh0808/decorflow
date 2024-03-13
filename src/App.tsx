@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useParams } from "react-router-dom";
+import axios from "axios";
 
 import Loader from "./common/Loader/index";
 import PageTitle from "./components/PageTitle";
@@ -19,11 +20,11 @@ import Printorder from "./pages/Sales/printorder";
 import AddCustomer from "./pages/Customer/AddCustomer";
 import ViewCustomer from "./pages/Customer/ViewCustomer";
 import NotFound from "./pages/NotFound";
-{
-  /* Dispatching Service */
-}
 import ViewEntry from "./pages/Dispatch/ViewEntry";
 import OrderEntry from "./pages/Dispatch/OrderEntry";
+import NewInvoice from "./pages/Invoice/newinvoice";
+
+axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -148,6 +149,15 @@ function App() {
             <>
               <PageTitle title="Form Layout | YHD" />
               <FormLayout />
+            </>
+          }
+        />
+        <Route
+          path="/invoice/new"
+          element={
+            <>
+              <PageTitle title="Quote | YHD" />
+              <NewInvoice />
             </>
           }
         />

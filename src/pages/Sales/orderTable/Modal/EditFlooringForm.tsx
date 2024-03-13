@@ -39,14 +39,20 @@ const EditFlooringOrderForm = ({
     }));
   };
 
-  const handleFileInputChange = async (e) => {
+  const handleFileInputChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
       try {
         const compressedImage = await compressImage(file);
+        const renamedFile = new File([compressedImage], "image.jpg", {
+          type: "image/jpeg",
+        });
+        console.log("Sending image with filename:", renamedFile.name);
         setFormData((prevFormData) => ({
           ...prevFormData,
-          image: compressedImage,
+          image: renamedFile,
         }));
       } catch (error) {
         console.error("Error compressing image:", error);

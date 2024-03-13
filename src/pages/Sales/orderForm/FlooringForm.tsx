@@ -43,9 +43,15 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
     if (file) {
       try {
         const compressedImage = await compressImage(file);
+
+        // Renaming the file
+        const renamedFile = new File([compressedImage], "image.jpg", {
+          type: "image/jpeg",
+        });
+        console.log("Sending image with filename:", renamedFile.name);
         setFormData((prevFormData) => ({
           ...prevFormData,
-          image: compressedImage,
+          image: renamedFile,
         }));
       } catch (error) {
         console.error("Error compressing image:", error);

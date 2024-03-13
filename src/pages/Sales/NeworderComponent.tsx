@@ -65,6 +65,8 @@ const CustomerTable = () => {
     Wallpaper: "https://ik.imagekit.io/tealcdn2023/assets/wallpaper.png",
     Furniture: "https://ik.imagekit.io/tealcdn2023/assets/Decor.png",
     Mattress: "https://ik.imagekit.io/tealcdn2023/assets/bed.png",
+    Headboard:
+      "https://ik.imagekit.io/tealcdn2023/assets/Headboard.png?updatedAt=1710332499600",
   };
 
   const fetchCustomers = async () => {

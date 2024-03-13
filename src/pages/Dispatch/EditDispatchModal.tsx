@@ -23,8 +23,8 @@ const EditDispatchModal = ({ formData, saveEditedData, closeModal }) => {
           className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
           aria-hidden="true"
         ></div>
-        <div className="relative bg-slate-50 dark:bg-slate-900 dark:text-slate-100 rounded-lg overflow-hidden max-w-lg mx-auto z-10">
-          <div className="p-4">
+        <div className="relative bg-slate-50 dark:bg-slate-900 dark:text-slate-100 rounded-lg overflow-hidden w-[80vw]  max-w-xl mx-auto z-10">
+          <div className="p-4 px-2">
             <h2 className="text-xl font-semibold mb-2">
               Edit Dispatch Details
             </h2>
