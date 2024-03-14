@@ -129,72 +129,81 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
   };
 
   const renderProductForm = () => {
-    switch (selectedProduct) {
-      case "Curtains":
-        return (
-          <CurtainsForm
-            formData={formData}
-            onInputChange={(e) => handleInputChange(e)}
-            onCloseModal={handleCloseModal}
-            onSubmit={(formData) => handleFormSubmit(formData)}
-            selectedCustomer={selectedCustomer}
-          />
-        );
-      case "Sofas":
-        return (
-          <SofaForm
-            formData={formData}
-            onInputChange={(e) => handleInputChange(e)}
-            onCloseModal={handleCloseModal}
-            onSubmit={handleSubmit}
-            selectedCustomer={selectedCustomer}
-          />
-        );
-      case "Blinds":
-        return (
-          <BlindsForm
-            onCloseModal={handleCloseModal}
-            onSubmit={handleSubmit}
-            selectedCustomer={selectedCustomer}
-          />
-        );
-      case "Wallpaper":
-        return (
-          <WallpaperForm
-            onCloseModal={handleCloseModal}
-            onSubmit={handleFormSubmit}
-            selectedCustomer={selectedCustomer}
-          />
-        );
-      case "Floorings":
-        return (
-          <FlooringForm
-            onSubmit={handleFormSubmit}
-            onCloseModal={handleCloseModal}
-            selectedCustomer={selectedCustomer}
-          />
-        );
-      case "Furniture":
-        return (
-          <FurnitureForm
-            onSubmit={handleFormSubmit}
-            onCloseModal={handleCloseModal}
-            selectedCustomer={selectedCustomer}
-          />
-        );
-      case "Mattress":
-        return (
-          <MattressForm
-            onSubmit={handleFormSubmit}
-            onCloseModal={handleCloseModal}
-            selectedCustomer={selectedCustomer}
-          />
-        );
-      default:
-        return null;
-    }
-  };
+        switch (selectedProduct) {
+            case "Curtains":
+                sting: return (
+                    <CurtainsForm
+                        formData={formData}
+                        onInputChange={(e) => handleInputChange(e)}
+                        onCloseModal={handleCloseModal}
+                        onSubmit={(formData) => handleFormSubmit(formData)}
+                        selectedCustomer={selectedCustomer}
+                    />
+                );
+            case "Sofas":
+                return (
+                    <SofaForm
+                        formData={formData}
+                        onInputChange={(e) => handleInputChange(e)}
+                        onCloseModal={handleCloseModal}
+                        onSubmit={handleSubmit}
+                        selectedCustomer={selectedCustomer}
+                    />
+                );
+            case "Blinds":
+                return (
+                    <BlindsForm
+                        onCloseModal={handleCloseModal}
+                        onSubmit={handleSubmit}
+                        selectedCustomer={selectedCustomer}
+                    />
+                );
+            case "Wallpaper":
+                return (
+                    <WallpaperForm
+                        onCloseModal={handleCloseModal}
+                        onSubmit={handleFormSubmit}
+                        selectedCustomer={selectedCustomer}
+                    />
+                );
+            case "Floorings":
+                return (
+                    <FlooringForm
+                        onSubmit={handleFormSubmit}
+                        onCloseModal={handleCloseModal}
+                        selectedCustomer={selectedCustomer}
+                    />
+                );
+            case "Furniture":
+                return (
+                    <FurnitureForm
+                        onSubmit={handleFormSubmit}
+                        onCloseModal={handleCloseModal}
+                        selectedCustomer={selectedCustomer}
+                    />
+                );
+            case "Mattress":
+                return (
+                    <MattressForm
+                        onSubmit={handleFormSubmit}
+                        onCloseModal={handleCloseModal}
+                        selectedCustomer={selectedCustomer}
+                    />
+                );
+            case "Headboard":
+                return (
+                    <HeadboardForm
+                        onSubmit={handleFormSubmit}
+                        onCloseModal={handleCloseModal}
+                        selectedCustomer={selectedCustomer}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
 
+    
     return (
         <div>
             {!selectedCustomer && (
