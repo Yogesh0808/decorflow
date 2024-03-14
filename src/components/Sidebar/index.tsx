@@ -245,7 +245,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className="mb-6 flex flex-col gap-1.5">
                             <li>
                                 <NavLink
-                                    to="/client/new"
+                                    to="/customer/new"
                                     className={({ isActive }) =>
                                         "group relative flex items-center gap-2.5 rounded-md px-4 font-normal text-bodydark2 duration-300 ease-in-out hover:text-white " +
                                         (isActive && "!text-white")
@@ -268,7 +268,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </li>
                             <li>
                                 <NavLink
-                                    to="/client/view"
+                                    to="/customer/view"
                                     className={({ isActive }) =>
                                         "group relative flex items-center gap-2.5 rounded-md px-4 font-normal text-bodydark2 duration-300 ease-in-out hover:text-white " +
                                         (isActive && "!text-white")
