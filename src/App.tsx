@@ -59,7 +59,7 @@ function App() {
           }
         />
         <Route
-          path="/Customer/New"
+          path="/customer/new"
           element={
             <>
               <PageTitle title="New-Customer | YHD" />
@@ -68,7 +68,7 @@ function App() {
           }
         />
         <Route
-          path="/Customer/View"
+          path="/customer/view"
           element={
             <>
               <PageTitle title="View-Customer | YHD" />
@@ -85,33 +85,33 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/Neworder"
-          element={
-            <>
-              <PageTitle title="Order | YHD" />
-              <Neworder />
-            </>
-          }
-        />
-        <Route
-          path="/Vieworder"
-          element={
-            <>
-              <PageTitle title="View-Order | YHD" />
-              <Vieworder />
-            </>
-          }
-        />
-        <Route
-          path="/printorder"
-          element={
-            <>
-              <PageTitle title="Printing Preview | YHD" />
-              <Printorder />
-            </>
-          }
-        />
+      <Route
+                path="/order/new"
+                element={
+                    <>
+                        <PageTitle title="New-Order | YHD" />
+                        <Neworder />
+                    </>
+                }
+            />
+            <Route
+                path="/order/view"
+                element={
+                    <>
+                        <PageTitle title="View-Order | YHD" />
+                        <Vieworder />
+                    </>
+                }
+            />
+            <Route
+                path="/order/print"
+                element={
+                    <>
+                        <PageTitle title="Printing Preview | YHD" />
+                        <Printorder />
+                    </>
+                }
+            />
         {/* Dispatching Routing Starts Here:)) */}
         <Route
           path="/dispatch/entry"
