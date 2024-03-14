@@ -7,7 +7,7 @@ import FurnitureOrdersTable from "./orderTable/FurnitureOrdersTable";
 import WallpaperOrdersTable from "./orderTable/WallpaperOrdersTable";
 import FlooringsOrdersTable from "./orderTable/FlooringsOrdersTable";
 import MattressOrdersTable from "./orderTable/MattressOrdersTable";
-import HeadboardOrdersTable from "./orderTable/HeadBoardOrdersTable";
+import HeadboardOrdersTable from "./orderTable/HeadboardOrdersTable";
 import Loader from "../../common/Loader/index";
 import SkeletonRow from "./SkeletonRow";
 
