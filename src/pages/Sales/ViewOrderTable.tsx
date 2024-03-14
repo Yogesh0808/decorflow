@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CurtainsOrdersTable from "./orderTable/CurtainsOrdersTable";
@@ -8,6 +7,7 @@ import FurnitureOrdersTable from "./orderTable/FurnitureOrdersTable";
 import WallpaperOrdersTable from "./orderTable/WallpaperOrdersTable";
 import FlooringsOrdersTable from "./orderTable/FlooringsOrdersTable";
 import MattressOrdersTable from "./orderTable/MattressOrdersTable";
+import HeadboardOrdersTable from "./orderTable/HeadBoardOrdersTable";
 import Loader from "../../common/Loader/index";
 import SkeletonRow from "./SkeletonRow";
 
@@ -26,7 +26,7 @@ const ViewOrderComponent = ({
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    fetchCustomers();
+    fetchCustomers(); // Fetch customers when component mounts
   }, []);
 
   useEffect(() => {
@@ -42,8 +42,9 @@ const ViewOrderComponent = ({
   const handleDelete = async (productId) => {
     try {
       // Make DELETE request to delete the product
-      await axios.delete(`/api/products/${productId}`);            //Deleting Product By it's ID
+      await axios.delete(`/api/products/${productId}`);
       // Update UI by removing the deleted product from the products list
+      // deleteProduct(productId);
     } catch (error) {
       console.error("Error deleting product:", error);
       // Handle error, show error message or retry option
@@ -231,6 +232,15 @@ const ViewOrderComponent = ({
         case "Mattress":
           return (
             <MattressOrdersTable
+              key={category}
+              products={products}
+              deleteProduct={deleteProduct}
+              editProduct={editProduct}
+            />
+          );
+        case "Headboard":
+          return (
+            <HeadboardOrdersTable
               key={category}
               products={products}
               deleteProduct={deleteProduct}

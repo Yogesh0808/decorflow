@@ -7,9 +7,9 @@ import FurnitureOrdersTable from "./printTable/FurnitureOrdersTable";
 import WallpaperOrdersTable from "./printTable/WallpaperOrdersTable";
 import FlooringsOrdersTable from "./printTable/FlooringsOrdersTable";
 import MattressOrdersTable from "./printTable/MattressOrdersTable";
+import HeadboardOrdersTable from "./printTable/HeadboardOrdersTable";
 import Logo from "../../images/logo/Logo.png";
 import Loader from "../../common/Loader/index";
-import html2pdf from "html2pdf.js";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
@@ -128,6 +128,8 @@ const PrintTable = () => {
           return <FlooringsOrdersTable key={category} products={products} />;
         case "Mattress":
           return <MattressOrdersTable key={category} products={products} />;
+        case "Headboard":
+          return <HeadboardOrdersTable key={category} products={products} />;
         default:
           return null;
       }
