@@ -4,13 +4,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface SofaFormProps {
-  onCloseModal: () => void;
-  selectedCustomer: { id: string; clientName: string }; // Corrected property name from cid to id
+    onCloseModal: () => void;
+    selectedCustomer: { id: string; clientName: string }; // Corrected property name from cid to id
 }
 
 const SofaForm: React.FC<SofaFormProps> = ({
-  onCloseModal,
-  selectedCustomer,
+    onCloseModal,
+    selectedCustomer,
 }) => {
   const [formData, setFormData] = useState<any>({
     title: "",
@@ -32,28 +32,28 @@ const SofaForm: React.FC<SofaFormProps> = ({
     pillowFabricImage: null,
   });
 
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-  const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
-    return {
-      headers: {
-        Authorization: basicAuth,
-      },
+    const getHeaders = () => {
+        const username = "abinesh";
+        const password = "abi";
+        const basicAuth = "Basic " + btoa(username + ":" + password);
+        return {
+            headers: {
+                Authorization: basicAuth,
+            },
+        };
     };
-  };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -94,27 +94,46 @@ const SofaForm: React.FC<SofaFormProps> = ({
       dataToSubmit.append("customerName", selectedCustomer.clientName);
       dataToSubmit.append("customerId", selectedCustomer.id);
 
-      const response = await axios.post(
-        `/api/products/${selectedCustomer.id}/Sofa`,
-        dataToSubmit,
-        getHeaders()
-      );
+            const response = await axios.post(
+                `/api/products/${selectedCustomer.id}/Sofa`,
+                dataToSubmit,
+                getHeaders()
+            );
 
-      console.log("Form submitted successfully:", response.data);
-      onCloseModal();
-      toast.success("Sofa Order has been submitted successfully!");
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+            console.log("Form submitted successfully:", response.data);
+            onCloseModal();
+            toast.success("Sofa Order has been submitted successfully!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            toast.error("Sofa Order has been cancelled", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Sofa Data:", formData);
-    await submitFormData(formData);
-  };
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log("Sofa Data:", formData);
+        await submitFormData(formData);
+    };
 
   return (
     <div className="relative bg-rose-50 rounded-lg shadow dark:bg-slate-700">

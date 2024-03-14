@@ -41,19 +41,19 @@ const BlindOrdersTable = ({ products, deleteProduct, editProduct }) => {
     };
   };
 
-  const handleDelete = async (productId) => {
-    try {
-      // Make DELETE request to delete the product
+      const handleDelete = async (productId) => {
+        try {
+            // Make DELETE request to delete the product
       await axios.delete(`/api/products/${productId}`, getHeaders());
-      deleteProduct(productId);
-    } catch (error) {
-      console.error("Error deleting product:", error);
-    }
-  };
-
+            deleteProduct(productId);
+        } catch (error) {
+            console.error("Error deleting product:", error);
+        }
+    };
+  
   if (!products || products.length === 0) {
-    return <div>No product data available</div>;
-  }
+            return <div>No product data available</div>;
+    }
 
   return (
     <div className="max-w-screen mx-auto overflow-x-hidden p-4">

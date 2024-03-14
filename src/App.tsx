@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation, useParams } from "react-router-dom";
+import {
+    Navigate,
+    Route,
+    Routes,
+    useLocation,
+    useParams,
+} from "react-router-dom";
 import axios from "axios";
 
 import Loader from "./common/Loader/index";
@@ -27,16 +33,16 @@ import NewInvoice from "./pages/Invoice/NewInvoice";
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
 function App() {
-  const [loading, setLoading] = useState<boolean>(true);
-  const { pathname } = useLocation();
+    const [loading, setLoading] = useState<boolean>(true);
+    const { pathname } = useLocation();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 500);
-  }, []);
+    useEffect(() => {
+        setTimeout(() => setLoading(false), 500);
+    }, []);
 
   return loading ? (
     <Loader />
@@ -210,6 +216,101 @@ function App() {
       </Routes>
     </>
   );
+    return loading ? (
+        <Loader />
+    ) : (
+        <>
+            <Routes>
+                <Route path="*" element={<NotFound />} />
+                <Route
+                    path="/"
+                    element={<Navigate to="/analytics/dashboard" />}
+                />
+                <Route
+                    index
+                    path="/analytics/dashboard"
+                    element={
+                        <>
+                            <PageTitle title="Dashboard | YHD" />
+                            <Dashboard />
+                        </>
+                    }
+                />
+                <Route
+                    path="/analytics/performance"
+                    element={
+                        <>
+                            <PageTitle title="Performance | YHD" />
+                            <Performance />
+                        </>
+                    }
+                />
+                <Route
+                    path="/client/new"
+                    element={
+                        <>
+                            <PageTitle title="New-Customer | YHD" />
+                            <AddCustomer />
+                        </>
+                    }
+                />
+                <Route
+                    path="/client/view"
+                    element={
+                        <>
+                            <PageTitle title="View-Customer | YHD" />
+                            <ViewCustomer />
+                        </>
+                    }
+                />
+                <Route
+                    path="/order/new"
+                    element={
+                        <>
+                            <PageTitle title="New-Order | YHD" />
+                            <Neworder />
+                        </>
+                    }
+                />
+                <Route
+                    path="/order/view"
+                    element={
+                        <>
+                            <PageTitle title="View-Order | YHD" />
+                            <Vieworder />
+                        </>
+                    }
+                />
+                <Route
+                    path="/order/print"
+                    element={
+                        <>
+                            <PageTitle title="Printing Preview | YHD" />
+                            <Printorder />
+                        </>
+                    }
+                />
+                <Route
+                    path="/dispatch/entry"
+                    element={
+                        <>
+                            <PageTitle title="OrderEntry | YHD" />
+                            <OrderEntry />
+                        </>
+                    }
+                />
+                <Route
+                    path="/dispatch/view"
+                    element={
+                        <>
+                            <PageTitle title="OrderEntry | YHD" />
+                            <ViewEntry />
+                        </>
+                    }
+                />
+            </Routes>
+        </>
+    );
 }
 
 export default App;
