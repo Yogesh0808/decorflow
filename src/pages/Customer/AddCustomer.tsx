@@ -236,7 +236,7 @@ const AddCustomer = () => {
                         <textarea
                             name="address"
                             id="address"
-                            rows="3"
+                            rows={3}
                             className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
                             onChange={handleInputChange}
                             value={formData.address}
@@ -299,9 +299,8 @@ const AddCustomer = () => {
                     <button
                         type="submit"
                         disabled={isDisabled}
-                        className={`bg-red-700 text-white py-2.5 px-6 rounded-md hover:bg-red-800 ${
-                            isDisabled ? "bg-red-900" : "bg-red-700"
-                        }`}>
+                        className={`bg-red-700 text-white py-2.5 px-6 rounded-md hover:bg-red-800 ${isDisabled ? "bg-red-900" : "bg-red-700"
+                            }`}>
                         Add Customer
                     </button>
                 </form>

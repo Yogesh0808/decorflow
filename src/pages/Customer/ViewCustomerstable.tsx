@@ -26,12 +26,15 @@ function ViewCustomers({ filterValue }: any) {
     const [formData, setFormData] = useState({
         cid: "",
         salutation: "",
-        clientName: "",
-        clientType: "",
-        purpose: "",
-        address: "",
+        clientName: "None",
+        clientType: "None",
+        purpose: "None",
+        address: "None",
         phone: "",
-        emailAddress: "",
+        emailAddress: "None",
+        isCompanyOrder: false,
+        companyName: "None",
+        gstNumber: "None",
     });
 
     useEffect(() => {
@@ -51,15 +54,15 @@ function ViewCustomers({ filterValue }: any) {
         setFilteredData(filtered);
     }, [filterValue]);
 
-  const getClients = async () => {
-    try {
-      const response = await axios.get("/api/customer", getHeaders());
-      setClients(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching clients:", error);
-    }
-  };
+    const getClients = async () => {
+        try {
+            const response = await axios.get("/api/customer", getHeaders());
+            setClients(response.data);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching clients:", error);
+        }
+    };
 
     const deleteClient = (clientId) => {
         if (window.confirm("Are you sure you want to delete this client?")) {
@@ -69,7 +72,7 @@ function ViewCustomers({ filterValue }: any) {
                     console.log("Client deleted");
                     setToastMessage("Client Deleted successfully.");
                     setShowToast(true);
-          // Move the getClients() call inside the .then() block
+                    // Move the getClients() call inside the .then() block
                     getClients();
                 })
                 .catch((error) => {
@@ -78,7 +81,7 @@ function ViewCustomers({ filterValue }: any) {
         }
     };
 
-    const editClient = (client) => {
+    const editClient = (client: any) => {
         setEditedClient(client);
         setShowModal(true);
     };
@@ -87,13 +90,13 @@ function ViewCustomers({ filterValue }: any) {
         setShowModal(false);
     };
 
-    const saveEditedClient = (editedData) => {
+    const saveEditedClient = (editedData: any) => {
         axios
             .put(`/api/customer/${editedData.id}`, editedData, getHeaders())
             .then((response) => {
                 console.log("Edited client data:", editedData);
-                setClients((prevClients) =>
-                    prevClients.map((client) => {
+                setClients((prevClients: any) =>
+                    prevClients.map((client: any) => {
                         if (client.id === editedData.id) {
                             return editedData;
                         }
@@ -110,7 +113,7 @@ function ViewCustomers({ filterValue }: any) {
     };
 
     useEffect(() => {
-        let timer;
+        let timer: any;
         if (showToast) {
             timer = setTimeout(() => {
                 setShowToast(false);
@@ -155,6 +158,12 @@ function ViewCustomers({ filterValue }: any) {
                                         Email Address
                                     </th>
                                     <th scope="col" className="px-4 py-4">
+                                        Company Name
+                                    </th>
+                                    <th scope="col" className="px-4 py-4">
+                                        GST Number
+                                    </th>
+                                    <th scope="col" className="px-4 py-4">
                                         Action
                                     </th>
                                 </tr>
@@ -162,110 +171,137 @@ function ViewCustomers({ filterValue }: any) {
                             <tbody>
                                 {filterValue === ""
                                     ? clients.map((client: any) => (
-                                          <tr
-                                              key={client.id}
-                                              className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700">
-                                              <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                                                  {client.cid}
-                                              </td>
-                                              <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                                                  {client.salutation}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.clientName}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.clientType}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.purpose}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.address}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.phone}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.emailAddress}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  <button
-                                                      onClick={() =>
-                                                          editClient(client)
-                                                      }
-                                                      width="18"
-                                                      height="18"
-                                                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                                      <img
-                                                          src={edit}
-                                                          className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"></img>
-                                                  </button>
-                                                  <button
-                                                      onClick={() =>
-                                                          deleteClient(
-                                                              client.id
-                                                          )
-                                                      }
-                                                      className="font-medium text-red-600 dark:text-red-500 hover:underline ml-2">
-                                                      <img
-                                                          src={trash}
-                                                          className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
-                                                          alt="Trash Icon"
-                                                      />
-                                                  </button>
-                                              </td>
-                                          </tr>
-                                      ))
+                                        <tr
+                                            key={client.id}
+                                            className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700">
+                                            <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
+                                                {client.cid}
+                                            </td>
+                                            <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
+                                                {client.salutation}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.clientName}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.clientType}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.purpose}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.address}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.phone}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.emailAddress === "" || null ? "None" : client.emailAddress}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.companyName === null || ""
+                                                    ? "None"
+                                                    : client.companyName}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.gstNumber === null || ""
+                                                    ? "None"
+                                                    : client.gstNumber}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <button
+                                                    onClick={() =>
+                                                        editClient(client)
+                                                    }
+                                                    width="18"
+                                                    height="18"
+                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                                    <img
+                                                        src={edit}
+                                                        className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"></img>
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        deleteClient(
+                                                            client.id
+                                                        )
+                                                    }
+                                                    className="font-medium text-red-600 dark:text-red-500 hover:underline ml-2">
+                                                    <img
+                                                        src={trash}
+                                                        className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                                                        alt="Trash Icon"
+                                                    />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
                                     : filteredData.map((client: any) => (
-                                          <tr
-                                              key={client.id}
-                                              className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700">
-                                              <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                                                  {client.cid}
-                                              </td>
-                                              <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
-                                                  {client.salutation}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.clientName}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.clientType}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.purpose}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.address}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.phone}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  {client.emailAddress}
-                                              </td>
-                                              <td className="px-4 py-2">
-                                                  <button
-                                                      onClick={() =>
-                                                          editClient(client)
-                                                      }
-                                                      className="font-medium text-yTeal dark:text-blue-500 hover:underline">
-                                                      Edit
-                                                  </button>
-
-                                                  <button
-                                                      onClick={() =>
-                                                          deleteClient(
-                                                              client.id
-                                                          )
-                                                      }
-                                                      className="font-medium text-yRed dark:text-red-500 hover:underline">
-                                                      Delete
-                                                  </button>
-                                              </td>
-                                          </tr>
-                                      ))}
+                                        <tr
+                                            key={client.id}
+                                            className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700">
+                                            <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
+                                                {client.cid}
+                                            </td>
+                                            <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
+                                                {client.salutation}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.clientName}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.clientType}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.purpose}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.address}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.phone}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.emailAddress === "" || null ? "None" : client.emailAddress}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.companyName === null || ""
+                                                    ? "None"
+                                                    : client.companyName}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {client.gstNumber === null || ""
+                                                    ? "None"
+                                                    : client.gstNumber}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <button
+                                                    onClick={() =>
+                                                        editClient(client)
+                                                    }
+                                                    width="18"
+                                                    height="18"
+                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                                    <img
+                                                        src={edit}
+                                                        className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"></img>
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        deleteClient(
+                                                            client.id
+                                                        )
+                                                    }
+                                                    className="font-medium text-red-600 dark:text-red-500 hover:underline ml-2">
+                                                    <img
+                                                        src={trash}
+                                                        className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                                                        alt="Trash Icon"
+                                                    />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>
@@ -298,7 +334,7 @@ function ViewCustomers({ filterValue }: any) {
                 )}
             </div>
             {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+                <div className="fixed mt-10 inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-9999">
                     <div className="bg-slate-200 w-full lg:max-w-md sm:max-w-64 rounded-xl p- dark:bg-slate-900">
                         <EditClientModal
                             client={editedClient}
@@ -360,6 +396,9 @@ function EditClientModal({
     const [editedEmailAddress, setEditedEmailAddress] = useState(
         client?.emailAddress || ""
     );
+    const [editedCompanyName, setEditedCompanyName] = useState(client?.companyName || "");
+    const [editedGstNumber, setEditedGstNumber] = useState(client?.gstNumber || "");
+    const [editedIsCompanyOrder, setEditedIsCompanyOrder] = useState(client?.gstNumber || "");
 
     // Function to handle saving the edited client data
     const handleSave = () => {
@@ -369,7 +408,7 @@ function EditClientModal({
             editedClientType &&
             editedPurpose &&
             editedAddress &&
-            editedPhone &&
+            editedPhone ||
             editedEmailAddress
         ) {
             // Collect edited data
@@ -383,6 +422,9 @@ function EditClientModal({
                 address: editedAddress,
                 phone: editedPhone,
                 emailAddress: editedEmailAddress,
+                isCompanyOrder: editedIsCompanyOrder,
+                companyName: editedCompanyName,
+                gstNumber: editedGstNumber,
             };
             saveEditedClient(editedData);
         } else {
@@ -390,132 +432,182 @@ function EditClientModal({
         }
     };
 
-  return (
-    <div className="p-8 sm:px-4 bg-slate-200 dark:bg-slate-900 rounded-lg">
-      <div className="overflow-auto sm:max-h-49 lg:max-h-125 ">
-        <h2 className="text-3xl text-center my-1">Edit Client</h2>
-        <div className="mb-2 sm:mb-4 dark:text-slate-50">
-          <label
-            htmlFor="salutation"
-            className="block text-sm font-medium text-slate-800 dark:text-slate-300"
-          >
-            Salutation
-          </label>
-          <input
-            type="text"
-            id="salutation"
-            value={editedSalutation}
-            onChange={(e) => setEditedSalutation(e.target.value)}
-            className="..."
-          />
+    return (
+        <div className="p-8 sm:px-4 bg-slate-200 dark:bg-slate-900 rounded-lg">
+            <div className="overflow-auto sm:max-h-49 lg:max-h-125 ">
+                <h2 className="text-3xl text-center my-1">Edit Client</h2>
+                <div className="mb-2 sm:mb-4 dark:text-slate-50">
+                    <label
+                        htmlFor="salutation"
+                        className="block text-sm font-medium text-slate-800 dark:text-slate-300">
+                        Salutation
+                    </label>
+                    <select
+                        id="clientType"
+                        value={editedSalutation}
+                        onChange={(e) => setEditedSalutation(e.target.value)}
+                        className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-white dark:border-neutral-500 dark:bg-slate-700 dark:focus:ring-neutral-400">
+                        <option value="Mr">Mr</option>
+                        <option value="Mrs">Mrs</option>
+                    </select>
+                </div>
+                <div className="mb-2 sm:mb-4">
+                    <label
+                        htmlFor="clientName"
+                        className="block text-sm font-medium text-slate-800 dark:text-slate-50">
+                        Client Name
+                    </label>
+                    <input
+                        type="text"
+                        id="clientName"
+                        value={editedClientName}
+                        onChange={(e) => setEditedClientName(e.target.value)}
+                        className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-white dark:border-neutral-500 dark:bg-slate-700 dark:focus:ring-neutral-400"
+                    />
+                </div>
+                <div className="mb-2 sm:mb-4">
+                    <label
+                        htmlFor="clientType"
+                        className="block text-sm font-medium text-slate-800 dark:text-slate-50">
+                        Client Type
+                    </label>
+                    <select
+                        id="clientType"
+                        value={editedClientType}
+                        onChange={(e) => setEditedClientType(e.target.value)}
+                        className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-white dark:border-neutral-500 dark:bg-slate-700 dark:focus:ring-neutral-400">
+                        <option value="Architect">Architect</option>
+                        <option value="Client">Client</option>
+                        <option value="Interior Designer">
+                            Interior Designer
+                        </option>
+                    </select>
+                </div>
+                <div className="mb-2 sm:mb-4">
+                    <label
+                        htmlFor="purpose"
+                        className="block text-sm font-medium text-slate-800 dark:text-slate-100">
+                        Purpose
+                    </label>
+                    <input
+                        type="text"
+                        id="purpose"
+                        value={editedPurpose}
+                        onChange={(e) => setEditedPurpose(e.target.value)}
+                        className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-white dark:border-neutral-500 dark:bg-slate-700 dark:focus:ring-neutral-400"
+                    />
+                </div>
+
+                <div className="mb-2 sm:mb-4">
+                    <label
+                        htmlFor="phone"
+                        className="block text-sm font-medium text-slate-800 dark:text-slate-50">
+                        Phone
+                    </label>
+                    <input
+                        type="number"
+                        id="phone"
+                        value={editedPhone}
+                        onChange={(e) => setEditedPhone(e.target.value)}
+                        className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 dark:text-white dark:border-neutral-500 dark:bg-slate-700 dark:focus:ring-neutral-400 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md "
+                    />
+                </div>
+                <div className="mb-2 sm:mb-4">
+                    <label
+                        htmlFor="emailAddress"
+                        className="block text-sm font-medium text-slate-800 dark:text-slate-50">
+                        Email Address
+                    </label>
+                    <input
+                        type="text"
+                        id="emailAddress"
+                        value={editedEmailAddress}
+                        onChange={(e) => setEditedEmailAddress(e.target.value)}
+                        className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-white  dark:border-neutral-500 dark:bg-slate-700 dark:focus:ring-neutral-400"
+                    />
+                </div>
+                <div className="mb-2 sm:mb-4">
+                    <label
+                        htmlFor="address"
+                        className="block text-sm font-medium text-slate-800 dark:text-slate-50">
+                        Address
+                    </label>
+                    <textarea
+                        rows={3}
+                        id="address"
+                        value={editedAddress}
+                        onChange={(e) => setEditedAddress(e.target.value)}
+                        className="mt-1 py-2 px-3 sm:px-4 dark:text-white dark:border-neutral-500 dark:bg-slate-700 dark:focus:ring-neutral-400 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-white dark:border-neutral-500 dark:bg-slate-700 dark:focus:ring-neutral-400"
+                    />
+                </div>
+                <div className="flex flex-col">
+                    {editedIsCompanyOrder && (
+                        <>
+                            <label
+                                htmlFor="company-name"
+                                className="text-sm font-medium mb-2">
+                                Company Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="companyName"
+                                id="company-name"
+                                className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+                                onChange={e => setEditedCompanyName(e.target.value)}
+                                value={editedCompanyName}
+                            />
+                        </>
+                    )}
+                </div>
+
+                <div className="flex flex-col my-4">
+                    {editedIsCompanyOrder && (
+                        <>
+                            <label
+                                htmlFor="gst-number"
+                                className="text-sm font-medium mb-2">
+                                GST Number
+                            </label>
+                            <input
+                                type="text"
+                                name="gstNumber"
+                                id="gst-number"
+                                className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+                                onChange={e => setEditedGstNumber(e.target.value)}
+                                value={editedGstNumber}
+                            />
+                        </>
+                    )}
+                </div>
+                <div className="flex items-center my-6">
+                    <input
+                        type="checkbox"
+                        id="company-order"
+                        name="isCompanyOrder"
+                        className="rounded   p-2 text-slate-600 shadow-sm  dark:text-white  dark:bg-slate-700 "
+                        onChange={e => setEditedIsCompanyOrder(e.target.checked)}
+                        checked={editedIsCompanyOrder}
+                    />
+                    <label htmlFor="company-order" className="ml-2 text-sm">
+                        GST Order
+                    </label>
+                </div>
+                <div className="flex justify-end">
+                    <button
+                        onClick={handleSave}
+                        className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                        Update
+                    </button>
+                    <button
+                        onClick={closeModal}
+                        className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                        Close
+                    </button>
+                </div>
+            </div>
         </div>
-        <div className="mb-2 sm:mb-4">
-          <label
-            htmlFor="clientName"
-            className="block text-sm font-medium text-slate-800 dark:text-slate-50"
-          >
-            Client Name
-          </label>
-          <input
-            type="text"
-            id="clientName"
-            value={editedClientName}
-            onChange={(e) => setEditedClientName(e.target.value)}
-            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-          />
-        </div>
-        <div className="mb-2 sm:mb-4">
-          <label
-            htmlFor="clientType"
-            className="block text-sm font-medium text-slate-800 dark:text-slate-50"
-          >
-            Client Type
-          </label>
-          <input
-            type="text"
-            id="clientType"
-            value={editedClientType}
-            onChange={(e) => setEditedClientType(e.target.value)}
-            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-          />
-        </div>
-        <div className="mb-2 sm:mb-4">
-          <label
-            htmlFor="purpose"
-            className="block text-sm font-medium text-slate-800 dark:text-slate-100"
-          >
-            Purpose
-          </label>
-          <input
-            type="text"
-            id="purpose"
-            value={editedPurpose}
-            onChange={(e) => setEditedPurpose(e.target.value)}
-            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-          />
-        </div>
-        <div className="mb-2 sm:mb-4">
-          <label
-            htmlFor="address"
-            className="block text-sm font-medium text-slate-800 dark:text-slate-50"
-          >
-            Address
-          </label>
-          <input
-            type="text"
-            id="address"
-            value={editedAddress}
-            onChange={(e) => setEditedAddress(e.target.value)}
-            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-          />
-        </div>
-        <div className="mb-2 sm:mb-4">
-          <label
-            htmlFor="phone"
-            className="block text-sm font-medium text-slate-800 dark:text-slate-50"
-          >
-            Phone
-          </label>
-          <input
-            type="text"
-            id="phone"
-            value={editedPhone}
-            onChange={(e) => setEditedPhone(e.target.value)}
-            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-          />
-        </div>
-        <div className="mb-2 sm:mb-4">
-          <label
-            htmlFor="emailAddress"
-            className="block text-sm font-medium text-slate-800 dark:text-slate-50"
-          >
-            Email Address
-          </label>
-          <input
-            type="text"
-            id="emailAddress"
-            value={editedEmailAddress}
-            onChange={(e) => setEditedEmailAddress(e.target.value)}
-            className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-slate-950"
-          />
-        </div>
-        <div className="flex justify-end">
-          <button
-            onClick={handleSave}
-            className="mr-2 px-3 py-1 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 sm:px-4 dark:text-slate-100"
-          >
-            Save
-          </button>
-          <button
-            onClick={closeModal}
-            className="px-3 py-1 bg-red-700 text-white rounded-2xl hover:bg-red-800 sm:px-4"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 // SkeletonTable component to render skeleton loading effect
