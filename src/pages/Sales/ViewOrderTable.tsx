@@ -272,7 +272,7 @@ const ViewOrderComponent = ({
                                 <li className="p-3 font-bold w-1/6 text-center">
                                     Client ID
                                 </li>
-                                <li className="p-3 font-bold w-5/6 text-center">
+                                    <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
                                     Client Name
                                 </li>
                             </ul>
@@ -299,7 +299,7 @@ const ViewOrderComponent = ({
                                 <li className="p-3 font-bold w-1/6 text-center">
                                     Client ID
                                 </li>
-                                <li className="p-3 font-bold w-5/6 text-center">
+                                        <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
                                     Client Name
                                 </li>
                             </ul>

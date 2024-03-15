@@ -88,6 +88,16 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
         fetchCustomers();
     }, []);
 
+    useEffect(() => {
+        const searchRegex = new RegExp(`^${filterValue}`, "i"); // 'i' flag for case-insensitive
+
+        const filtered = customers.filter((client: any) =>
+            searchRegex.test(client.clientName)
+        );
+
+        setFilteredData(filtered);
+    }, [filterValue]);
+
     const handleCategorySelect = (product) => {
         setSelectedProduct(product);
         setShowModal(true);
@@ -109,26 +119,26 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
         });
     };
 
-  const handleFormSubmit = async (formData) => {
-    try {
-      const { clientName, cid } = selectedCustomer;
-      const dataToSubmit = {
-        ...formData,
-        customerName: clientName,
-        customerId: cid,
-      };
-      console.log("Submitted Data:", dataToSubmit);
-      setShowModal(false);
-      setFormData({
-        ...formData,
-        [selectedProduct]: "",
-      });
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
-  };
+    const handleFormSubmit = async (formData) => {
+        try {
+            const { clientName, cid } = selectedCustomer;
+            const dataToSubmit = {
+                ...formData,
+                customerName: clientName,
+                customerId: cid,
+            };
+            console.log("Submitted Data:", dataToSubmit);
+            setShowModal(false);
+            setFormData({
+                ...formData,
+                [selectedProduct]: "",
+            });
+        } catch (error) {
+            console.error("Error submitting form:", error);
+        }
+    };
 
-  const renderProductForm = () => {
+    const renderProductForm = () => {
         switch (selectedProduct) {
             case "Curtains":
                 sting: return (
@@ -203,7 +213,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
         }
     };
 
-    
+
     return (
         <div>
             {!selectedCustomer && (
@@ -216,7 +226,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                 <li className="p-3 font-bold w-1/6 text-center">
                                     Client ID
                                 </li>
-                                <li className="p-3 font-bold w-5/6 text-center">
+                                <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
                                     Client Name
                                 </li>
                             </ul>
@@ -242,7 +252,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                 <li className="p-3 font-bold w-1/6 text-center">
                                     Client ID
                                 </li>
-                                <li className=" w-5/6 text-center p-3 font-bold">
+                                <li className=" w-5/6 text-center p-3 font-bold flex justify-center items-center">
                                     Client Name
                                 </li>
                             </ul>
@@ -256,7 +266,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                     <li className="p-3 w-1/6 text-center">
                                         {customer.cid}
                                     </li>
-                                    <li className=" w-5/6 text-center p-3">
+                                    <li className=" w-5/6 text-center p-3 ">
                                         {customer.clientName}
                                     </li>
                                 </ul>
