@@ -23,11 +23,11 @@ const EditHeadboardForm = ({
   useEffect(() => {
     if (selectedProduct) {
       setFormData({
-        title: selectedProduct.title || "",
-        description: selectedProduct.description || "",
-        sizeOfHeadboard: selectedProduct.sizeOfHeadboard || "",
-        headboardFabricCode: selectedProduct.headboardFabricCode || "",
-        remarks: selectedProduct.remarks || "",
+        title: selectedProduct.data.title || "",
+        description: selectedProduct.data.description || "",
+        sizeOfHeadboard: selectedProduct.data.sizeOfHeadboard || "",
+        headboardFabricCode: selectedProduct.data.headboardFabricCode || "",
+        remarks: selectedProduct.data.remarks || "",
       });
     }
   }, [selectedProduct]);
