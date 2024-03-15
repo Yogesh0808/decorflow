@@ -526,7 +526,7 @@ function EditClientModal({
                         className="mt-1 py-2 px-3 sm:px-4 focus:ring-red-600 focus:border-red-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:text-white  dark:border-neutral-500 dark:bg-slate-700 dark:focus:ring-neutral-400"
                     />
                 </div>
-                <div className="mb-2 sm:mb-4">
+                <div className="">
                     <label
                         htmlFor="address"
                         className="block text-sm font-medium text-slate-800 dark:text-slate-50">
@@ -580,7 +580,7 @@ function EditClientModal({
                         </>
                     )}
                 </div>
-                <div className="flex items-center my-6">
+                <div className="flex items-center my-3">
                     <input
                         type="checkbox"
                         id="company-order"
