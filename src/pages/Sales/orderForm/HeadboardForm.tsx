@@ -100,7 +100,7 @@ const Headboard: React.FC<HeadboardProps> = ({
   };
 
   return (
-    <div className="relative bg-rose-50 rounded-lg shadow dark:bg-slate-700">
+    <div className="relative  bg-gradient-to-tr from-[#DEE4EA] to-[#F9FCFF] dark:from-[#003049] from-50% dark:to-[#669bbc] rounded-lg shadow dark:bg-slate-700 mt-20">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
         <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
           Headboard Order Form
@@ -268,7 +268,7 @@ const Headboard: React.FC<HeadboardProps> = ({
           </div>
           <button
             type="submit"
-            className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-white inline-flex w-full justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             disabled={loading}
           >
             {loading ? (
