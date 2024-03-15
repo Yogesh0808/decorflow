@@ -32,7 +32,11 @@ const AddCustomer = () => {
 
     const [showToast, setShowToast] = useState(false);
 
+    //for button disabling
+    const [isDisabled, setIsDisabled] = useState(false); // Initial state set to true
+
     const saveClient = () => {
+        setIsDisabled(true);
         axios
             .post("/api/customer", formData, getHeaders())
             .then((response) => {
@@ -42,7 +46,8 @@ const AddCustomer = () => {
             })
             .catch((error) => {
                 console.error("Error saving client:", error);
-            });
+            })
+            .finally(() => setIsDisabled(false));
     };
 
     const handleInputChange = (e: any) => {
@@ -293,7 +298,10 @@ const AddCustomer = () => {
                     </div>
                     <button
                         type="submit"
-                        className="bg-red-700 text-white py-2.5 px-6  rounded-md hover:bg-red-800">
+                        disabled={isDisabled}
+                        className={`bg-red-700 text-white py-2.5 px-6 rounded-md hover:bg-red-800 ${
+                            isDisabled ? "bg-red-900" : "bg-red-700"
+                        }`}>
                         Add Customer
                     </button>
                 </form>
