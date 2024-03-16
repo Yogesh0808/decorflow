@@ -33,6 +33,7 @@ const NewInvoice = () => {
     }
     return () => clearTimeout(timer);
   }, [showToast]);
+  
 
   const fetchCustomers = async () => {
     try {
@@ -64,16 +65,36 @@ const NewInvoice = () => {
   };
 
   const calculateAmountAndGst = ({ quantity, rate, gstPercentage }) => {
-    const calculatedAmount = parseFloat(quantity) * parseFloat(rate);
-    const calculatedGstAmount =
-      (calculatedAmount * parseFloat(gstPercentage)) / 100;
+    // Check if all required fields are filled
+    if (!quantity || !rate || !gstPercentage) {
+      console.error("Please fill in all required fields");
+      return;
+    }
+
+    const parsedQuantity = parseFloat(quantity);
+    const parsedRate = parseFloat(rate);
+    const parsedGstPercentage = parseFloat(gstPercentage);
+
+    if (
+      isNaN(parsedQuantity) ||
+      isNaN(parsedRate) ||
+      isNaN(parsedGstPercentage)
+    ) {
+      console.error("Invalid input values");
+      return;
+    }
+
+    const calculatedAmount = parsedQuantity * parsedRate;
+    const calculatedGstAmount = (calculatedAmount * parsedGstPercentage) / 100;
     const calculatedTotal = calculatedAmount + calculatedGstAmount;
 
     setFormData((prevFormData) => ({
       ...prevFormData,
-      amount: calculatedAmount || 0,
-      gstAmount: calculatedGstAmount || 0,
-      total: calculatedTotal || 0,
+      amount: isNaN(calculatedAmount) ? "0.00" : calculatedAmount.toFixed(2),
+      gstAmount: isNaN(calculatedGstAmount)
+        ? "0.00"
+        : calculatedGstAmount.toFixed(2),
+      total: isNaN(calculatedTotal) ? "0.00" : calculatedTotal.toFixed(2),
     }));
   };
 

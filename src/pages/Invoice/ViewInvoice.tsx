@@ -22,6 +22,16 @@ const ViewInvoice = () => {
     fetchInvoices();
   }, []);
 
+  useEffect(() => {
+    let timer;
+    if (showToast) {
+      timer = setTimeout(() => {
+        setShowToast(false);
+      }, 2500);
+    }
+    return () => clearTimeout(timer);
+  }, [showToast]);
+
   const fetchCustomers = async () => {
     try {
       const response = await axios.get("/api/customer/names", getHeaders());
@@ -72,8 +82,9 @@ const ViewInvoice = () => {
   const saveEditedInvoice = async (editedData) => {
     try {
       const response = await axios.put(
-        `/api/invoice/${editedData.id}`, // Adjust the API endpoint
-        editedData
+        `/api/invoice/${editedData.id}`,
+        editedData,
+        getHeaders()
       );
       console.log("Data saved successfully:", response.data);
       setShowEditModal(false);
@@ -130,85 +141,86 @@ const ViewInvoice = () => {
           </div>
         </div>
 
-        <table className="w-full rounded-lg text-sm text-left text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
-          <thead className="rounded-lg text-sm text-blue-900 uppercase bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
-            <tr>
-              <th scope="col" className="px-3 py-4">
-                S.No.
-              </th>
-              <th scope="col" className="px-3 py-4">
-                Area
-              </th>
-              <th scope="col" className="px-4 py-4">
-                Quantity
-              </th>
-              <th scope="col" className="px-4 py-4">
-                Rate
-              </th>
-              <th scope="col" className="px-4 py-4">
-                Amount
-              </th>
-              <th scope="col" className="px-4 py-4">
-                GST %
-              </th>
-              <th scope="col" className="px-4 py-4">
-                GST Amount
-              </th>
-              <th scope="col" className="px-4 py-4">
-                Total
-              </th>
-              <th scope="col" className="px-4 py-4">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoices.length > 0 ? (
-              invoices.map((invoice, index) => (
-                <tr
-                  key={invoice.id}
-                  className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
-                >
-                  <td className="py-2 px-3 text-gray-900">{index + 1}</td>
-                  <td className="py-2 px-3">{invoice.area}</td>
-                  <td className="py-2 px-4">{invoice.quantity}</td>
-                  <td className="py-2 px-4">{invoice.rate}</td>
-                  <td className="py-2 px-4">{invoice.amount}</td>
-                  <td className="py-2 px-4">{invoice.gstPercentage}</td>
-                  <td className="py-2 px-4">{invoice.gstAmount}</td>
-                  <td className="py-2 px-4">{invoice.total}</td>
-                  <td className="py-2 px-4">
-                    <button onClick={() => editInvoice(invoice)}>
-                      <img
-                        src={edit}
-                        className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
-                        alt="Edit Button"
-                      ></img>
-                    </button>
-                    <button onClick={() => deleteInvoice(invoice.id)}>
-                      <img
-                        src={trash}
-                        className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
-                        alt="Trash Icon"
-                      />
-                    </button>
+        <div className="overflow-y-auto overflow-x-auto rounded-xl">
+          <table className="w-full rounded-lg text-sm text-left text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
+            <thead className="rounded-lg text-sm text-blue-900 uppercase bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
+              <tr>
+                <th scope="col" className="px-3 py-4">
+                  S.No.
+                </th>
+                <th scope="col" className="px-3 py-4">
+                  Area
+                </th>
+                <th scope="col" className="px-4 py-4">
+                  Quantity
+                </th>
+                <th scope="col" className="px-4 py-4">
+                  Rate
+                </th>
+                <th scope="col" className="px-4 py-4">
+                  Amount
+                </th>
+                <th scope="col" className="px-4 py-4">
+                  GST %
+                </th>
+                <th scope="col" className="px-4 py-4">
+                  GST Amount
+                </th>
+                <th scope="col" className="px-4 py-4">
+                  Total
+                </th>
+                <th scope="col" className="px-4 py-4">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {invoices.length > 0 ? (
+                invoices.map((invoice, index) => (
+                  <tr
+                    key={invoice.id}
+                    className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
+                  >
+                    <td className="py-2 px-3 text-gray-900">{index + 1}</td>
+                    <td className="py-2 px-3">{invoice.area}</td>
+                    <td className="py-2 px-4">{invoice.quantity}</td>
+                    <td className="py-2 px-4">{invoice.rate}</td>
+                    <td className="py-2 px-4">{invoice.amount}</td>
+                    <td className="py-2 px-4">{invoice.gstPercentage}</td>
+                    <td className="py-2 px-4">{invoice.gstAmount}</td>
+                    <td className="py-2 px-4">{invoice.total}</td>
+                    <td className="py-2 px-4">
+                      <button onClick={() => editInvoice(invoice)}>
+                        <img
+                          src={edit}
+                          className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                          alt="Edit Button"
+                        ></img>
+                      </button>
+                      <button onClick={() => deleteInvoice(invoice.id)}>
+                        <img
+                          src={trash}
+                          className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                          alt="Trash Icon"
+                        />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="8"
+                    className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800"
+                  >
+                    No invoices available.
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="8"
-                  className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800"
-                >
-                  No invoices available.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
 
-        {/* Edit Invoice Modal */}
         {showEditModal && (
           <EditInvoiceModal
             invoice={editedInvoice}
