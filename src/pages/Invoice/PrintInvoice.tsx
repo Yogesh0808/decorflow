@@ -84,85 +84,157 @@ const PrintInvoice = () => {
     const printContent = document.querySelector(".print-content");
     const newWindow = window.open("", "_blank");
     const htmlContent = `
-      <html>
-        <head>
-          <title>Invoicing Preview</title>
-          <link rel="preconnect" href="https://fonts.googleapis.com">
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-          <style>
-          body, h1, p, table {
-            margin: 10px;
-            padding: 0;
-            border-radius: 5px;
-          }
+    <html>
+    <head>
+      <title>Invoicing Preview</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+      <style>
+        body, h1, p, table {
+          margin: 10px;
+          padding: 0;
+          border-radius: 5px;
+        }
+    
+        /* Global styles */
+        body {
+          font-family: "Inter", sans-serif;
+          font-optical-sizing: auto;
+          font-weight: 400;
+          line-height: 1;
+          color: #333;
+          background-color: #f8f8f8;
+        }
+    
+        /* Header styles */
+        .invoice-header {
+          background-color: #880D1E;
+          color: #fff;
+          padding: 25px;
+          border-radius: 6px 6px 0 0;
+        }
 
-          /* Global styles */
-          body {
-            font-family: "Inter", sans-serif;
-            font-optical-sizing: auto;
-            font-weight: 400;
-            line-height: 1;
-            color: #333;
-          }
+        image {
+          width: 200px;
+          height: 200px;
+        }
+    
+        .invoice-header h1 {
+          margin: 0;
+          text-transform: uppercase;
+          font-size: 24px;
+        }
+    
+        .invoice-header p {
+          margin: 5px 0;
+          font-family: "Nunito", sans-serif;
+          font-weight: 300;
+        }
+    
+        .customer-details {
+          margin-top: 20px;
+        }
+    
+        table {
+          width: 90%;
+          border-collapse: collapse;
+          margin-top: 30px;
+          margin: 20px auto;
+          border-radius: 5px;
+          background-color: #fff;
+        }
+    
+        th, td {
+          border: 1px solid #ccc;
+          padding: 12px;
+          text-align: left;
+        }
+    
+        th {
+          background-color: #b31942;
+          color: #fff;
+        }
+    
+        /* Terms and conditions styles */
+        .terms-conditions {
+          margin-top: 30px;
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 5px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        .terms-conditions h2 {
+          color: #b31942;
+          margin-top: 0;
+          font-size: 20px;
+        }
+    
+        .terms-conditions ol {
+          margin-left: 20px;
+        }
+    
+        .terms-conditions ol li {
+          margin-bottom: 10px;
+        }
+    
+        .terms-conditions p {
+          margin: 10px 0;
+        }
+.flex {
+  display: flex;
+}
 
-          /* Header styles */
-          .invoice-header {
-              background-color: #f2f2f2;
-              padding: 10px;
-              border-bottom: 1px solid #ccc;
-          }
+.justify-between {
+  justify-content: space-between;
+}
 
-          .invoice-header h1 {
-              margin: 0;
-              text-transform: uppercase;
-          }
+.justify-end {
+  justify-content: flex-end;
+}
 
-          .invoice-header p {
-              margin: 5px 0;
-              color: #666;
-              font-family: "Nunito",sans-serif;
-              font-weight: 300;
-          }
+.mb-4 {
+  margin-bottom: 1rem;
+}
 
-          /* Customer details styles */
-          .customer-details {
-              margin-top: 10px;
-          }
-
-          /* Table styles */
-          table {
-              width: 75%;
-              border-collapse: collapse;
-              margin-top: 20px;
-              border-radius:5px;
-              margin: 0 20px;
-          }
-
-          th, td {
-              border: 1px solid #ccc;
-              padding: 8px;
-              text-align: left;
-          }
-
-          th {
-              background-color: #f2f2f2;
-              font-weight: bold;
-              padding: 10px auto;
-          }
-
-          /* Image styles */
-          img {
-              max-width: 160px;
-              height: auto;
-          }
-          </style>
-          </head>
-          <body>
-            ${printContent.innerHTML}
-          </body>
-      </html>
+.w-25 {
+  width: 25%;
+}
+      </style>
+    </head>
+    <body>
+      <div class="invoice-header">
+        <h1>Invoicing Preview</h1>
+        <p>Thank you for choosing us!</p>
+      </div>
+      ${printContent.innerHTML}
+      <div class="terms-conditions">
+        <h2>Terms and Conditions:</h2>
+        <ol>
+          <li>50% advance payment to be made in favor of “YASH HOME DECORS”</li>
+          <li>Delivery period 45 to 60 days on receipt of the payment.</li>
+          <li>Our Responsibility Ceases as soon as the goods leave our hands.</li>
+          <li>Order once placed cannot be taken back or exchanged.</li>
+          <li>Service will be given if any damage occurred (not immediate).</li>
+          <li>Finished Product should be collected at CHOOLAI showroom.</li>
+          <li>In case of outstation work there will be extra charges levied.</li>
+          <li>At the time of installation ladders & scaffolding should be provided by the clients.</li>
+          <li>Material not mentioned in the quote will be extra.</li>
+          <li>Final installation will be done after complete payment.</li>
+          <li>TRANSPORATION AND INSTALLATION WILL BE EXTRA</li>
+        </ol>
+        <p><strong>GST TIN NO:</strong> 33CJWPM2113B1ZJ</p>
+        <p><strong>Our Bank Details:</strong></p>
+        <p>ACCOUNT NO: 357201010036581</p>
+        <p>A/C NAME: Yash Home Decors</p>
+        <p>UNION BANK OF INDIA (TRIPLICANE BRANCH)</p>
+        <p>IFSC Code: UBIN053572</p>
+      </div>
+    </body>
+    </html>
     `;
+
     newWindow.document.write(htmlContent);
     newWindow.document.close();
 
@@ -328,6 +400,7 @@ const PrintInvoice = () => {
                 <div>
                   <img
                     src="https://ik.imagekit.io/tealcdn2023/assets/YHD.png"
+                    width="100"
                     className="w-25"
                     alt="Logo"
                   />
@@ -396,79 +469,81 @@ const PrintInvoice = () => {
                 </div>
               </div>
               <div className="max-w-screen mx-auto p-6 space-y-6 text-neutral-700 dark:text-neutral-100">
-                <h1 className="text-3xl font-normal mb-4">Invoice View</h1>
+                <h1 className="text-3xl font-normal mb-4">Order Invoice</h1>
 
-                <table className="w-full border-collapse border border-neutral-300 dark:border-neutral-800 mt-8">
-                  <thead>
-                    <tr className="bg-neutral-100 dark:bg-slate-800">
-                      <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                        S.No.
-                      </th>
-                      <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                        Area
-                      </th>
-                      <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                        Quantity
-                      </th>
-                      <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                        Rate
-                      </th>
-                      <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                        Amount
-                      </th>
-                      <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                        GST Percentage
-                      </th>
-                      <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                        GST Amount
-                      </th>
-                      <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                        Total
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {invoices.length > 0 ? (
-                      invoices.map((invoice, index) => (
-                        <tr key={invoice.id}>
-                          <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                            {index + 1}
-                          </td>
-                          <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                            {invoice.area}
-                          </td>
-                          <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                            {invoice.quantity}
-                          </td>
-                          <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                            {invoice.rate}
-                          </td>
-                          <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                            {invoice.amount}
-                          </td>
-                          <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                            {invoice.gstPercentage}
-                          </td>
-                          <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                            {invoice.gstAmount}
-                          </td>
-                          <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                            {invoice.total}
+                <div className="overflow-y-auto overflow-x-auto rounded-xl">
+                  <table className="w-full rounded-lg text-sm text-left text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
+                    <thead className="rounded-lg text-sm text-blue-900 uppercase bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
+                      <tr className="bg-neutral-100 dark:bg-slate-800">
+                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                          S.No.
+                        </th>
+                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                          Area
+                        </th>
+                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                          Quantity
+                        </th>
+                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                          Rate
+                        </th>
+                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                          Amount
+                        </th>
+                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                          GST %
+                        </th>
+                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                          GST Amount
+                        </th>
+                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                          Total
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {invoices.length > 0 ? (
+                        invoices.map((invoice, index) => (
+                          <tr key={invoice.id}>
+                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                              {index + 1}
+                            </td>
+                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                              {invoice.area}
+                            </td>
+                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                              {invoice.quantity}
+                            </td>
+                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                              {invoice.rate}
+                            </td>
+                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                              {invoice.amount}
+                            </td>
+                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                              {invoice.gstPercentage}
+                            </td>
+                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                              {invoice.gstAmount}
+                            </td>
+                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
+                              {invoice.total}
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="8"
+                            className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800"
+                          >
+                            No invoices available.
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="8"
-                          className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800"
-                        >
-                          No invoices available.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
 
                 {/* Subtotal */}
                 <div className="flex justify-end">
