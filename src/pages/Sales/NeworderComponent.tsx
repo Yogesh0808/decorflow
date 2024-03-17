@@ -214,7 +214,6 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
         }
     };
 
-
     return (
         <div>
             {!selectedCustomer && (
@@ -232,8 +231,11 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                 </li>
                             </ul>
                             {filteredData.map((customer: any, index) => (
-                                <ClientList index={index} customer={customer} setSelectedCustomer={setSelectedCustomer} />
-
+                                <ClientList
+                                    index={index}
+                                    customer={customer}
+                                    setSelectedCustomer={setSelectedCustomer}
+                                />
                             ))}
                         </>
                     ) : (
@@ -247,7 +249,11 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                 </li>
                             </ul>
                             {customers.map((customer: any, index) => (
-                                <ClientList index={index} customer={customer} setSelectedCustomer={setSelectedCustomer} />
+                                <ClientList
+                                    index={index}
+                                    customer={customer}
+                                    setSelectedCustomer={setSelectedCustomer}
+                                />
                             ))}
                         </>
                     )}
@@ -272,7 +278,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                         {selectedCustomer && selectedCustomer.cid}
                     </p>
                     <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100 dark:bg-gray-800">
-                        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                        <div className="grid grid-cols-2 gap-3 md:gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                             {[
                                 "Curtains",
                                 "Sofas",
@@ -295,7 +301,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                         className="w-full lg:h-32 sm:h-28 p-4"
                                     />
                                     <div className="p-4">
-                                        <p className="text-center text-blue-800 bg-blue-50 dark:text-white dark:bg-blue-800 rounded-xl p-1.5 text-xl font-normal">
+                                        <p className="text-center text-blue-800 bg-blue-50 dark:text-white dark:bg-blue-800 rounded-xl p-1.5 py-1 text-xl font-normal">
                                             {product}
                                         </p>
                                     </div>

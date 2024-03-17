@@ -26,6 +26,12 @@ const MattressForm: React.FC<MattressFormProps> = ({
         bedProtectorColor: "",
         image: null,
         deliveryTime: "",
+        width: "",
+        height: "",
+        unit1: "",
+        unit2: "",
+        timeOfDeliveryValue: "",
+        timeOfDeliveryUnit: "days",
     });
     const [loading, setLoading] = useState(false);
 
@@ -216,22 +222,84 @@ const MattressForm: React.FC<MattressFormProps> = ({
                                 <option value="Hybrid">Hybrid</option>
                             </select>
                         </div>
-                        <div className="col-span-2">
+                        <div className="col-span-2 space-y-2">
                             <label
                                 htmlFor="size"
                                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white">
                                 Size
                             </label>
-                            <input
-                                type="text"
-                                id="size"
-                                name="size"
-                                value={formData.size}
-                                onChange={handleInputChange}
-                                required
-                                className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter size"
-                            />
+                            <div className="inputGrp w-full flex">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="height"
+                                    name="height"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.height}
+                                    placeholder="Height"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit1"
+                                    name="unit1"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit2: e.target.value,
+                                            unit1: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit1}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">In</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                    <option value="sqm">Sq m</option>
+                                    <option value="syd">Sq yd</option>
+                                </select>
+                            </div>
+                            <div className="inputGrp w-full flex items-center">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="width"
+                                    name="width"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.width}
+                                    placeholder="width"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit2"
+                                    name="unit2"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit1: e.target.value,
+                                            unit2: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit2}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">In</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                    <option value="sqm">Sq m</option>
+                                    <option value="syd">Sq yd</option>
+                                </select>
+                            </div>
                         </div>
                         <div className="col-span-2">
                             <label
@@ -353,20 +421,30 @@ const MattressForm: React.FC<MattressFormProps> = ({
                         </div>
                         <div className="col-span-2">
                             <label
-                                htmlFor="deliveryTime"
+                                htmlFor="timeOfDelivery"
                                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white">
                                 Time of Delivery
                             </label>
-                            <input
-                                type="text"
-                                id="deliveryTime"
-                                name="deliveryTime"
-                                value={formData.deliveryTime}
-                                onChange={handleInputChange}
-                                required
-                                className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter time of delivery"
-                            />
+                            <div className="flex items-center">
+                                <input
+                                    type="text"
+                                    id="timeOfDelivery"
+                                    name="timeOfDeliveryValue"
+                                    value={formData.timeOfDeliveryValue}
+                                    onChange={handleInputChange}
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Enter time of delivery"
+                                />
+                                <select
+                                    value={formData.timeOfDeliveryUnit}
+                                    name="timeOfDeliveryUnit"
+                                    onChange={handleInputChange}
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option value="days">days</option>
+                                    <option value="weeks">weeks</option>
+                                    <option value="months">months</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <button

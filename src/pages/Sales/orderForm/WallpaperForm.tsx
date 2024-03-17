@@ -21,6 +21,10 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
         catalogNumber: "",
         image: null,
         remarks: "",
+        width: "",
+        height: "",
+        unit1: "",
+        unit2: "",
     });
     const [loading, setLoading] = useState(false);
 
@@ -186,7 +190,7 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
                                 placeholder="Enter title"
                             />
                         </div>
-                        <div className="col-span-2 md:col-span-1">
+                        <div className="col-span-2 ">
                             <label
                                 htmlFor="description"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -202,21 +206,84 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
                                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Write product description here"></textarea>
                         </div>
-                        <div className="col-span-2 md:col-span-1">
+                        <div className="col-span-2 space-y-2">
                             <label
                                 htmlFor="sizeOfWall"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Size of Wall
                             </label>
-                            <input
-                                type="text"
-                                value={formData.sizeOfWall}
-                                id="sizeOfWall"
-                                name="sizeOfWall"
-                                onChange={handleInputChange}
-                                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter size of wall"
-                            />
+                            <div className="inputGrp w-full flex">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="height"
+                                    name="height"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.height}
+                                    placeholder="Height"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit1"
+                                    name="unit1"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit2: e.target.value,
+                                            unit1: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit1}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">In</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                    <option value="sqm">Sq m</option>
+                                    <option value="syd">Sq yd</option>
+                                </select>
+                            </div>
+                            <div className="inputGrp w-full flex items-center">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="width"
+                                    name="width"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.width}
+                                    placeholder="width"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit2"
+                                    name="unit2"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit1: e.target.value,
+                                            unit2: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit2}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">In</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                    <option value="sqm">Sq m</option>
+                                    <option value="syd">Sq yd</option>
+                                </select>
+                            </div>
                         </div>
                         <div className="col-span-2 md:col-span-1">
                             <label

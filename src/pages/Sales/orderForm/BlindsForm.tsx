@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { convertUnit } from "../../../service/UnitConverstions";
 
 interface BlindsFormProps {
     onCloseModal: () => void;
@@ -16,8 +17,12 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
         title: "",
         description: "",
         size: "",
+        height: "",
+        width: "",
+        unit1: "",
+        unit2: "",
         quantity: "",
-        typeOfBlinds: "Roman Blinds",
+        typeOfBlinds: "",
         catalogueName: "",
         fabricCode: "",
         image: null,
@@ -151,7 +156,7 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
                                 placeholder="Enter title"
                             />
                         </div>
-                        <div className="col-span-2 md:col-span-1">
+                        <div className="col-span-2 ">
                             <label
                                 htmlFor="description"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -167,21 +172,84 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
                                 placeholder="Write product description here"
                             />
                         </div>
-                        <div className="col-span-2 md:col-span-1">
+                        <div className="col-span-2 space-y-2">
                             <label
                                 htmlFor="size"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Size
                             </label>
-                            <input
-                                type="text"
-                                id="size"
-                                name="size"
-                                value={formData.size}
-                                onChange={handleInputChange}
-                                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter size"
-                            />
+                            <div className="inputGrp w-full flex">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="height"
+                                    name="height"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.height}
+                                    placeholder="Height"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit1"
+                                    name="unit1"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit2: e.target.value,
+                                            unit1: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit1}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">In</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                    <option value="sqm">Sq m</option>
+                                    <option value="syd">Sq yd</option>
+                                </select>
+                            </div>
+                            <div className="inputGrp w-full flex items-center">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="width"
+                                    name="width"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.width}
+                                    placeholder="width"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit2"
+                                    name="unit2"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit1: e.target.value,
+                                            unit2: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit2}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">In</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                    <option value="sqm">Sq m</option>
+                                    <option value="syd">Sq yd</option>
+                                </select>
+                            </div>
                         </div>
                         <div className="col-span-2 md:col-span-1">
                             <label
@@ -195,8 +263,56 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
                                 name="quantity"
                                 value={formData.quantity}
                                 onChange={handleInputChange}
+                                onClick={() => {
+                                    if (formData.width !== "") {
+                                        let unit = "";
+                                        switch (formData.unit1) {
+                                            case "mm":
+                                                unit = "mm";
+                                                break;
+                                            case "in":
+                                                unit = "inches";
+                                                break;
+                                            case "cm":
+                                                unit = "cm";
+                                                break;
+                                            case "yd":
+                                                unit = "yard";
+                                                break;
+                                            case "ft":
+                                                unit = "feet";
+                                                break;
+                                            case "m":
+                                                unit = "meter";
+                                                break;
+                                            case "sqm":
+                                                unit = "squareMeter";
+                                                break;
+                                            case "syd":
+                                                unit = "squareYard";
+                                                break;
+                                            default:
+                                                unit = "";
+                                        }
+                                        let W = convertUnit(
+                                            formData.width,
+                                            unit,
+                                            "feet"
+                                        );
+                                        let H = convertUnit(
+                                            formData.height,
+                                            unit,
+                                            "feet"
+                                        );
+                                        let quan: number = Math.ceil(W * H);
+                                        setFormData({
+                                            ...formData,
+                                            quantity: quan,
+                                        });
+                                    }
+                                }}
                                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter number of pieces"
+                                placeholder="Enter Quantity"
                             />
                         </div>
                         <div className="col-span-2 md:col-span-1">

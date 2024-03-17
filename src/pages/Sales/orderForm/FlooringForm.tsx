@@ -20,8 +20,13 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
         sizeOfFloor: "",
         numberOfSqft: "",
         unit: "Mtr",
+        width:"",
+        height:"",
+        unit1: "",
+        unit2: "",
         totOfSq: "",
-        catalogCodeAndNumber: "",
+        fabricName: "",
+        fabricCode: "",
         image: null,
         remarks: "",
         id: "",
@@ -43,28 +48,28 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
         console.log(formData);
     };
 
-  const handleFileInputChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = e.target.files && e.target.files[0];
-    if (file) {
-      try {
-        const compressedImage = await compressImage(file);
+    const handleFileInputChange = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) {
+            try {
+                const compressedImage = await compressImage(file);
 
-        // Renaming the file
-        const renamedFile = new File([compressedImage], "image.jpg", {
-          type: "image/jpeg",
-        });
-        console.log("Sending image with filename:", renamedFile.name);
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          image: renamedFile,
-        }));
-      } catch (error) {
-        console.error("Error compressing image:", error);
-      }
-    }
-  };
+                // Renaming the file
+                const renamedFile = new File([compressedImage], "image.jpg", {
+                    type: "image/jpeg",
+                });
+                console.log("Sending image with filename:", renamedFile.name);
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    image: renamedFile,
+                }));
+            } catch (error) {
+                console.error("Error compressing image:", error);
+            }
+        }
+    };
 
     const compressImage = (file: File) => {
         return new Promise<File>((resolve, reject) => {
@@ -228,22 +233,84 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
                                 </option>
                             </select>
                         </div>
-                        <div className="col-span-2">
+                        <div className="col-span-2 space-y-2">
                             <label
                                 htmlFor="sizeOfFloor"
                                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white">
                                 Size of the Floor
                             </label>
-                            <input
-                                type="text"
-                                name="sizeOfFloor"
-                                id="sizeOfFloor"
-                                value={formData.sizeOfFloor}
-                                onChange={handleInputChange}
-                                required
-                                className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter size of the floor"
-                            />
+                            <div className="inputGrp w-full flex">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="height"
+                                    name="height"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.height}
+                                    placeholder="Height"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit1"
+                                    name="unit1"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit2: e.target.value,
+                                            unit1: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit1}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">In</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                    <option value="sqm">Sq m</option>
+                                    <option value="syd">Sq yd</option>
+                                </select>
+                            </div>
+                            <div className="inputGrp w-full flex items-center">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="width"
+                                    name="width"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.width}
+                                    placeholder="width"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit2"
+                                    name="unit2"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit1: e.target.value,
+                                            unit2: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit2}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">In</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                    <option value="sqm">Sq m</option>
+                                    <option value="syd">Sq yd</option>
+                                </select>
+                            </div>
                         </div>
                         {/* /*change code* */}
                         <div className="col-span-2">
@@ -260,48 +327,51 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
                                     value={formData.numberOfSqft}
                                     onChange={handleInputChange}
                                     required
-                                    className=" w-5/6 bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5  dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="Enter number"
                                 />
                                 <select
                                     name="unit"
                                     id="unit"
                                     value={formData.unit}
-                                    onChange={handleInputChange}
-                                    className="h-max py-2 w-1/6 text-center bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 dark:bg-slate-600  dark:border-slate-500 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0">
                                     <option value="SqFt">SqFt</option>
                                     <option value="Mts">Mts</option>
                                 </select>
                             </div>
                         </div>
 
-                        {/* <div className="col-span-2">
-                            <label
-                                htmlFor="numberOfSqft"
-                                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white">
-                                final meters
-                            </label>
-                            <input
-                                type="text"
-                                name="numberOfSqft"
-                                id="numberOfSqft"
-                                value={formData.totOfSq}
-                                required
-                                className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter number of sqft/meter"
-                            />
-                        </div> */}
                         <div className="col-span-2">
                             <label
                                 htmlFor="catalogCodeAndNumber"
                                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white">
-                                Catalog Code and Number
+                                Fabric Name
                             </label>
                             <input
                                 type="text"
                                 id="catalogCodeAndNumber"
                                 name="catalogCodeAndNumber"
-                                value={formData.catalogCodeAndNumber}
+                                value={formData.fabricName}
+                                onChange={handleInputChange}
+                                required
+                                className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Enter catalog code and number"
+                            />
+                        </div>
+                        <div className="col-span-2">
+                            <label
+                                htmlFor="catalogCodeAndNumber"
+                                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white">
+                                Fabric code
+                            </label>
+                            <input
+                                type="text"
+                                id="catalogCodeAndNumber"
+                                name="catalogCodeAndNumber"
+                                value={formData.fabricCode}
                                 onChange={handleInputChange}
                                 required
                                 className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"

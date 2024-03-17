@@ -347,7 +347,6 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 value={formData.noOfPanels}
                                 onClick={() => {
                                     if (formData.width !== "") {
-                                        console.log(formData.unit1);
                                         let unit = "";
                                         switch (formData.unit1) {
                                             case "mm":
@@ -515,7 +514,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 onChange={(e: any) => handleInputChange(e)}
                                 value={formData.tieOption}>
-                                <option value="">Select Tie Option</option>
+                                <option value="No Tie">No Tie</option>
                                 <option value="Attached">
                                     Attached in curtain
                                 </option>
