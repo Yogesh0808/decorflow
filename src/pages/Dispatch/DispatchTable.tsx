@@ -210,7 +210,7 @@ const DispatchView = () => {
       {showToast && (
         <div
           id="toast-success"
-          className="absolute top-0 right-0 flex items-center w-xl max-w-xs p-2 px-4 mr-4 mb-4 text-gray-500 bg-emerald-100 rounded-lg shadow"
+          className="absolute top-0 right-0 flex items-center w-xl max-w-xs p-2 px-4 mr-4 mb-4 text-slate-500 bg-emerald-100 rounded-lg shadow"
           role="alert"
         >
           <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-900 bg-emerald-300 rounded-lg">

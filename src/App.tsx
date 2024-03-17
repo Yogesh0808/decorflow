@@ -10,16 +10,8 @@ import axios from "axios";
 
 import Loader from "./common/Loader/index";
 import PageTitle from "./components/PageTitle";
-import Calendar from "./pages/Calendar";
-import Chart from "./pages/Chart";
 import ECommerce from "./pages/Dashboard/ECommerce";
-import FormElements from "./pages/Form/FormElements";
-import FormLayout from "./pages/Form/FormLayout";
-import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
-import Tables from "./pages/Tables";
-import Alerts from "./pages/UiElements/Alerts";
-import Buttons from "./pages/UiElements/Buttons";
 import Neworder from "./pages/Sales/Neworder";
 import Vieworder from "./pages/Sales/Vieworder";
 import Printorder from "./pages/Sales/printorder";
@@ -79,15 +71,6 @@ function App() {
           }
         />
         <Route
-          path="/calendar"
-          element={
-            <>
-              <PageTitle title="Calendar | YHD" />
-              <Calendar />
-            </>
-          }
-        />
-        <Route
           path="/order/new"
           element={
             <>
@@ -134,33 +117,6 @@ function App() {
           }
         />
         <Route
-          path="/profile"
-          element={
-            <>
-              <PageTitle title="Profile | YHD" />
-              <Profile />
-            </>
-          }
-        />
-        <Route
-          path="/forms/form-elements"
-          element={
-            <>
-              <PageTitle title="Form Elements | YHD" />
-              <FormElements />
-            </>
-          }
-        />
-        <Route
-          path="/forms/form-layout"
-          element={
-            <>
-              <PageTitle title="Form Layout | YHD" />
-              <FormLayout />
-            </>
-          }
-        />
-        <Route
           path="/invoice/new"
           element={
             <>
@@ -188,47 +144,11 @@ function App() {
           }
         />
         <Route
-          path="/tables"
-          element={
-            <>
-              <PageTitle title="Tables | YHD" />
-              <Tables />
-            </>
-          }
-        />
-        <Route
           path="/settings"
           element={
             <>
               <PageTitle title="Settings | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <Settings />
-            </>
-          }
-        />
-        <Route
-          path="/chart"
-          element={
-            <>
-              <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Chart />
-            </>
-          }
-        />
-        <Route
-          path="/ui/alerts"
-          element={
-            <>
-              <PageTitle title="Alerts | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Alerts />
-            </>
-          }
-        />
-        <Route
-          path="/ui/buttons"
-          element={
-            <>
-              <PageTitle title="Buttons | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Buttons />
             </>
           }
         />

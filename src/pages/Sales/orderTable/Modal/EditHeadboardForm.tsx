@@ -128,7 +128,7 @@ const EditHeadboardForm = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="title"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                   >
                     Title
                   </label>
@@ -145,7 +145,7 @@ const EditHeadboardForm = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="description"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                   >
                     Description
                   </label>
@@ -162,7 +162,7 @@ const EditHeadboardForm = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="sizeOfHeadboard"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                   >
                     Size of Headboard
                   </label>
@@ -179,7 +179,7 @@ const EditHeadboardForm = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="headboardFabricCode"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                   >
                     Headboard Fabric Code
                   </label>
@@ -196,7 +196,7 @@ const EditHeadboardForm = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="image"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                   >
                     Headboard Fabric Image
                   </label>
@@ -212,7 +212,7 @@ const EditHeadboardForm = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="fimg"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                   >
                     Headboard References Image
                   </label>
@@ -228,7 +228,7 @@ const EditHeadboardForm = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="limg"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                   >
                     Headboard Sight Image
                   </label>
@@ -244,7 +244,7 @@ const EditHeadboardForm = ({
                 <div className="col-span-2">
                   <label
                     htmlFor="remarks"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                   >
                     Remarks
                   </label>

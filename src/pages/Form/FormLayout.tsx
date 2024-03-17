@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import SelectGroupOne from '../../components/Forms/SelectGroup/SelectGroupOne';
-import DefaultLayout from '../../layout/DefaultLayout';
+import { Link } from "react-router-dom";
+import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+import SelectGroupOne from "../../components/Forms/SelectGroup/SelectGroupOne";
+import DefaultLayout from "../../layout/DefaultLayout";
 
 const FormLayout = () => {
   return (
@@ -78,7 +78,7 @@ const FormLayout = () => {
                   ></textarea>
                 </div>
 
-                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-slate hover:bg-opacity-90">
                   Send Message
                 </button>
               </div>
@@ -154,7 +154,7 @@ const FormLayout = () => {
                   </Link>
                 </div>
 
-                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-slate hover:bg-opacity-90">
                   Sign In
                 </button>
               </div>
@@ -214,7 +214,7 @@ const FormLayout = () => {
                   />
                 </div>
 
-                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-slate hover:bg-opacity-90">
                   Sign Up
                 </button>
               </div>

@@ -86,7 +86,7 @@ const PrintInvoice = () => {
     const htmlContent = `
     <html>
     <head>
-      <title>Invoicing Preview</title>
+      <title>Invoicing</title>
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
@@ -104,10 +104,9 @@ const PrintInvoice = () => {
           font-weight: 400;
           line-height: 1;
           color: #333;
-          background-color: #f8f8f8;
+          background-image: linear-gradient(120deg, #ffcccc 0%, #ff99cc 100%);
         }
-    
-        /* Header styles */
+
         .invoice-header {
           background-color: #880D1E;
           color: #fff;
@@ -141,8 +140,8 @@ const PrintInvoice = () => {
           border-collapse: collapse;
           margin-top: 30px;
           margin: 20px auto;
-          border-radius: 5px;
-          background-color: #fff;
+          border-radius: 10px;
+          background-color: #f8f8f8;
         }
     
         th, td {
@@ -152,7 +151,7 @@ const PrintInvoice = () => {
         }
     
         th {
-          background-color: #b31942;
+          background-color: #880D1E;
           color: #fff;
         }
     
@@ -166,7 +165,7 @@ const PrintInvoice = () => {
         }
     
         .terms-conditions h2 {
-          color: #b31942;
+          color: #DD2342;
           margin-top: 0;
           font-size: 20px;
         }
@@ -274,6 +273,7 @@ const PrintInvoice = () => {
               font-weight: 400;
               line-height: 1;
               color: #333;
+
             }
   
   
@@ -404,22 +404,22 @@ const PrintInvoice = () => {
                     className="w-25"
                     alt="Logo"
                   />
-                  <h1 className="text-3xl font-semibold uppercase text-slate-800 dark:text-white">
+                  <h1 className="text-3xl font-semibold uppercase text-slate-800  dark:text-white">
                     Yash Home Decors
                   </h1>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
                     #174, Pycrofts Road, Royapettah, Chennai - 600014
                   </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <p className="text-sm text-slate-700 dark:text-slate-300">
                     Ph: +91-95000-05914
                   </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <p className="text-sm text-slate-700 dark:text-slate-300">
                     GSTIN/UIN: 33CJWPM2113B1ZJ
                   </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <p className="text-sm text-slate-700 dark:text-slate-300">
                     Tamil Nadu, Code: 33
                   </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <p className="text-sm text-slate-700 dark:text-slate-300">
                     Email: yashdecoratives@gmail.com
                   </p>
                 </div>
@@ -428,13 +428,13 @@ const PrintInvoice = () => {
                   <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
                     Order Details
                   </h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
                     Date: 19/02/2024
                   </p>
                 </div>
               </div>
               <div className="mt-4">
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
                   Customer Details
                 </h2>
                 <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
@@ -472,7 +472,7 @@ const PrintInvoice = () => {
                 <h1 className="text-3xl font-normal mb-4">Order Invoice</h1>
 
                 <div className="overflow-y-auto overflow-x-auto rounded-xl">
-                  <table className="w-full rounded-lg text-sm text-left text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
+                  <table className="w-full rounded-lg text-sm text-left text-slate-500 dark:text-slate-400 bg-gray-900 dark:bg-gray-800">
                     <thead className="rounded-lg text-sm text-blue-900 uppercase bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
                       <tr className="bg-neutral-100 dark:bg-slate-800">
                         <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
@@ -565,7 +565,7 @@ const PrintInvoice = () => {
                 {showToast && (
                   <div
                     id="toast-success"
-                    className="absolute top-0 right-0 flex items-center w-xl max-w-xs p-2 px-4 mr-4 mb-4 text-gray-500 bg-emerald-100 rounded-lg shadow"
+                    className="absolute top-0 right-0 flex items-center w-xl max-w-xs p-2 px-4 mr-4 mb-4 text-slate-500 bg-emerald-100 rounded-lg shadow"
                     role="alert"
                   >
                     <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-900 bg-emerald-300 rounded-lg">
@@ -606,7 +606,7 @@ const PrintInvoice = () => {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center text-gray-900 text-xl mt-4">
+          <div className="flex flex-col items-center justify-center text-slate-900 text-xl mt-4">
             <img
               src="https://ik.imagekit.io/tealcdn2023/assets/No%20data-cuate.svg"
               className="w-100"

@@ -142,7 +142,7 @@ const ViewInvoice = () => {
         </div>
 
         <div className="overflow-y-auto overflow-x-auto rounded-xl">
-          <table className="w-full rounded-lg text-sm text-left text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
+          <table className="w-full rounded-lg text-sm text-left text-slate-500 dark:text-slate-400 bg-gray-900 dark:bg-gray-800">
             <thead className="rounded-lg text-sm text-blue-900 uppercase bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
               <tr>
                 <th scope="col" className="px-3 py-4">
@@ -181,7 +181,7 @@ const ViewInvoice = () => {
                     key={invoice.id}
                     className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
                   >
-                    <td className="py-2 px-3 text-gray-900">{index + 1}</td>
+                    <td className="py-2 px-3 text-slate-900">{index + 1}</td>
                     <td className="py-2 px-3">{invoice.area}</td>
                     <td className="py-2 px-4">{invoice.quantity}</td>
                     <td className="py-2 px-4">{invoice.rate}</td>
@@ -232,7 +232,7 @@ const ViewInvoice = () => {
         {showToast && (
           <div
             id="toast-success"
-            className="absolute top-0 right-0 flex items-center w-xl max-w-xs p-2 px-4 mr-4 mb-4 text-gray-500 bg-emerald-100 rounded-lg shadow"
+            className="absolute top-0 right-0 flex items-center w-xl max-w-xs p-2 px-4 mr-4 mb-4 text-slate-500 bg-emerald-100 rounded-lg shadow"
             role="alert"
           >
             <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-900 bg-emerald-300 rounded-lg">

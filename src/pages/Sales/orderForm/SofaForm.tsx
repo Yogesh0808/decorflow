@@ -4,13 +4,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface SofaFormProps {
-    onCloseModal: () => void;
-    selectedCustomer: { id: string; clientName: string }; // Corrected property name from cid to id
+  onCloseModal: () => void;
+  selectedCustomer: { id: string; clientName: string };
 }
 
 const SofaForm: React.FC<SofaFormProps> = ({
-    onCloseModal,
-    selectedCustomer,
+  onCloseModal,
+  selectedCustomer,
 }) => {
   const [formData, setFormData] = useState<any>({
     title: "",
@@ -29,49 +29,74 @@ const SofaForm: React.FC<SofaFormProps> = ({
     remarks: "",
     pillowSize: "",
     pillowFabric: "",
-    pillowFabricImage: null,
+    timeOfDeliveryValue: "",
+    timeOfDeliveryUnit: "days",
   });
 
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [includePillows, setIncludePillows] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<any>({
+    image: null,
+    fimg: null,
+    limg: null,
+  });
+  const [fileNames, setFileNames] = useState<any>({
+    image: "",
+    fimg: "",
+    limg: "",
+  });
 
-    const getHeaders = () => {
-        const username = "abinesh";
-        const password = "abi";
-        const basicAuth = "Basic " + btoa(username + ":" + password);
-        return {
-            headers: {
-                Authorization: basicAuth,
-            },
-        };
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
     };
+  };
 
-    const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const { name, value } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: value,
-        }));
-    };
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleTimeOfDeliveryChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIncludePillows(e.target.checked); // Update state based on checkbox value
+  };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
+    const name = e.target.name;
+
     if (file) {
-      const name = e.target.name;
-      const fileType = file.type;
-      let newName = "";
-      if (fileType === "image/jpeg") {
-        newName = `${name}.jpeg`;
-      } else if (fileType === "image/jpg") {
-        newName = `${name}.jpg`;
-      } else {
-        newName = file.name;
-      }
-      const renamedFile = new File([file], newName, { type: file.type });
+      setSelectedImage((prevState) => ({
+        ...prevState,
+        [name]: URL.createObjectURL(file),
+      }));
+      setFileNames((prevFileNames) => ({
+        ...prevFileNames,
+        [name]: file.name,
+      }));
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: renamedFile,
+        [name]: file,
       }));
     }
   };
@@ -82,7 +107,6 @@ const SofaForm: React.FC<SofaFormProps> = ({
       const dataToSubmit = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
         if (key === "image" && value instanceof File) {
-          // Create a new file object with the name "image.jpg"
           const renamedFile = new File([value], "image.jpg", {
             type: value.type,
           });
@@ -94,49 +118,49 @@ const SofaForm: React.FC<SofaFormProps> = ({
       dataToSubmit.append("customerName", selectedCustomer.clientName);
       dataToSubmit.append("customerId", selectedCustomer.id);
 
-            const response = await axios.post(
-                `/api/products/${selectedCustomer.id}/Sofa`,
-                dataToSubmit,
-                getHeaders()
-            );
+      const response = await axios.post(
+        `/api/products/${selectedCustomer.id}/Sofa`,
+        dataToSubmit,
+        getHeaders()
+      );
 
-            console.log("Form submitted successfully:", response.data);
-            onCloseModal();
-            toast.success("Sofa Order has been submitted successfully!", {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } catch (error) {
-            console.error("Error submitting form:", error);
-            toast.error("Sofa Order has been cancelled", {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
+      console.log("Form submitted successfully:", response.data);
+      onCloseModal();
+      toast.success("Sofa Order has been submitted successfully!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Sofa Order has been cancelled", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("Sofa Data:", formData);
-        await submitFormData(formData);
-    };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Sofa Data:", formData);
+    await submitFormData(formData);
+  };
 
   return (
-    <div className="relative bg-rose-50 rounded-lg shadow dark:bg-slate-700">
+    <div className="relative bg-sky-100 rounded-lg shadow dark:bg-slate-700">
       <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
         <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
           Sofa Order Form
@@ -172,7 +196,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="title"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Title
               </label>
@@ -182,7 +206,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 name="title"
                 value={formData.title}
                 onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter title"
               />
             </div>
@@ -190,30 +214,30 @@ const SofaForm: React.FC<SofaFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="description"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Description
               </label>
               <textarea
                 id="description"
                 name="description"
-                rows={4}
+                rows={3}
                 value={formData.description}
                 onChange={handleInputChange}
-                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-400 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Write product description here"
               ></textarea>
             </div>
-            <p>
-              Dimensions <hr></hr>
-            </p>
-
-            <div className="col-span-2">
+            <div className="col-span-2 text-black dark:text-white">
+              <p>Dimensions</p>
+              <hr></hr>
+            </div>
+            <div className="col-span-1">
               <label
                 htmlFor="size"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
-                Size of Sofa
+                Size
               </label>
               <input
                 type="text"
@@ -221,17 +245,17 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 name="size"
                 value={formData.size}
                 onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter size"
+                className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter size (inches)"
               />
             </div>
             {/* Depth */}
-            <div className="col-span-2">
+            <div className="col-span-1">
               <label
                 htmlFor="depth"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
-                Depth of Sofa
+                Depth
               </label>
               <input
                 type="text"
@@ -239,17 +263,17 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 name="depth"
                 value={formData.depth}
                 onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter depth"
               />
             </div>
             {/* Floor to Seat */}
-            <div className="col-span-2">
+            <div className="col-span-1">
               <label
                 htmlFor="floorToSeat"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
-                Floor to Seat Sofa
+                Floor to Seat
               </label>
               <input
                 type="text"
@@ -257,17 +281,16 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 name="floorToSeat"
                 value={formData.floorToSeat}
                 onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter floor to seat height"
               />
             </div>
-            {/* Seat to Back Height */}
-            <div className="col-span-2">
+            <div className="col-span-1">
               <label
                 htmlFor="seatToBackHeight"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
-                Seat to Back Height
+                Seat to Back
               </label>
               <input
                 type="text"
@@ -275,24 +298,23 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 name="seatToBackHeight"
                 value={formData.seatToBackHeight}
                 onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter seat to back height"
               />
             </div>
-            {/* Shape and Model */}
             <div className="col-span-2">
               <label
                 htmlFor="shapeModel"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
-                Shape and Model of Sofa
+                Shape and Model
               </label>
               <select
                 id="shapeModel"
                 name="shapeModel"
                 value={formData.shapeModel}
                 onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               >
                 <option value="Squared">Squared</option>
                 <option value="Normal">Normal</option>
@@ -300,13 +322,16 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 <option value="Poufs">Poufs</option>
                 <option value="Ottoman">Ottoman</option>
                 <option value="Cot and Bed Side">Cot and Bed Side</option>
-                <option value="Headboard">Headboard</option>
+                <option value="Deewan cum Sofa">Deewan cum Sofa</option>
+                <option value="Sofa cum Sofa">Sofa cum Bed</option>
+                <option value="Corner Sofa">Corner Sofa</option>
+                <option value="Seatout Cushion">Seatout Cushion</option>
               </select>
             </div>
             <div className="col-span-2">
               <label
                 htmlFor="image"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Reference Image
               </label>
@@ -318,12 +343,20 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
+              {selectedImage.image && (
+                <div className="mt-2">
+                  <img
+                    src={selectedImage.image}
+                    alt="Selected"
+                    className="w-full rounded-lg border border-gray-300"
+                  />
+                </div>
+              )}
             </div>
-            {/* Fabric Name & Code */}
             <div className="col-span-2">
               <label
                 htmlFor="fabricNameCode"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Fabric Name & Code
               </label>
@@ -333,15 +366,14 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 name="fabricNameCode"
                 value={formData.fabricNameCode}
                 onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter fabric name and code"
               />
             </div>
-            {/* Fabric Image */}
             <div className="col-span-2">
               <label
                 htmlFor="fimg"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Fabric Image
               </label>
@@ -353,30 +385,20 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 onChange={handleFileInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
+              {selectedImage.fimg && (
+                <div className="mt-2">
+                  <img
+                    src={selectedImage.fimg}
+                    alt="Selected"
+                    className="w-full rounded-lg border border-gray-300"
+                  />
+                </div>
+              )}
             </div>
-            {/* Sofa Leg */}
-            <div className="col-span-2">
-              <label
-                htmlFor="sofaLeg"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Sofa Leg
-              </label>
-              <input
-                type="text"
-                id="sofaLeg"
-                name="sofaLeg"
-                value={formData.sofaLeg}
-                onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter sofa leg details"
-              />
-            </div>
-            {/* Leg Image */}
-            <div className="col-span-2">
+            <div className="col-span-2 relative">
               <label
                 htmlFor="limg"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Sofa Leg Image
               </label>
@@ -386,97 +408,134 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 name="limg"
                 accept="image/*"
                 onChange={handleFileInputChange}
-                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="hidden"
               />
+              <div className="relative">
+                <input
+                  type="text"
+                  readOnly
+                  value={fileNames.limg}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-16 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Choose file"
+                />
+                <label
+                  htmlFor="limg"
+                  className="absolute top-0 right-0 bg-blue-500 hover:bg-blue-600 focus:bg-blue-600 text-white px-4 py-2.5 rounded-lg cursor-pointer text-sm"
+                >
+                  Choose File
+                </label>
+              </div>
+              {selectedImage.limg && (
+                <div className="mt-2">
+                  <img
+                    src={selectedImage.limg}
+                    alt="Selected"
+                    className="w-full rounded-lg border border-gray-300"
+                  />
+                </div>
+              )}
             </div>
-            {/* Pillow Size */}
-            <div className="col-span-2">
+            <div className="col-span-1">
               <label
-                htmlFor="pillowSize"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                htmlFor="includePillows"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
-                Pillow Size
+                Include Pillows
               </label>
               <input
-                type="text"
-                id="pillowSize"
-                name="pillowSize"
-                value={formData.pillowSize}
-                onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter pillow size"
+                type="checkbox"
+                id="includePillows"
+                name="includePillows"
+                checked={includePillows}
+                onChange={handleCheckboxChange}
+                className="form-checkbox h-4 w-4 text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-300"
               />
             </div>
-            {/* Pillow Fabric */}
-            <div className="col-span-2">
-              <label
-                htmlFor="pillowFabric"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Pillow Fabric
-              </label>
-              <input
-                type="text"
-                id="pillowFabric"
-                name="pillowFabric"
-                value={formData.pillowFabric}
-                onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter pillow fabric"
-              />
-            </div>
-            {/* Pillow Fabric Image */}
-            <div className="col-span-2">
-              <label
-                htmlFor="pillowFabricImage"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Pillow Fabric Image
-              </label>
-              <input
-                type="file"
-                id="pillowFabricImage"
-                name="pillowFabricImage"
-                accept="image/*"
-                onChange={handleFileInputChange}
-                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />
-            </div>
-            {/* Remarks */}
+
+            {includePillows && (
+              <>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="pillowSize"
+                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
+                  >
+                    Pillow Size
+                  </label>
+                  <input
+                    type="text"
+                    id="pillowSize"
+                    name="pillowSize"
+                    value={formData.pillowSize}
+                    onChange={handleInputChange}
+                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Enter pillow size"
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="pillowFabric"
+                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
+                  >
+                    Pillow Fabric
+                  </label>
+                  <input
+                    type="text"
+                    id="pillowFabric"
+                    name="pillowFabric"
+                    value={formData.pillowFabric}
+                    onChange={handleInputChange}
+                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Enter pillow fabric"
+                  />
+                </div>
+              </>
+            )}
             <div className="col-span-2">
               <label
                 htmlFor="remarks"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Remarks
               </label>
               <textarea
                 id="remarks"
                 name="remarks"
-                rows={4}
+                rows={3}
                 value={formData.remarks}
                 onChange={handleInputChange}
                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Add any additional remarks here"
               ></textarea>
             </div>
-            {/* Time Of Delivery */}
             <div className="col-span-2">
               <label
                 htmlFor="timeOfDelivery"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Time of Delivery (TOD)
               </label>
-              <input
-                type="text"
-                id="timeOfDelivery"
-                name="timeOfDelivery"
-                value={formData.timeOfDelivery}
-                onChange={handleInputChange}
-                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter time of delivery"
-              />
+              <div className="flex">
+                <input
+                  type="number"
+                  id="timeOfDelivery"
+                  name="timeOfDeliveryValue"
+                  value={formData.timeOfDeliveryValue}
+                  onChange={handleTimeOfDeliveryChange}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter time"
+                />
+                <select
+                  id="timeOfDeliveryUnit"
+                  name="timeOfDeliveryUnit"
+                  value={formData.timeOfDeliveryUnit}
+                  onChange={handleTimeOfDeliveryChange}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                >
+                  <option value="days">Days</option>
+                  <option value="weeks">Weeks</option>
+                  <option value="months">Months</option>
+                </select>
+              </div>
             </div>
           </div>
           <button

@@ -61,7 +61,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
         &#8203;
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all lg:max-w-lg sm:my-8 sm:align-middle sm:max-w-full sm:w-full">
           <button
-            className="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-800 focus:outline-none"
+            className="absolute top-0 right-0 mt-4 mr-4 text-slate-600 hover:text-slate-800 focus:outline-none"
             onClick={closeModal}
           >
             <svg
@@ -85,7 +85,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="area"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-slate-700"
                   >
                     Area
                   </label>
@@ -101,7 +101,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="quantity"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-slate-700"
                   >
                     Quantity
                   </label>
@@ -117,7 +117,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="rate"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-slate-700"
                   >
                     Rate
                   </label>
@@ -133,7 +133,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="gstPercentage"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-slate-700"
                   >
                     GST%
                   </label>
@@ -162,7 +162,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
               <button
                 type="button"
                 onClick={closeModal}
-                className="w-full lg:mx-2 inline-flex my-2 justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                className="w-full lg:mx-2 inline-flex my-2 justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-slate-700 shadow-sm hover:text-slate-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
               >
                 Cancel
               </button>

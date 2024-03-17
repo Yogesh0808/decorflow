@@ -108,7 +108,7 @@ const Headboard: React.FC<HeadboardProps> = ({
         <button
           type="button"
           onClick={onCloseModal}
-          className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          className="text-slate-400 bg-transparent hover:bg-gray-200 hover:text-slate-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
           data-modal-toggle="crud-modal"
         >
           <svg
@@ -135,7 +135,7 @@ const Headboard: React.FC<HeadboardProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="title"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Title
               </label>
@@ -152,7 +152,7 @@ const Headboard: React.FC<HeadboardProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="description"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Description
               </label>
@@ -169,7 +169,7 @@ const Headboard: React.FC<HeadboardProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="sizeOfHeadboard"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Size of Headboard
               </label>
@@ -186,7 +186,7 @@ const Headboard: React.FC<HeadboardProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="headboardFabricCode"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Headboard Fabric Code
               </label>
@@ -203,7 +203,7 @@ const Headboard: React.FC<HeadboardProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="image"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Headboard Fabric Image
               </label>
@@ -219,7 +219,7 @@ const Headboard: React.FC<HeadboardProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="rimg"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Headboard References Image
               </label>
@@ -235,7 +235,7 @@ const Headboard: React.FC<HeadboardProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="limg"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Headboard Sight Image
               </label>
@@ -251,7 +251,7 @@ const Headboard: React.FC<HeadboardProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="remarks"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Remarks
               </label>

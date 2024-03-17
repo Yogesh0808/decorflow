@@ -279,7 +279,7 @@ const DispatchForm = () => {
       {showToast && (
         <div
           id="toast-success"
-          className="absolute top-2 right-2 flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 bg-white rounded-lg shadow"
+          className="absolute top-2 right-2 flex items-center w-full max-w-xs p-2 mb-4 text-slate-500 bg-white rounded-lg shadow"
           role="alert"
         >
           <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg">

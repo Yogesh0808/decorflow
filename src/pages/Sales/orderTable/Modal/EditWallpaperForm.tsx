@@ -162,7 +162,7 @@ const EditWallpaperOrderForm = ({
               <div className="col-span-2">
                 <label
                   htmlFor="title"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Title
                 </label>
@@ -179,7 +179,7 @@ const EditWallpaperOrderForm = ({
               <div>
                 <label
                   htmlFor="description"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Description
                 </label>
@@ -197,7 +197,7 @@ const EditWallpaperOrderForm = ({
               <div>
                 <label
                   htmlFor="sizeOfWall"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Size of Wall
                 </label>
@@ -214,7 +214,7 @@ const EditWallpaperOrderForm = ({
               <div>
                 <label
                   htmlFor="noOfRolls"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Number of Rolls
                 </label>
@@ -231,7 +231,7 @@ const EditWallpaperOrderForm = ({
               <div>
                 <label
                   htmlFor="catalogCode"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Catalog Code
                 </label>
@@ -251,7 +251,7 @@ const EditWallpaperOrderForm = ({
               <div>
                 <label
                   htmlFor="remarks"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Remarks
                 </label>
@@ -268,7 +268,7 @@ const EditWallpaperOrderForm = ({
               <div>
                 <label
                   htmlFor="image"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Wallpaper Image
                 </label>

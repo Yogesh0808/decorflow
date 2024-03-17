@@ -41,25 +41,25 @@ const BlindOrdersTable = ({ products, deleteProduct, editProduct }) => {
     };
   };
 
-      const handleDelete = async (productId) => {
-        try {
-            // Make DELETE request to delete the product
+  const handleDelete = async (productId) => {
+    try {
+      // Make DELETE request to delete the product
       await axios.delete(`/api/products/${productId}`, getHeaders());
-            deleteProduct(productId);
-        } catch (error) {
-            console.error("Error deleting product:", error);
-        }
-    };
-  
-  if (!products || products.length === 0) {
-            return <div>No product data available</div>;
+      deleteProduct(productId);
+    } catch (error) {
+      console.error("Error deleting product:", error);
     }
+  };
+
+  if (!products || products.length === 0) {
+    return <div>No product data available</div>;
+  }
 
   return (
     <div className="max-w-screen mx-auto overflow-x-hidden p-4">
       <h1 className="text-black p-2 text-2xl dark:text-whiter">Blind Orders</h1>
       <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
-        <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
+        <table className="w-full rounded-lg text-sm text-left rtl:text-right text-slate-500 dark:text-slate-400 bg-gray-900 dark:bg-gray-800">
           <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
             <tr>
               <th scope="col" className="px-3 py-4">
@@ -100,7 +100,7 @@ const BlindOrdersTable = ({ products, deleteProduct, editProduct }) => {
                 key={product.id}
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
-                <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
+                <td className="py-2 text-slate-900 whitespace-nowrap text-center dark:text-white">
                   {++serialNumber}
                 </td>
                 <td className="px-3 py-2">{product.data.description}</td>

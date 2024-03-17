@@ -149,7 +149,7 @@ const EditBlindOrderForm = ({
               <div className="col-span-2">
                 <label
                   htmlFor="title"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Title
                 </label>
@@ -166,7 +166,7 @@ const EditBlindOrderForm = ({
               <div>
                 <label
                   htmlFor="description"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Description
                 </label>
@@ -183,7 +183,7 @@ const EditBlindOrderForm = ({
               <div>
                 <label
                   htmlFor="size"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Size
                 </label>
@@ -200,7 +200,7 @@ const EditBlindOrderForm = ({
               <div>
                 <label
                   htmlFor="quantity"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Quantity
                 </label>
@@ -217,7 +217,7 @@ const EditBlindOrderForm = ({
               <div>
                 <label
                   htmlFor="typeOfBlinds"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Type of Blinds
                 </label>
@@ -243,7 +243,7 @@ const EditBlindOrderForm = ({
               <div>
                 <label
                   htmlFor="catalogueName"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Catalogue Name
                 </label>
@@ -260,7 +260,7 @@ const EditBlindOrderForm = ({
               <div>
                 <label
                   htmlFor="fabricCode"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Fabric Code
                 </label>
@@ -277,7 +277,7 @@ const EditBlindOrderForm = ({
               <div>
                 <label
                   htmlFor="image"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Fabric Image
                 </label>
@@ -293,7 +293,7 @@ const EditBlindOrderForm = ({
               <div className="col-span-2">
                 <label
                   htmlFor="remarks"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
                   Remarks
                 </label>

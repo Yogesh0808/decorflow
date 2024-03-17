@@ -106,7 +106,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
         <button
           type="button"
           onClick={onCloseModal}
-          className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          className="text-slate-400 bg-transparent hover:bg-gray-200 hover:text-slate-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
           data-modal-toggle="crud-modal"
         >
           <svg
@@ -134,7 +134,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="title"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Title
               </label>
@@ -152,7 +152,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="description"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Description
               </label>
@@ -169,7 +169,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="size"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Size of Sofa
               </label>
@@ -186,7 +186,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="shapeModel"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Shape and Model of Sofa
               </label>
@@ -205,7 +205,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="image"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Reference Image
               </label>
@@ -222,7 +222,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="fabricNameCode"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Fabric Name & Code
               </label>
@@ -239,7 +239,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="fimg"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Fabric Image
               </label>
@@ -256,7 +256,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="sofaLeg"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Sofa Leg
               </label>
@@ -274,7 +274,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="limg"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Sofa Leg Image
               </label>
@@ -290,7 +290,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
             <div className="col-span-2">
               <label
                 htmlFor="remarks"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
                 Remarks
               </label>
