@@ -16,9 +16,9 @@ const SofaForm: React.FC<SofaFormProps> = ({
     title: "",
     description: "",
     size: "",
-    depth: "",
-    floorToSeat: "",
-    seatToBackHeight: "",
+    depth: { value: "", unit: "inches" },
+    floorToSeat: { value: "", unit: "inches" },
+    seatToBackHeight: { value: "", unit: "inches" },
     shapeModel: "L-Shaped",
     image: null,
     fabricNameCode: "",
@@ -77,6 +77,25 @@ const SofaForm: React.FC<SofaFormProps> = ({
     }));
   };
 
+  const handleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: { ...prevFormData[name], value: value },
+    }));
+  };
+
+  const handleUnitChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    name: string
+  ) => {
+    const { value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: { ...prevFormData[name], unit: value },
+    }));
+  };
+
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIncludePillows(e.target.checked); // Update state based on checkbox value
   };
@@ -112,7 +131,11 @@ const SofaForm: React.FC<SofaFormProps> = ({
           });
           dataToSubmit.append("image", renamedFile);
         } else {
-          dataToSubmit.append(key, value);
+          if (typeof value === "object" && "value" in value) {
+            dataToSubmit.append(key, value.value + " " + value.unit);
+          } else {
+            dataToSubmit.append(key, value);
+          }
         }
       });
       dataToSubmit.append("customerName", selectedCustomer.clientName);
@@ -257,15 +280,27 @@ const SofaForm: React.FC<SofaFormProps> = ({
               >
                 Depth
               </label>
-              <input
-                type="text"
-                id="depth"
-                name="depth"
-                value={formData.depth}
-                onChange={handleInputChange}
-                className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter depth"
-              />
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  id="depth"
+                  name="depth"
+                  value={formData.depth.value}
+                  onChange={handleNumberInputChange}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter depth"
+                />
+                <select
+                  value={formData.depth.unit}
+                  onChange={(e) => handleUnitChange(e, "depth")}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                >
+                  <option value="inches">inches</option>
+                  <option value="feet">feet</option>
+                  <option value="cm">cm</option>
+                  <option value="mm">mm</option>
+                </select>
+              </div>
             </div>
             {/* Floor to Seat */}
             <div className="col-span-1">
@@ -275,16 +310,29 @@ const SofaForm: React.FC<SofaFormProps> = ({
               >
                 Floor to Seat
               </label>
-              <input
-                type="text"
-                id="floorToSeat"
-                name="floorToSeat"
-                value={formData.floorToSeat}
-                onChange={handleInputChange}
-                className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter floor to seat height"
-              />
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  id="floorToSeat"
+                  name="floorToSeat"
+                  value={formData.floorToSeat.value}
+                  onChange={handleNumberInputChange}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter floor to seat height"
+                />
+                <select
+                  value={formData.floorToSeat.unit}
+                  onChange={(e) => handleUnitChange(e, "floorToSeat")}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                >
+                  <option value="inches">inches</option>
+                  <option value="feet">feet</option>
+                  <option value="cm">cm</option>
+                  <option value="mm">mm</option>
+                </select>
+              </div>
             </div>
+            {/* Seat to Back */}
             <div className="col-span-1">
               <label
                 htmlFor="seatToBackHeight"
@@ -292,15 +340,27 @@ const SofaForm: React.FC<SofaFormProps> = ({
               >
                 Seat to Back
               </label>
-              <input
-                type="text"
-                id="seatToBackHeight"
-                name="seatToBackHeight"
-                value={formData.seatToBackHeight}
-                onChange={handleInputChange}
-                className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Enter seat to back height"
-              />
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  id="seatToBackHeight"
+                  name="seatToBackHeight"
+                  value={formData.seatToBackHeight.value}
+                  onChange={handleNumberInputChange}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter seat to back height"
+                />
+                <select
+                  value={formData.seatToBackHeight.unit}
+                  onChange={(e) => handleUnitChange(e, "seatToBackHeight")}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                >
+                  <option value="inches">inches</option>
+                  <option value="feet">feet</option>
+                  <option value="cm">cm</option>
+                  <option value="mm">mm</option>
+                </select>
+              </div>
             </div>
             <div className="col-span-2">
               <label
@@ -435,61 +495,35 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 </div>
               )}
             </div>
-            <div className="col-span-1">
+            <div className="col-span-2">
               <label
-                htmlFor="includePillows"
+                htmlFor="timeOfDelivery"
                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
               >
-                Include Pillows
+                Time of Delivery
               </label>
-              <input
-                type="checkbox"
-                id="includePillows"
-                name="includePillows"
-                checked={includePillows}
-                onChange={handleCheckboxChange}
-                className="form-checkbox h-4 w-4 text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-300"
-              />
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  id="timeOfDelivery"
+                  name="timeOfDeliveryValue"
+                  value={formData.timeOfDeliveryValue}
+                  onChange={handleTimeOfDeliveryChange}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter time of delivery"
+                />
+                <select
+                  value={formData.timeOfDeliveryUnit}
+                  name="timeOfDeliveryUnit"
+                  onChange={handleTimeOfDeliveryChange}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                >
+                  <option value="days">days</option>
+                  <option value="weeks">weeks</option>
+                  <option value="months">months</option>
+                </select>
+              </div>
             </div>
-
-            {includePillows && (
-              <>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="pillowSize"
-                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
-                  >
-                    Pillow Size
-                  </label>
-                  <input
-                    type="text"
-                    id="pillowSize"
-                    name="pillowSize"
-                    value={formData.pillowSize}
-                    onChange={handleInputChange}
-                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Enter pillow size"
-                  />
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="pillowFabric"
-                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
-                  >
-                    Pillow Fabric
-                  </label>
-                  <input
-                    type="text"
-                    id="pillowFabric"
-                    name="pillowFabric"
-                    value={formData.pillowFabric}
-                    onChange={handleInputChange}
-                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Enter pillow fabric"
-                  />
-                </div>
-              </>
-            )}
             <div className="col-span-2">
               <label
                 htmlFor="remarks"
@@ -503,88 +537,116 @@ const SofaForm: React.FC<SofaFormProps> = ({
                 rows={3}
                 value={formData.remarks}
                 onChange={handleInputChange}
-                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-400 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Add any additional remarks here"
               ></textarea>
             </div>
             <div className="col-span-2">
-              <label
-                htmlFor="timeOfDelivery"
-                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
-              >
-                Time of Delivery (TOD)
-              </label>
-              <div className="flex">
+              <div className="flex items-center">
                 <input
-                  type="number"
-                  id="timeOfDelivery"
-                  name="timeOfDeliveryValue"
-                  value={formData.timeOfDeliveryValue}
-                  onChange={handleTimeOfDeliveryChange}
-                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Enter time"
+                  type="checkbox"
+                  id="includePillows"
+                  name="includePillows"
+                  checked={includePillows}
+                  onChange={handleCheckboxChange}
+                  className="text-primary-600 border-gray-300 focus:ring-primary-500 h-4 w-4 mr-2"
                 />
-                <select
-                  id="timeOfDeliveryUnit"
-                  name="timeOfDeliveryUnit"
-                  value={formData.timeOfDeliveryUnit}
-                  onChange={handleTimeOfDeliveryChange}
-                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                <label
+                  htmlFor="includePillows"
+                  className="block text-sm font-medium text-slate-900 dark:text-white"
                 >
-                  <option value="days">Days</option>
-                  <option value="weeks">Weeks</option>
-                  <option value="months">Months</option>
-                </select>
+                  Include Pillows
+                </label>
               </div>
             </div>
-          </div>
-          <button
-            type="submit"
-            className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            disabled={loading}
-          >
-            {loading ? (
-              <>
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+            {includePillows && (
+              <div className="col-span-2">
+                <label
+                  htmlFor="pillowSize"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.373A8 8 0 0112 20v4c-6.627 0-12-5.373-12-12h4zm14-2A8 8 0 0120 12H24c0 6.627-5.373 12-12 12v-4z"
-                  ></path>
-                </svg>
-                <p>Please Wait...</p>
-              </>
-            ) : (
-              <>
-                <svg
-                  className="me-1 -ms-1 w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                Add new product
-              </>
+                  Pillow Size
+                </label>
+                <input
+                  type="text"
+                  id="pillowSize"
+                  name="pillowSize"
+                  value={formData.pillowSize}
+                  onChange={handleInputChange}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter pillow size"
+                />
+              </div>
             )}
-          </button>
+            {includePillows && (
+              <div className="col-span-2">
+                <label
+                  htmlFor="pillowFabric"
+                  className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
+                >
+                  Pillow Fabric
+                </label>
+                <input
+                  type="text"
+                  id="pillowFabric"
+                  name="pillowFabric"
+                  value={formData.pillowFabric}
+                  onChange={handleInputChange}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter pillow fabric"
+                />
+              </div>
+            )}
+          </div>
+          <div className="text-center">
+            <button
+              type="submit"
+              className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.373A8 8 0 0112 20v4c-6.627 0-12-5.373-12-12h4zm14-2A8 8 0 0120 12H24c0 6.627-5.373 12-12 12v-4z"
+                    ></path>
+                  </svg>
+                  <p>Please Wait...</p>
+                </>
+              ) : (
+                <>
+                  <svg
+                    className="me-1 -ms-1 w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                  Add new product
+                </>
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </div>
