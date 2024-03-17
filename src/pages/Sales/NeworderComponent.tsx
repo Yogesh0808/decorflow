@@ -11,6 +11,7 @@ import FurnitureForm from "./orderForm/FurnitureForm";
 import MattressForm from "./orderForm/MattressForm";
 import SkeletonRow from "./SkeletonRow";
 import HeadboardForm from "./orderForm/HeadboardForm";
+import ClientList from "../../components/Customer/ClientList";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
@@ -231,19 +232,8 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                 </li>
                             </ul>
                             {filteredData.map((customer: any, index) => (
-                                <ul
-                                    className="flex w-full justify-around bg-blue-100 text-graydark my-3 rounded-xl"
-                                    key={index}
-                                    onClick={() => {
-                                        setSelectedCustomer(customer);
-                                    }}>
-                                    <li className="p-3 w-1/6 text-center">
-                                        {customer.cid}
-                                    </li>
-                                    <li className="p-3 w-5/6 text-center">
-                                        {customer.clientName}
-                                    </li>
-                                </ul>
+                                <ClientList index={index} customer={customer} setSelectedCustomer={setSelectedCustomer} />
+
                             ))}
                         </>
                     ) : (
@@ -257,19 +247,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                                 </li>
                             </ul>
                             {customers.map((customer: any, index) => (
-                                <ul
-                                    className="flex w-full justify-around bg-blue-100 text-graydark my-3 rounded-xl"
-                                    key={index}
-                                    onClick={() => {
-                                        setSelectedCustomer(customer);
-                                    }}>
-                                    <li className="p-3 w-1/6 text-center">
-                                        {customer.cid}
-                                    </li>
-                                    <li className=" w-5/6 text-center p-3 ">
-                                        {customer.clientName}
-                                    </li>
-                                </ul>
+                                <ClientList index={index} customer={customer} setSelectedCustomer={setSelectedCustomer} />
                             ))}
                         </>
                     )}

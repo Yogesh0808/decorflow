@@ -10,6 +10,8 @@ import MattressOrdersTable from "./orderTable/MattressOrdersTable";
 import HeadboardOrdersTable from "./orderTable/HeadboardOrdersTable";
 import Loader from "../../common/Loader/index";
 import SkeletonRow from "./SkeletonRow";
+import ClientList from "../../components/Customer/ClientList";
+import ViewOrder from "../../components/Customer/ViewOrder";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
@@ -277,20 +279,7 @@ const ViewOrderComponent = ({
                                 </li>
                             </ul>
                             {filteredData.map((customer: any, index) => (
-                                <ul
-                                    className="flex w-full justify-around bg-blue-100 text-graydark my-3 rounded-xl"
-                                    key={index}
-                                    onClick={() => {
-                                        setSelectedCustomer(customer);
-                                        handleSelectCustomer(customer.id);
-                                    }}>
-                                    <li className="p-3 w-1/6 text-center">
-                                        {customer.cid}
-                                    </li>
-                                    <li className="p-3 w-5/6 text-center">
-                                        {customer.clientName}
-                                    </li>
-                                </ul>
+                                <ViewOrder index={index} customer={customer} handleSelectCustomer={handleSelectCustomer} setSelectedCustomer={setSelectedCustomer} />
                             ))}
                         </>
                     ) : (
@@ -304,20 +293,7 @@ const ViewOrderComponent = ({
                                 </li>
                             </ul>
                             {customers.map((customer: any, index) => (
-                                <ul
-                                    className="flex w-full justify-around bg-blue-100 text-graydark my-3 rounded-xl"
-                                    key={index}
-                                    onClick={() => {
-                                        setSelectedCustomer(customer);
-                                        handleSelectCustomer(customer.id);
-                                    }}>
-                                    <li className="p-3 w-1/6 text-center">
-                                        {customer.cid}
-                                    </li>
-                                    <li className="p-3 w-5/6 text-center">
-                                        {customer.clientName}
-                                    </li>
-                                </ul>
+                                <ViewOrder index={index} customer={customer} handleSelectCustomer={handleSelectCustomer} setSelectedCustomer={setSelectedCustomer} />
                             ))}
                         </>
                     )}
