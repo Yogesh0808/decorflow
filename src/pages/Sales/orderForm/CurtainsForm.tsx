@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { convertUnit } from "../../../service/UnitConverstions";
 interface CurtainsFormProps {
     onCloseModal: () => void;
     selectedCustomer: { id: string; clientName: string };
@@ -16,12 +16,18 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         title: "",
         description: "",
         size: "",
+        height: "",
+        width: "",
+        unit1: "",
+        unit2: "",
         widthOfFabric: "",
         noOfPieces: "",
         noOfPanels: "",
         modelOfStitching: "",
         fabricName: "",
         fabricCode: "",
+        hookType: "",
+        trackType: "",
         image: null,
         tieOption: "",
         remarks: "",
@@ -32,7 +38,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const { name, value } = e.target;
-        setFormData((prevFormData) => ({
+        setFormData((prevFormData: any) => ({
             ...prevFormData,
             [name]: value,
         }));
@@ -190,7 +196,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 placeholder="Enter title"
                             />
                         </div>
-                        <div className="col-span-2 md:col-span-1">
+                        <div className="col-span-2 md:col-span-2">
                             <label
                                 htmlFor="description"
                                 className="block mb-2 text-sm font-medium  text-gray-900 dark:text-white">
@@ -206,22 +212,86 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 className="block p-2.5 w-full text-sm col-span-2 text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Write product description here"></textarea>
                         </div>
-                        <div className="col-span-2 md:col-span-1">
+                        <div className="col-span-2  wrap w-full space-y-2">
                             <label
-                                htmlFor="size"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                htmlFor="description"
+                                className="block mb-2 text-sm font-medium  text-gray-900 dark:text-white">
                                 Size
                             </label>
-                            <input
-                                type="text"
-                                value={formData.size}
-                                id="size"
-                                name="size"
-                                onChange={(e) => handleInputChange(e)} // Add onChange event handler
-                                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter size"
-                            />
+                            <div className="inputGrp w-full flex">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="height"
+                                    name="height"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.height}
+                                    placeholder="Height"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit1"
+                                    name="unit1"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit2: e.target.value,
+                                            unit1: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit1}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">In</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                    <option value="sqm">Sq m</option>
+                                    <option value="syd">Sq yd</option>
+                                </select>
+                            </div>
+                            <div className="inputGrp w-full flex items-center">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="width"
+                                    name="width"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.width}
+                                    placeholder="width"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit2"
+                                    name="unit2"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit1: e.target.value,
+                                            unit2: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit2}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">In</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                    <option value="sqm">Sq m</option>
+                                    <option value="syd">Sq yd</option>
+                                </select>
+                            </div>
                         </div>
+
                         <div className="col-span-2 md:col-span-1">
                             <label
                                 htmlFor="widthOfFabric"
@@ -229,15 +299,25 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 Width of Fabric
                             </label>
                             <input
-                                type="text"
+                                type="number"
                                 id="widthOfFabric"
                                 name="widthOfFabric"
                                 value={formData.widthOfFabric}
                                 onChange={(e) => handleInputChange(e)}
                                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Enter width of fabric"
+                                list="widthOfFabricOptions"
                             />
+                            <datalist id="widthOfFabricOptions">
+                                <option value="48" />
+                                <option value="54" />
+                                <option value="118" />
+                                <option value="125" />
+                                <option value="128" />
+                                <option value="129" />
+                            </datalist>
                         </div>
+
                         <div className="col-span-2 md:col-span-1">
                             <label
                                 htmlFor="noOfPieces"
@@ -265,6 +345,53 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 id="noOfPanels"
                                 name="noOfPanels"
                                 value={formData.noOfPanels}
+                                onClick={() => {
+                                    if (formData.width !== "") {
+                                        console.log(formData.unit1);
+                                        let unit = "";
+                                        switch (formData.unit1) {
+                                            case "mm":
+                                                unit = "mm";
+                                                break;
+                                            case "in":
+                                                unit = "inches";
+                                                break;
+                                            case "cm":
+                                                unit = "cm";
+                                                break;
+                                            case "yd":
+                                                unit = "yard";
+                                                break;
+                                            case "ft":
+                                                unit = "feet";
+                                                break;
+                                            case "m":
+                                                unit = "meter";
+                                                break;
+                                            case "sqm":
+                                                unit = "squareMeter";
+                                                break;
+                                            case "syd":
+                                                unit = "squareYard";
+                                                break;
+                                            default:
+                                                unit = "";
+                                        }
+
+                                        let widthInch = convertUnit(
+                                            formData.width,
+                                            unit,
+                                            "inches"
+                                        );
+                                        let noPanels: number = Math.ceil(
+                                            widthInch / 20
+                                        );
+                                        setFormData({
+                                            ...formData,
+                                            noOfPanels: noPanels,
+                                        });
+                                    }
+                                }}
                                 onChange={(e) => handleInputChange(e)}
                                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Enter number of panels"
@@ -283,8 +410,63 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 value={formData.modelOfStitching}
                                 onChange={(e) => handleInputChange(e)}
                                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter model of stitching"
+                                placeholder="Enter width of fabric"
+                                list="stitching"
                             />
+                            <datalist id="stitching">
+                                <option value="1 pleat"></option>
+                                <option value="2 pleat"></option>
+                                <option value="3 pleat"></option>
+                                <option value="ring model"></option>
+                                <option value="ripple fold"></option>
+                                <option value="tailored pleat"></option>
+                                <option value="inverted pleat"></option>
+                                <option value="goblet"></option>
+                                <option value="cubicle"></option>
+                                <option value="rod pocket"></option>
+                            </datalist>
+                        </div>
+                        <div className="col-span-2 md:col-span-1">
+                            <label
+                                htmlFor="hookType"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Hook
+                            </label>
+                            <select
+                                id="hookType"
+                                name="hookType"
+                                value={formData.hookType}
+                                onChange={(e) => handleInputChange(e)}
+                                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <option value="Track Hook">Track Hook</option>
+                                <option value="Rod Hook">Rod Hook</option>
+                            </select>
+                        </div>
+                        <div className="col-span-2 md:col-span-1">
+                            <label
+                                htmlFor="trackType"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Track
+                            </label>
+                            <input
+                                className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                list="tracksLists"
+                                name="trackType"
+                                type="text"
+                                value={formData.trackType}
+                                onChange={(e) => handleInputChange(e)}
+                            />
+                            <datalist id="tracksLists">
+                                <option value="SS Rod">SS Rod</option>
+                                <option value="M Track">M Track</option>
+                                <option value="I Track">I Track</option>
+                                <option value="Hospital Track">
+                                    Hospital Track
+                                </option>
+                                <option value="Silent Track">
+                                    Silent Track
+                                </option>
+                            </datalist>
                         </div>
                     </div>
                     <hr className="my-4" />
@@ -303,6 +485,22 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 onChange={(e) => handleInputChange(e)}
                                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Enter fabric name"
+                            />
+                        </div>
+                        <div className="col-span-2 md:col-span-1">
+                            <label
+                                htmlFor="fabricCode"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Fabric Code
+                            </label>
+                            <input
+                                type="text"
+                                id="fabricCode"
+                                name="fabricCode"
+                                value={formData.fabricCode}
+                                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Enter fabric code"
+                                onChange={(e) => handleInputChange(e)}
                             />
                         </div>
                         <div className="col-span-2 md:col-span-1">
@@ -343,22 +541,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                     handleInputChange(e)
                                 }></textarea>
                         </div>
-                        <div className="col-span-2 md:col-span-1">
-                            <label
-                                htmlFor="fabricCode"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Fabric Code
-                            </label>
-                            <input
-                                type="text"
-                                id="fabricCode"
-                                name="fabricCode"
-                                value={formData.fabricCode}
-                                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter fabric code"
-                                onChange={(e) => handleInputChange(e)}
-                            />
-                        </div>
+
                         <div className="col-span-2 ">
                             <label
                                 htmlFor="image"
