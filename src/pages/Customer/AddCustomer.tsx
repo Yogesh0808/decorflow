@@ -25,11 +25,18 @@ const AddCustomer = () => {
         phone: "",
         emailAddress: "",
         address: "",
+        isCompanyOrder: false,
+        companyName: "",
+        gstNumber: "",
     });
 
     const [showToast, setShowToast] = useState(false);
 
+    //for button disabling
+    const [isDisabled, setIsDisabled] = useState(false); // Initial state set to true
+
     const saveClient = () => {
+        setIsDisabled(true);
         axios
             .post("/api/customer", formData, getHeaders())
             .then((response) => {
@@ -39,12 +46,15 @@ const AddCustomer = () => {
             })
             .catch((error) => {
                 console.error("Error saving client:", error);
-            });
+            })
+            .finally(() => setIsDisabled(false));
     };
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: any) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        e.target.type === "checkbox"
+            ? setFormData({ ...formData, [name]: e.target.checked })
+            : setFormData({ ...formData, [name]: value });
     };
 
     useEffect(() => {
@@ -61,7 +71,6 @@ const AddCustomer = () => {
         e.preventDefault();
         console.log(formData);
         saveClient();
-        //clearForm();
     };
 
     const clearForm = () => {
@@ -227,7 +236,7 @@ const AddCustomer = () => {
                         <textarea
                             name="address"
                             id="address"
-                            rows="3"
+                            rows={3}
                             className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
                             onChange={handleInputChange}
                             value={formData.address}
@@ -274,7 +283,7 @@ const AddCustomer = () => {
                             </>
                         )}
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center mb-5 ">
                         <input
                             type="checkbox"
                             id="company-order"
@@ -289,7 +298,9 @@ const AddCustomer = () => {
                     </div>
                     <button
                         type="submit"
-                        className="bg-red-700 text-white py-2 px-4 rounded-md hover:bg-red-800">
+                        disabled={isDisabled}
+                        className={`bg-red-700 text-white py-2.5 px-6 rounded-md hover:bg-red-800 ${isDisabled ? "bg-red-900" : "bg-red-700"
+                            }`}>
                         Add Customer
                     </button>
                 </form>
