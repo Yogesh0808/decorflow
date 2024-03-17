@@ -299,7 +299,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 Width of Fabric
                             </label>
                             <input
-                                type="number"
+                                type="text"
                                 id="widthOfFabric"
                                 name="widthOfFabric"
                                 value={formData.widthOfFabric}
