@@ -28,12 +28,17 @@ const MattressForm: React.FC<MattressFormProps> = ({
         deliveryTime: "",
         width: "",
         height: "",
-        unit1: "",
-        unit2: "",
+        unit1: "in",
+        unit2: "in",
         timeOfDeliveryValue: "",
         timeOfDeliveryUnit: "days",
     });
     const [loading, setLoading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<any>({
+      image: null,
+      fimg: null,
+      limg: null,
+    });
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -56,8 +61,13 @@ const MattressForm: React.FC<MattressFormProps> = ({
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
         const file = e.target.files && e.target.files[0];
+        const name = e.target.name;
         if (file) {
             try {
+                setSelectedImage({
+                    ...selectedImage,
+                    [name]:URL.createObjectURL(file)
+                })
                 const compressedImage = await compressImage(file);
                 setFormData((prevFormData: any) => ({
                     ...prevFormData,
@@ -255,13 +265,11 @@ const MattressForm: React.FC<MattressFormProps> = ({
                                     }}
                                     value={formData.unit1}>
                                     <option value="mm">mm</option>
-                                    <option value="in">In</option>
+                                    <option value="in">Inch</option>
                                     <option value="cm">cm</option>
                                     <option value="yd">yd</option>
                                     <option value="ft">ft</option>
                                     <option value="m">m</option>
-                                    <option value="sqm">Sq m</option>
-                                    <option value="syd">Sq yd</option>
                                 </select>
                             </div>
                             <div className="inputGrp w-full flex items-center">
@@ -291,13 +299,11 @@ const MattressForm: React.FC<MattressFormProps> = ({
                                     }}
                                     value={formData.unit2}>
                                     <option value="mm">mm</option>
-                                    <option value="in">In</option>
+                                    <option value="in">Inch</option>
                                     <option value="cm">cm</option>
                                     <option value="yd">yd</option>
                                     <option value="ft">ft</option>
                                     <option value="m">m</option>
-                                    <option value="sqm">Sq m</option>
-                                    <option value="syd">Sq yd</option>
                                 </select>
                             </div>
                         </div>
@@ -418,6 +424,15 @@ const MattressForm: React.FC<MattressFormProps> = ({
                                 required
                                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             />
+                            {selectedImage.image && (
+                                <div className="mt-2">
+                                    <img
+                                        src={selectedImage.image}
+                                        alt="Selected"
+                                        className="w-full rounded-lg border border-gray-300"
+                                    />
+                                </div>
+                            )}
                         </div>
                         <div className="col-span-2">
                             <label

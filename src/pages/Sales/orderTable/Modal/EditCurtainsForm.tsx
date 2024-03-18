@@ -50,6 +50,7 @@ const EditCurtainsForm = ({
 
   const handleFileInputChange = async (e) => {
     const file = e.target.files && e.target.files[0];
+        const name = e.target.name;
     if (file) {
       try {
         const compressedImage = await compressImage(file);

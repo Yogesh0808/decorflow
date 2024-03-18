@@ -24,11 +24,16 @@ const Headboard: React.FC<HeadboardProps> = ({
         limg: null,
         width: "",
         height: "",
-        unit1: "",
-        unit2: "",
+        unit1: "in",
+        unit2: "in",
     });
 
     const [loading, setLoading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<any>({
+        image: null,
+        rimg: null,
+        limg: null,
+    });
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -42,6 +47,7 @@ const Headboard: React.FC<HeadboardProps> = ({
 
     const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files && e.target.files[0];
+        const name = e.target.name;
         if (file) {
             const name = e.target.name;
             const fileType = file.type;
@@ -57,6 +63,10 @@ const Headboard: React.FC<HeadboardProps> = ({
             setFormData((prevFormData) => ({
                 ...prevFormData,
                 [name]: renamedFile,
+            }));
+            setSelectedImage((prevState) => ({
+                ...prevState,
+                [name]: URL.createObjectURL(file),
             }));
         }
     };
@@ -199,13 +209,11 @@ const Headboard: React.FC<HeadboardProps> = ({
                                     }}
                                     value={formData.unit1}>
                                     <option value="mm">mm</option>
-                                    <option value="in">In</option>
+                                    <option value="in">Inch</option>
                                     <option value="cm">cm</option>
                                     <option value="yd">yd</option>
                                     <option value="ft">ft</option>
                                     <option value="m">m</option>
-                                    <option value="sqm">Sq m</option>
-                                    <option value="syd">Sq yd</option>
                                 </select>
                             </div>
                             <div className="inputGrp w-full flex items-center">
@@ -235,13 +243,11 @@ const Headboard: React.FC<HeadboardProps> = ({
                                     }}
                                     value={formData.unit2}>
                                     <option value="mm">mm</option>
-                                    <option value="in">In</option>
+                                    <option value="in">Inch</option>
                                     <option value="cm">cm</option>
                                     <option value="yd">yd</option>
                                     <option value="ft">ft</option>
                                     <option value="m">m</option>
-                                    <option value="sqm">Sq m</option>
-                                    <option value="syd">Sq yd</option>
                                 </select>
                             </div>
                         </div>
@@ -281,7 +287,7 @@ const Headboard: React.FC<HeadboardProps> = ({
                             <label
                                 htmlFor="image"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Headboard Fabric Image
+                                Fabric Image
                             </label>
                             <input
                                 type="file"
@@ -291,12 +297,21 @@ const Headboard: React.FC<HeadboardProps> = ({
                                 onChange={handleFileInputChange}
                                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             />
+                            {selectedImage.image && (
+                                <div className="mt-2">
+                                    <img
+                                        src={selectedImage.image}
+                                        alt="Selected"
+                                        className="w-full rounded-lg border border-gray-300"
+                                    />
+                                </div>
+                            )}
                         </div>
                         <div className="col-span-2">
                             <label
                                 htmlFor="rimg"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Headboard References Image
+                                References Image
                             </label>
                             <input
                                 type="file"
@@ -306,12 +321,21 @@ const Headboard: React.FC<HeadboardProps> = ({
                                 onChange={handleFileInputChange}
                                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             />
+                            {selectedImage.rimg && (
+                                <div className="mt-2">
+                                    <img
+                                        src={selectedImage.rimg}
+                                        alt="Selected"
+                                        className="w-full rounded-lg border border-gray-300"
+                                    />
+                                </div>
+                            )}
                         </div>
                         <div className="col-span-2">
                             <label
                                 htmlFor="limg"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Headboard Sight Image
+                                Sight Image
                             </label>
                             <input
                                 type="file"
@@ -321,6 +345,15 @@ const Headboard: React.FC<HeadboardProps> = ({
                                 onChange={handleFileInputChange}
                                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             />
+                            {selectedImage.limg && (
+                                <div className="mt-2">
+                                    <img
+                                        src={selectedImage.limg}
+                                        alt="Selected"
+                                        className="w-full rounded-lg border border-gray-300"
+                                    />
+                                </div>
+                            )}
                         </div>
                         <div className="col-span-2">
                             <label

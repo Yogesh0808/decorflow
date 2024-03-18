@@ -42,6 +42,7 @@ const EditHeadboardForm = ({
 
   const handleFileInputChange = (e) => {
     const file = e.target.files && e.target.files[0];
+        const name = e.target.name;
     if (file) {
       setFormData((prevFormData) => ({
         ...prevFormData,
