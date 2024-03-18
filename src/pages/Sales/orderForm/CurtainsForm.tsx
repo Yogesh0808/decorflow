@@ -18,7 +18,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         size: "",
         height: "",
         width: "",
-        uunit1: "in",
+        unit1: "in",
         unit2: "in",
         widthOfFabric: "",
         noOfPieces: "",
