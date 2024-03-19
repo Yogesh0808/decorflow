@@ -107,6 +107,12 @@ const SofaOrdersTable = ({ products, deleteProduct, editProduct }) => {
               <th scope="col" className="px-4 py-4">
                 Remarks
               </th>
+              <th scope="col" className="px-3 py-4">
+                Pillow Fabric
+              </th>
+              <th scope="col" className="px-3 py-4">
+                Pillow Size
+              </th>
               <th scope="col" className="px-4 py-4">
                 Action
               </th>
@@ -172,6 +178,9 @@ const SofaOrdersTable = ({ products, deleteProduct, editProduct }) => {
                   )}
                 </td>
                 <td className="px-4 py-2">{product.data.remarks}</td>
+                <td className="px-4 py-2">{product.data.pillowFabric}</td>
+                <td className="px-4 py-2">{product.data.pillowSize}</td>
+
                 <td className="px-4 py-2">
                   <button
                     onClick={() => openEditModal(product)}
@@ -205,7 +214,7 @@ const SofaOrdersTable = ({ products, deleteProduct, editProduct }) => {
             saveEditedOrder(selectedProductForEdit.id, editedData)
           }
           onCloseModal={closeEditModal}
-          selectedProduct={selectedProductForEdit} // Pass selectedProductForEdit as a prop
+          selectedProduct={selectedProductForEdit}
           editProduct={editProduct}
         />
       )}

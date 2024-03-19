@@ -23,7 +23,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
     image: null,
     fabricNameCode: "",
     fimg: null,
-    sofaLeg: "",
+    sofaLeg: { value: "", unit: "inches" },
     limg: null,
     timeOfDelivery: "",
     remarks: "",
@@ -105,6 +105,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
     const name = e.target.name;
 
     if (file) {
+      // Create a copy of the FormData and append the file with the appropriate name
+      const updatedFormData = new FormData();
+      updatedFormData.append(
+        name,
+        file,
+        name === "image" ? "image.jpg" : `${name}.jpg`
+      );
+
+      // Update state for the selected image and file names
       setSelectedImage((prevState) => ({
         ...prevState,
         [name]: URL.createObjectURL(file),
@@ -125,11 +134,9 @@ const SofaForm: React.FC<SofaFormProps> = ({
       setLoading(true);
       const dataToSubmit = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
-        if (key === "image" && value instanceof File) {
-          const renamedFile = new File([value], "image.jpg", {
-            type: value.type,
-          });
-          dataToSubmit.append("image", renamedFile);
+        if (value instanceof File) {
+          const fileName = key === "image" ? "image.jpg" : `${key}.jpg`;
+          dataToSubmit.append(key, value, fileName);
         } else {
           if (typeof value === "object" && "value" in value) {
             dataToSubmit.append(key, value.value + " " + value.unit);
@@ -454,6 +461,35 @@ const SofaForm: React.FC<SofaFormProps> = ({
                   />
                 </div>
               )}
+            </div>
+            <div className="col-span-2">
+              <label
+                htmlFor="sofaLeg"
+                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white"
+              >
+                Sofa Leg
+              </label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  id="sofaLeg"
+                  name="sofaLeg"
+                  value={formData.sofaLeg.value}
+                  onChange={handleNumberInputChange}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter Leg Length in inches"
+                />
+                <select
+                  value={formData.sofaLeg.unit}
+                  onChange={(e) => handleUnitChange(e, "sofaLeg")}
+                  className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                >
+                  <option value="inches">inches</option>
+                  <option value="feet">feet</option>
+                  <option value="cm">cm</option>
+                  <option value="mm">mm</option>
+                </select>
+              </div>
             </div>
             <div className="col-span-2 relative">
               <label
