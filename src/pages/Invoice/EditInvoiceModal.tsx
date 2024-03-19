@@ -87,7 +87,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                     htmlFor="area"
                     className="block text-sm font-medium text-slate-700"
                   >
-                    Area
+                    Particulars
                   </label>
                   <input
                     type="text"
@@ -145,6 +145,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                     className="mt-1 p-2 w-full border rounded-md"
                   >
                     <option value="">Select GST%</option>
+                    <option value="0">None</option>
                     <option value="5">5%</option>
                     <option value="12">12%</option>
                     <option value="18">18%</option>

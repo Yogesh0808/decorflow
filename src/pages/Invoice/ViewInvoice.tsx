@@ -149,7 +149,7 @@ const ViewInvoice = () => {
                   S.No.
                 </th>
                 <th scope="col" className="px-3 py-4">
-                  Area
+                  Particulars
                 </th>
                 <th scope="col" className="px-4 py-4">
                   Quantity

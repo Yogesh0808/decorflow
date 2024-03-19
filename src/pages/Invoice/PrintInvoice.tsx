@@ -479,7 +479,7 @@ const PrintInvoice = () => {
                           S.No.
                         </th>
                         <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                          Area
+                          Particulars
                         </th>
                         <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
                           Quantity

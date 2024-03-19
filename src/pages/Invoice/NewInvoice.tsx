@@ -179,7 +179,7 @@ const NewInvoice = () => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="flex flex-col">
                   <label htmlFor="area" className="text-sm font-medium">
-                    Area
+                    Particulars
                   </label>
                   <input
                     type="text"
@@ -235,6 +235,7 @@ const NewInvoice = () => {
                     required
                   >
                     <option value="">Select GST%</option>
+                    <option value="0">None</option>
                     <option value="5">5%</option>
                     <option value="12">12%</option>
                     <option value="18">18%</option>

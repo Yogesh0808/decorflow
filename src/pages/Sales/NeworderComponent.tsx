@@ -23,10 +23,21 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
     title: "",
     description: "",
     size: "",
+    depth: { value: "", unit: "inches" },
+    floorToSeat: { value: "", unit: "inches" },
+    seatToBackHeight: { value: "", unit: "inches" },
     shapeModel: "L-Shaped",
-    referenceImage: null,
+    image: null,
     fabricNameCode: "",
-    fabricImage: null,
+    fimg: null,
+    sofaLeg: "",
+    limg: null,
+    timeOfDelivery: "",
+    remarks: "",
+    pillowSize: "",
+    pillowFabric: "",
+    timeOfDeliveryValue: "",
+    timeOfDeliveryUnit: "days",
   });
   const [customers, setCustomers] = useState([]);
   const [filteredData, setFilteredData] = useState([]);

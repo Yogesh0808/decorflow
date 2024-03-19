@@ -99,11 +99,19 @@ const EditCurtainsForm = ({
     e.preventDefault();
     try {
       const formDataToSend = new FormData();
+
+      // Set file name to "image.jpg"
+      if (formData.image) {
+        formDataToSend.append("image", formData.image, "image.jpg");
+      }
+
+      // Append other form data
       Object.keys(formData).forEach((key) => {
-        formDataToSend.append(key, formData[key]);
+        if (key !== "image") {
+          formDataToSend.append(key, formData[key]);
+        }
       });
 
-      // Make the PUT request to update the product
       const response = await axios.put(
         `/api/products/${selectedProduct.id}`,
         formDataToSend,
