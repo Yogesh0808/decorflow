@@ -104,11 +104,11 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        console.log("Curtains handleSubmit Called!");
         e.preventDefault();
         try {
             setLoading(true);
 
+            formData.size = `${formData.height}H x ${formData.width}W`;
             const formDataToSend = new FormData();
             Object.keys(formData).forEach((key) => {
                 formDataToSend.append(key, formData[key]);

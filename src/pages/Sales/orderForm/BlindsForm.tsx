@@ -65,6 +65,7 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
         try {
             setLoading(true);
 
+            formData.size = `${formData.height}H x ${formData.width}W`;
             const formDataToSend = new FormData();
             Object.keys(formData).forEach((key) => {
                 formDataToSend.append(key, formData[key]);

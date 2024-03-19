@@ -80,7 +80,8 @@ const EditMattressForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formDataToSend = new FormData();
+      formData.size = `${formData.height}H x ${formData.width}W`;
+            const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
         formDataToSend.append(key, formData[key]);
       });

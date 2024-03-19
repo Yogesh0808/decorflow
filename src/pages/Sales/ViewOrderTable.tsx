@@ -10,7 +10,6 @@ import MattressOrdersTable from "./orderTable/MattressOrdersTable";
 import HeadboardOrdersTable from "./orderTable/HeadboardOrdersTable";
 import Loader from "../../common/Loader/index";
 import SkeletonRow from "./SkeletonRow";
-import ClientList from "../../components/Customer/ClientList";
 import ViewOrder from "../../components/Customer/ViewOrder";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
@@ -61,7 +60,7 @@ const ViewOrderComponent = ({
             );
             setCustomers(response.data);
             setSkeleLoading(false);
-        } catch (error) {
+        } catch (error:any) {
             console.error("Error fetching customers:", error.message);
         }
     };
