@@ -35,9 +35,9 @@ const MattressForm: React.FC<MattressFormProps> = ({
     });
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState<any>({
-      image: null,
-      fimg: null,
-      limg: null,
+        image: null,
+        fimg: null,
+        limg: null,
     });
 
     const handleInputChange = (
@@ -66,8 +66,8 @@ const MattressForm: React.FC<MattressFormProps> = ({
             try {
                 setSelectedImage({
                     ...selectedImage,
-                    [name]:URL.createObjectURL(file)
-                })
+                    [name]: URL.createObjectURL(file),
+                });
                 const compressedImage = await compressImage(file);
                 setFormData((prevFormData: any) => ({
                     ...prevFormData,
@@ -118,17 +118,18 @@ const MattressForm: React.FC<MattressFormProps> = ({
             setLoading(true);
 
             formData.size = `${formData.height}H x ${formData.width}W`;
+            formData.deliveryTime = `${formData.timeOfDeliveryValue} ${formData.timeOfDeliveryUnit}`;
             const formDataToSend = new FormData();
-           // Set file name to "image.jpg"
-      if (formData.image) {
-        formDataToSend.append("image", formData.image, "image.jpg");
-      }
+            // Set file name to "image.jpg"
+            if (formData.image) {
+                formDataToSend.append("image", formData.image, "image.jpg");
+            }
 
-      Object.keys(formData).forEach((key) => {
-        if (key !== "image") {
-          formDataToSend.append(key, formData[key]);
-        }
-      });
+            Object.keys(formData).forEach((key) => {
+                if (key !== "image") {
+                    formDataToSend.append(key, formData[key]);
+                }
+            });
             formDataToSend.append("customerId", selectedCustomer.id);
             formDataToSend.append("category", "Mattress");
             console.log(formDataToSend);

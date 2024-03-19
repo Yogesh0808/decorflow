@@ -18,7 +18,7 @@ const FurnitureForm: React.FC<FurnitureFormProps> = ({
         size: "",
         qty: "",
         referenceCode: "",
-        referenceImage: null,
+        image: null,
         remarks: "",
         width: "",
         height: "",

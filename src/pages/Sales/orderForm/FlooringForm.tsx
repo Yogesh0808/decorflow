@@ -16,12 +16,12 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
 }) => {
     const [formData, setFormData] = useState({
         title: "",
-        description: "",
-        sizeOfFloor: "",
+        description: "Vinyl Roll",
+        size: "",
         numberOfSqft: "",
         unit: "Mtr",
-        width:"",
-        height:"",
+        width: "",
+        height: "",
         unit1: "in",
         unit2: "in",
         totOfSq: "",
@@ -33,9 +33,9 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
     });
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState<any>({
-      image: null,
-      fimg: null,
-      limg: null,
+        image: null,
+        fimg: null,
+        limg: null,
     });
 
     const handleInputChange = (
@@ -60,7 +60,6 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
         const name = e.target.name;
         if (file) {
             try {
-
                 setSelectedImage((prevState: any) => ({
                     ...prevState,
                     [name]: URL.createObjectURL(file),
@@ -123,16 +122,16 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
             formData.size = `${formData.height}H x ${formData.width}W`;
 
             const formDataToSend = new FormData();
-           // Set file name to "image.jpg"
-      if (formData.image) {
-        formDataToSend.append("image", formData.image, "image.jpg");
-      }
+            // Set file name to "image.jpg"
+            if (formData.image) {
+                formDataToSend.append("image", formData.image, "image.jpg");
+            }
 
-      Object.keys(formData).forEach((key) => {
-        if (key !== "image") {
-          formDataToSend.append(key, formData[key]);
-        }
-      });
+            Object.keys(formData).forEach((key) => {
+                if (key !== "image") {
+                    formDataToSend.append(key, formData[key]);
+                }
+            });
             formDataToSend.append("customerId", selectedCustomer.id);
             formDataToSend.append("category", "Flooring");
             console.log(formDataToSend);
@@ -234,10 +233,9 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
                                 id="description"
                                 name="description"
                                 value={formData.description}
-                                onChange={handleInputChange}
+                                onChange={(e) => handleInputChange(e)}
                                 required
                                 className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option value="">Select description</option>
                                 <option value="Vinyl Roll">
                                     Vinyl - Vinyl Roll
                                 </option>
@@ -406,7 +404,6 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
                                 onChange={handleFileInputChange}
                                 accept="image/*"
                                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                
                             />
                             {selectedImage.image && (
                                 <div className="mt-2">

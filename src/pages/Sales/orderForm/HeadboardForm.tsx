@@ -15,12 +15,12 @@ const Headboard: React.FC<HeadboardProps> = ({
     const [formData, setFormData] = useState<any>({
         title: "",
         description: "",
-        sizeOfHeadboard: "",
+        size: "",
         fabricName: "",
         fabricCode: "",
         remarks: "",
         image: null,
-        rimg: null,
+        fimg: null,
         limg: null,
         width: "",
         height: "",
@@ -31,7 +31,7 @@ const Headboard: React.FC<HeadboardProps> = ({
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState<any>({
         image: null,
-        rimg: null,
+        fimg: null,
         limg: null,
     });
 
@@ -85,9 +85,21 @@ const Headboard: React.FC<HeadboardProps> = ({
     const submitFormData = async (formData: any) => {
         try {
             setLoading(true);
+            formData.size = `${formData.height}H x ${formData.width}W`;
             const dataToSubmit = new FormData();
+            if (formData.image) {
+                dataToSubmit.append("image", formData.image, "image1.jpg");
+            }
+            if (formData.fimg) {
+                dataToSubmit.append("fimg", formData.fimg, "image2.jpg");
+            }
+            if (formData.limg) {
+                dataToSubmit.append("limg", formData.limg, "image3.jpg");
+            }
             Object.entries(formData).forEach(([key, value]) => {
-                dataToSubmit.append(key, value);
+                if (key !== "image" && key !== "fimg" && key !== "limg") {
+                    dataToSubmit.append(key, value);
+                }
             });
             dataToSubmit.append("customerName", selectedCustomer.clientName);
             dataToSubmit.append("customerId", selectedCustomer.id);
@@ -309,22 +321,22 @@ const Headboard: React.FC<HeadboardProps> = ({
                         </div>
                         <div className="col-span-2">
                             <label
-                                htmlFor="rimg"
+                                htmlFor="fimg"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 References Image
                             </label>
                             <input
                                 type="file"
-                                id="rimg"
-                                name="rimg"
+                                id="fimg"
+                                name="fimg"
                                 accept="image/*"
                                 onChange={handleFileInputChange}
                                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             />
-                            {selectedImage.rimg && (
+                            {selectedImage.fimg && (
                                 <div className="mt-2">
                                     <img
-                                        src={selectedImage.rimg}
+                                        src={selectedImage.fimg}
                                         alt="Selected"
                                         className="w-full rounded-lg border border-gray-300"
                                     />

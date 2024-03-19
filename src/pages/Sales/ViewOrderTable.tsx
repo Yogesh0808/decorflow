@@ -60,7 +60,7 @@ const ViewOrderComponent = ({
             );
             setCustomers(response.data);
             setSkeleLoading(false);
-        } catch (error:any) {
+        } catch (error: any) {
             console.error("Error fetching customers:", error.message);
         }
     };
@@ -81,7 +81,7 @@ const ViewOrderComponent = ({
         }
     };
 
-    const editProduct = (productId, editedData) => {
+    const editProduct = (productId: any, editedData: any) => {
         const index = products.findIndex((product) => product.id === productId);
 
         if (index !== -1) {
@@ -278,7 +278,12 @@ const ViewOrderComponent = ({
                                 </li>
                             </ul>
                             {filteredData.map((customer: any, index) => (
-                                <ViewOrder key={index} customer={customer} handleSelectCustomer={handleSelectCustomer} setSelectedCustomer={setSelectedCustomer} />
+                                <ViewOrder
+                                    key={index}
+                                    customer={customer}
+                                    handleSelectCustomer={handleSelectCustomer}
+                                    setSelectedCustomer={setSelectedCustomer}
+                                />
                             ))}
                         </>
                     ) : (
@@ -292,7 +297,12 @@ const ViewOrderComponent = ({
                                 </li>
                             </ul>
                             {customers.map((customer: any, index) => (
-                                <ViewOrder key={index} customer={customer} handleSelectCustomer={handleSelectCustomer} setSelectedCustomer={setSelectedCustomer} />
+                                <ViewOrder
+                                    key={index}
+                                    customer={customer}
+                                    handleSelectCustomer={handleSelectCustomer}
+                                    setSelectedCustomer={setSelectedCustomer}
+                                />
                             ))}
                         </>
                     )}
