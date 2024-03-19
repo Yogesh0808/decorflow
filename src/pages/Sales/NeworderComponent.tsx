@@ -232,6 +232,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                             </ul>
                             {filteredData.map((customer: any, index) => (
                                 <ClientList
+                                    key={index}
                                     index={index}
                                     customer={customer}
                                     setSelectedCustomer={setSelectedCustomer}
@@ -250,6 +251,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
                             </ul>
                             {customers.map((customer: any, index) => (
                                 <ClientList
+                                    key={index}
                                     index={index}
                                     customer={customer}
                                     setSelectedCustomer={setSelectedCustomer}

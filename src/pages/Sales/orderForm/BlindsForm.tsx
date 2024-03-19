@@ -30,9 +30,9 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
     });
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState<any>({
-      image: null,
-      fimg: null,
-      limg: null,
+        image: null,
+        fimg: null,
+        limg: null,
     });
 
     const handleInputChange = (
@@ -45,19 +45,52 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
         }));
     };
 
-    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files && e.target.files[0];
         const name = e.target.name;
         if (file) {
-            setSelectedImage((prevState:any) => ({
+            setSelectedImage((prevState: any) => ({
                 ...prevState,
                 [name]: URL.createObjectURL(file),
-              }));
+            }));
+            const compressedImage = await compressImage(file);
             setFormData((prevFormData) => ({
                 ...prevFormData,
-                image: file,
+                image: compressedImage,
             }));
         }
+    };
+
+    const compressImage = (file: File) => {
+        return new Promise<File>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event: any) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d")!;
+                    canvas.width = 700; // Adjust width as needed
+                    canvas.height = 800; // Adjust height as needed
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    canvas.toBlob(
+                        (blob) => {
+                            if (!blob) {
+                                reject(new Error("Failed to compress image."));
+                                return;
+                            }
+                            const compressedFile = new File([blob], file.name, {
+                                type: "image/jpeg", // Adjust mime type as needed
+                            });
+                            resolve(compressedFile);
+                        },
+                        "image/jpeg",
+                        0.6
+                    ); // Adjust quality as needed
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,9 +100,16 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
 
             formData.size = `${formData.height}H x ${formData.width}W`;
             const formDataToSend = new FormData();
-            Object.keys(formData).forEach((key) => {
-                formDataToSend.append(key, formData[key]);
-            });
+           // Set file name to "image.jpg"
+      if (formData.image) {
+        formDataToSend.append("image", formData.image, "image.jpg");
+      }
+
+      Object.keys(formData).forEach((key) => {
+        if (key !== "image") {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
             formDataToSend.append("customerId", selectedCustomer.id);
             formDataToSend.append("category", "Blinds");
 
@@ -331,7 +371,7 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
                                 id="typeOfBlinds"
                                 name="typeOfBlinds"
                                 value={formData.typeOfBlinds}
-                                onChange={()=>handleInputChange}
+                                onChange={() => handleInputChange}
                                 className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 <option value="Roman Blinds">
                                     Roman Blinds

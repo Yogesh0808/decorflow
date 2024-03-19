@@ -3,8 +3,9 @@ import axios from "axios";
 import edit from "../../../images/icon/edit.svg";
 import trash from "../../../images/icon/trash.svg";
 import EditCurtainsOrderForm from "./Modal/EditCurtainsForm";
+import { BsImages } from "react-icons/bs";
 
-const CurtainsOrdersTable = ({ products, deleteProduct, editProduct }) => {
+const CurtainsOrdersTable = ({ products, deleteProduct, editProduct }:any) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
 
@@ -73,7 +74,7 @@ const CurtainsOrdersTable = ({ products, deleteProduct, editProduct }) => {
               <th scope="col" className="px-3 py-4">
                 Description
               </th>
-              <th scope="col" className="px-4 py-4">
+              <th scope="col" className="px-4 py-">
                 Size
               </th>
               <th scope="col" className="px-4 py-4">

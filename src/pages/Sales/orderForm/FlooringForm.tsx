@@ -121,10 +121,18 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
             setLoading(true);
 
             formData.size = `${formData.height}H x ${formData.width}W`;
+
             const formDataToSend = new FormData();
-            Object.keys(formData).forEach((key) => {
-                formDataToSend.append(key, formData[key]);
-            });
+           // Set file name to "image.jpg"
+      if (formData.image) {
+        formDataToSend.append("image", formData.image, "image.jpg");
+      }
+
+      Object.keys(formData).forEach((key) => {
+        if (key !== "image") {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
             formDataToSend.append("customerId", selectedCustomer.id);
             formDataToSend.append("category", "Flooring");
             console.log(formDataToSend);
@@ -360,8 +368,8 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
                             </label>
                             <input
                                 type="text"
-                                id="catalogCodeAndNumber"
-                                name="catalogCodeAndNumber"
+                                id="fabricName"
+                                name="fabricName"
                                 value={formData.fabricName}
                                 onChange={handleInputChange}
                                 required
@@ -377,8 +385,8 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
                             </label>
                             <input
                                 type="text"
-                                id="catalogCodeAndNumber"
-                                name="catalogCodeAndNumber"
+                                id="fabricCode"
+                                name="fabricCode"
                                 value={formData.fabricCode}
                                 onChange={handleInputChange}
                                 required

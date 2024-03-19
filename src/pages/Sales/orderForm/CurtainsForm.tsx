@@ -109,9 +109,17 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
             setLoading(true);
 
             formData.size = `${formData.height}H x ${formData.width}W`;
+
+            
             const formDataToSend = new FormData();
+            // Set file name to "image.jpg"
+            if (formData.image) {
+                formDataToSend.append("image", formData.image, "image.jpg");
+            }
             Object.keys(formData).forEach((key) => {
-                formDataToSend.append(key, formData[key]);
+                if (key !== "image") {
+                    formDataToSend.append(key, formData[key]);
+                  }
             });
             formDataToSend.append("customerId", selectedCustomer.id);
             formDataToSend.append("category", "Curtains");

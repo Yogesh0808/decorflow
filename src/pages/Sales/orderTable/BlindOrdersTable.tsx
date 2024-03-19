@@ -78,7 +78,7 @@ const BlindOrdersTable = ({ products, deleteProduct, editProduct }) => {
                 Type of Blinds
               </th>
               <th scope="col" className="px-4 py-4">
-                Catalogue Name
+              Fabric Name
               </th>
               <th scope="col" className="px-4 py-4">
                 Fabric Code

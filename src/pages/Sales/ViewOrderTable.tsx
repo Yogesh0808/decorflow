@@ -278,7 +278,7 @@ const ViewOrderComponent = ({
                                 </li>
                             </ul>
                             {filteredData.map((customer: any, index) => (
-                                <ViewOrder index={index} customer={customer} handleSelectCustomer={handleSelectCustomer} setSelectedCustomer={setSelectedCustomer} />
+                                <ViewOrder key={index} customer={customer} handleSelectCustomer={handleSelectCustomer} setSelectedCustomer={setSelectedCustomer} />
                             ))}
                         </>
                     ) : (
@@ -292,7 +292,7 @@ const ViewOrderComponent = ({
                                 </li>
                             </ul>
                             {customers.map((customer: any, index) => (
-                                <ViewOrder index={index} customer={customer} handleSelectCustomer={handleSelectCustomer} setSelectedCustomer={setSelectedCustomer} />
+                                <ViewOrder key={index} customer={customer} handleSelectCustomer={handleSelectCustomer} setSelectedCustomer={setSelectedCustomer} />
                             ))}
                         </>
                     )}
