@@ -284,7 +284,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
             {selectedCustomer && selectedCustomer.cid}
           </p>
           <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100 dark:bg-gray-800">
-            <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
               {[
                 "Curtains",
                 "Sofas",

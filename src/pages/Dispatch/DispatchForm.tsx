@@ -168,7 +168,7 @@ const DispatchForm = () => {
           </div>
           <div className="flex flex-col">
             <label htmlFor="quantity" className="text-sm font-medium">
-              Quantity:
+              Fabric Code Number:
             </label>
             <input
               type="number"

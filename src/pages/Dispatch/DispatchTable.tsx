@@ -161,7 +161,8 @@ const DispatchView = () => {
                 {item.catalogName}
               </p>
               <p>
-                <span className="font-semibold">Quantity:</span> {item.quantity}
+                <span className="font-semibold">Fabric Code Number:</span>{" "}
+                {item.quantity}
               </p>
               <p>
                 <span className="font-semibold">Quantity Ordered:</span>{" "}
