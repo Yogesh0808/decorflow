@@ -142,13 +142,13 @@ const SofaOrdersTable = ({ products, deleteProduct, editProduct }) => {
                                     {product.data.size}
                                 </td>
                                 <td className="px-4 py-2">
-                                    {product.data.depth["value"]}
+                                    {`${product.data.depth} ${product.data.depthUnit}`}
                                 </td>
                                 <td className="px-4 py-2">
-                                    {product.data.floorToSeat.value}
+                                    {`${product.data.floorToSeat} ${product.data.floorToSeatUnit}`}
                                 </td>
                                 <td className="px-4 py-2">
-                                    {product.data.seatToBackHeight.value}
+                                    {`${product.data.seatToBackHeight} ${product.data.seatToBackHeightUnit}`}
                                 </td>
                                 <td className="px-4 py-2">
                                     {product.data.shapeModel}

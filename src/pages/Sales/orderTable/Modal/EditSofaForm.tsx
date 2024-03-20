@@ -14,16 +14,13 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
         title: selectedProduct.data.title,
         description: selectedProduct.data.description,
         size: selectedProduct.data.size,
-        depth: selectedProduct.data.depth || { value: "", unit: "inches" },
-        floorToSeat: selectedProduct.data.floorToSeat || {
-            value: "",
-            unit: "inches",
-        },
-        seatToBackHeight: selectedProduct.data.seatToBackHeight || {
-            value: "",
-            unit: "inches",
-        },
-        shapeModel: selectedProduct.data.shapeModel || "L-Shaped",
+        depth: selectedProduct.data.depth || "",
+        depthUnit: selectedProduct.data.depthUnit || "",
+        floorToSeat: selectedProduct.data.floorToSeat || "",
+        floorToSeatUnit: selectedProduct.data.floorToSeatUnit || "",
+        seatToBackHeight: selectedProduct.data.seatToBackHeight || "",
+        seatToBackHeightUnit: selectedProduct.data.seatToBackHeightUnit || "",
+        shapeModel: selectedProduct.data.shapeModel || "",
         image: selectedProduct.data.image || null,
         fimg: selectedProduct.data.fimg || null,
         limg: selectedProduct.data.limg || null,
@@ -266,20 +263,17 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                             type="text"
                                             id="depth"
                                             name="depth"
-                                            value={formData.depth.value}
-                                            onChange={handleNumberInputChange}
+                                            value={formData.depth}
+                                            onChange={handleInputChange}
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             placeholder="Enter depth"
                                         />
                                         <select
-                                            value={formData.depth.unit}
-                                            onChange={(e) =>
-                                                handleUnitChange(e, "depth")
-                                            }
+                                            name="depthUnit"
+                                            value={formData.depthUnit}
+                                            onChange={handleInputChange}
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            <option value="inches">
-                                                inches
-                                            </option>
+                                            <option value="inches">inches</option>
                                             <option value="feet">feet</option>
                                             <option value="cm">cm</option>
                                             <option value="mm">mm</option>
@@ -298,23 +292,17 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                             type="text"
                                             id="floorToSeat"
                                             name="floorToSeat"
-                                            value={formData.floorToSeat.value}
-                                            onChange={handleNumberInputChange}
+                                            value={formData.floorToSeat}
+                                            onChange={handleInputChange}
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             placeholder="Enter floor to seat height"
                                         />
                                         <select
-                                            value={formData.floorToSeat.unit}
-                                            onChange={(e) =>
-                                                handleUnitChange(
-                                                    e,
-                                                    "floorToSeat"
-                                                )
-                                            }
+                                            name="floorToSeatUnit"
+                                            value={formData.floorToSeatUnit}
+                                            onChange={handleInputChange}
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            <option value="inches">
-                                                inches
-                                            </option>
+                                            <option value="inches">inches</option>
                                             <option value="feet">feet</option>
                                             <option value="cm">cm</option>
                                             <option value="mm">mm</option>
@@ -333,27 +321,17 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                             type="text"
                                             id="seatToBackHeight"
                                             name="seatToBackHeight"
-                                            value={
-                                                formData.seatToBackHeight.value
-                                            }
-                                            onChange={handleNumberInputChange}
+                                            value={formData.seatToBackHeight}
+                                            onChange={handleInputChange}
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             placeholder="Enter seat to back height"
                                         />
                                         <select
-                                            value={
-                                                formData.seatToBackHeight.unit
-                                            }
-                                            onChange={(e) =>
-                                                handleUnitChange(
-                                                    e,
-                                                    "seatToBackHeight"
-                                                )
-                                            }
+                                            name="seatToBackHeightUnit"
+                                            value={formData.seatToBackHeightUnit}
+                                            onChange={handleInputChange}
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            <option value="inches">
-                                                inches
-                                            </option>
+                                            <option value="inches">inches</option>
                                             <option value="feet">feet</option>
                                             <option value="cm">cm</option>
                                             <option value="mm">mm</option>
@@ -374,9 +352,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                         className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                         <option value="Squared">Squared</option>
                                         <option value="Normal">Normal</option>
-                                        <option value="L-Shaped">
-                                            L-Shaped
-                                        </option>
+                                        <option value="L-Shaped">L-Shaped</option>
                                         <option value="Poufs">Poufs</option>
                                         <option value="Ottoman">Ottoman</option>
                                         <option value="Cot and Bed Side">
@@ -388,9 +364,7 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                         <option value="Sofa cum Sofa">
                                             Sofa cum Bed
                                         </option>
-                                        <option value="Corner Sofa">
-                                            Corner Sofa
-                                        </option>
+                                        <option value="Corner Sofa">Corner Sofa</option>
                                         <option value="Seatout Cushion">
                                             Seatout Cushion
                                         </option>
@@ -526,24 +500,18 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                             id="timeOfDelivery"
                                             name="timeOfDeliveryValue"
                                             value={formData.timeOfDeliveryValue}
-                                            onChange={
-                                                handleTimeOfDeliveryChange
-                                            }
+                                            onChange={handleTimeOfDeliveryChange}
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             placeholder="Enter time of delivery"
                                         />
                                         <select
                                             value={formData.timeOfDeliveryUnit}
                                             name="timeOfDeliveryUnit"
-                                            onChange={
-                                                handleTimeOfDeliveryChange
-                                            }
+                                            onChange={handleTimeOfDeliveryChange}
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                             <option value="days">days</option>
                                             <option value="weeks">weeks</option>
-                                            <option value="months">
-                                                months
-                                            </option>
+                                            <option value="months">months</option>
                                         </select>
                                     </div>
                                 </div>
