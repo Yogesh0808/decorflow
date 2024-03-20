@@ -16,9 +16,12 @@ const SofaForm: React.FC<SofaFormProps> = ({
         title: "",
         description: "",
         size: "",
-        depth: { value: "", unit: "inches" },
-        floorToSeat: { value: "", unit: "inches" },
-        seatToBackHeight: { value: "", unit: "inches" },
+        depth: "",
+        depthUnit: "inches",
+        floorToSeat: "",
+        floorToSeatUnit: "inches",
+        seatToBackHeight: "",
+        seatToBackHeightUnit: "inches",
         shapeModel: "L-Shaped",
         image: null,
         fabricName: "",
@@ -78,15 +81,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
         }));
     };
 
-    const handleNumberInputChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const { name, value } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: { ...prevFormData[name], value: value },
-        }));
-    };
+    
 
     const handleUnitChange = (
         e: React.ChangeEvent<HTMLSelectElement>,
@@ -282,16 +277,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
                                     type="text"
                                     id="depth"
                                     name="depth"
-                                    value={formData.depth.value}
-                                    onChange={handleNumberInputChange}
+                                    value={formData.depth}
+                                    onChange={handleInputChange}
                                     className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="Enter depth"
                                 />
                                 <select
-                                    value={formData.depth.unit}
-                                    onChange={(e) =>
-                                        handleUnitChange(e, "depth")
-                                    }
+                                name="depthUnit"
+                                    value={formData.depthUnit}
+                                    onChange={handleInputChange}
                                     className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value="inches">inches</option>
                                     <option value="feet">feet</option>
@@ -312,16 +306,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
                                     type="text"
                                     id="floorToSeat"
                                     name="floorToSeat"
-                                    value={formData.floorToSeat.value}
-                                    onChange={handleNumberInputChange}
+                                    value={formData.floorToSeat}
+                                    onChange={handleInputChange}
                                     className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="Enter floor to seat height"
                                 />
                                 <select
-                                    value={formData.floorToSeat.unit}
-                                    onChange={(e) =>
-                                        handleUnitChange(e, "floorToSeat")
-                                    }
+                                    name="floorToSeatUnit"
+                                    value={formData.floorToSeatUnit}
+                                    onChange={handleInputChange}
                                     className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value="inches">inches</option>
                                     <option value="feet">feet</option>
@@ -342,16 +335,15 @@ const SofaForm: React.FC<SofaFormProps> = ({
                                     type="text"
                                     id="seatToBackHeight"
                                     name="seatToBackHeight"
-                                    value={formData.seatToBackHeight.value}
-                                    onChange={handleNumberInputChange}
+                                    value={formData.seatToBackHeight}
+                                    onChange={handleInputChange}
                                     className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="Enter seat to back height"
                                 />
                                 <select
-                                    value={formData.seatToBackHeight.unit}
-                                    onChange={(e) =>
-                                        handleUnitChange(e, "seatToBackHeight")
-                                    }
+                                    name="seatToBackHeightUnit"
+                                    value={formData.seatToBackHeightUnit}
+                                    onChange={handleInputChange}
                                     className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value="inches">inches</option>
                                     <option value="feet">feet</option>
