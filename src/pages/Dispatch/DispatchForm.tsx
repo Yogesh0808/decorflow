@@ -19,6 +19,7 @@ const DispatchForm = () => {
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const [referenceImage, setReferenceImage] = useState(null); // New state for reference image
 
   useEffect(() => {
     let timer;
@@ -63,6 +64,50 @@ const DispatchForm = () => {
     setSelectedCustomer(e.target.value);
   };
 
+  const handleFileInputChange = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      try {
+        const compressedImage = await compressImage(file);
+        setReferenceImage(compressedImage);
+      } catch (error) {
+        console.error("Error compressing image:", error);
+      }
+    }
+  };
+
+  const compressImage = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = 700; // Adjust width as needed
+          canvas.height = 800; // Adjust height as needed
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                reject(new Error("Failed to compress image."));
+                return;
+              }
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg", // Adjust mime type as needed
+              });
+              resolve(compressedFile);
+            },
+            "image/jpeg",
+            0.6
+          ); // Adjust quality as needed
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -71,15 +116,27 @@ const DispatchForm = () => {
       );
 
       if (selectedCustomerObject) {
-        const dataWithCustomerId = {
-          ...formData,
-          customerId: selectedCustomer,
-          customerName: selectedCustomerObject.clientName,
-        };
+        const formDataToSend = new FormData();
+
+        // Set reference image in FormData
+        if (referenceImage) {
+          formDataToSend.append("image", referenceImage);
+        }
+
+        // Append other form data
+        Object.keys(formData).forEach((key) => {
+          formDataToSend.append(key, formData[key]);
+        });
+
+        formDataToSend.append("customerId", selectedCustomer);
+        formDataToSend.append(
+          "customerName",
+          selectedCustomerObject.clientName
+        );
 
         const response = await axios.post(
           `/api/dispatch/${selectedCustomer}`,
-          dataWithCustomerId,
+          formDataToSend,
           getHeaders()
         );
 
@@ -106,7 +163,8 @@ const DispatchForm = () => {
       docNumber: "",
       transitInformation: "",
     });
-    setSelectedCustomer("");
+    //setSelectedCustomer("");
+    setReferenceImage(null);
   };
 
   return (
@@ -168,7 +226,7 @@ const DispatchForm = () => {
           </div>
           <div className="flex flex-col">
             <label htmlFor="quantity" className="text-sm font-medium">
-              Quantity:
+              Fabric Code Number:
             </label>
             <input
               type="number"
@@ -267,6 +325,20 @@ const DispatchForm = () => {
                 />
               </label>
             </div>
+            {/* New field for reference image */}
+            <div className="flex flex-col">
+              <label htmlFor="referenceImage" className="text-sm font-medium">
+                Reference Image
+              </label>
+              <input
+                type="file"
+                id="referenceImage"
+                name="referenceImage"
+                accept="image/*"
+                onChange={handleFileInputChange}
+                className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-900"
+              />
+            </div>
           </div>
         </div>
         <button
@@ -279,7 +351,7 @@ const DispatchForm = () => {
       {showToast && (
         <div
           id="toast-success"
-          className="absolute top-2 right-2 flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 bg-white rounded-lg shadow"
+          className="absolute top-2 right-2 flex items-center w-full max-w-xs p-2 mb-4 text-slate-500 bg-white rounded-lg shadow"
           role="alert"
         >
           <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg">
