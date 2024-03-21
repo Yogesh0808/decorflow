@@ -80,31 +80,33 @@ const PrintInvoice = () => {
     }
   };
 
+  const filterInvoicesByCategory = (category) => {
+    return invoices.filter((invoice) => invoice.category === category);
+  };
+
+  const uniqueCategories = Array.from(
+    new Set(invoices.map((invoice) => invoice.category))
+  );
+
   const handlePrint = () => {
     const printContent = document.querySelector(".print-content");
     const newWindow = window.open("", "_blank");
     const htmlContent = `
     <html>
     <head>
-      <title>Invoicing</title>
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <title>Invoicing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
       <style>
-        body, h1, p, table {
-          margin: 10px;
-          padding: 0;
-          border-radius: 5px;
-        }
-    
-        /* Global styles */
         body {
           font-family: "Inter", sans-serif;
           font-optical-sizing: auto;
           font-weight: 400;
           line-height: 1;
           color: #333;
-          background-image: linear-gradient(120deg, #ffcccc 0%, #ff99cc 100%);
+          background-image: linear-gradient(120deg, #fff 0%, #f8f8f8 100%);
+          margin: 1%;
         }
 
         .invoice-header {
@@ -118,7 +120,7 @@ const PrintInvoice = () => {
           width: 200px;
           height: 200px;
         }
-    
+
         .invoice-header h1 {
           margin: 0;
           text-transform: uppercase;
@@ -133,20 +135,18 @@ const PrintInvoice = () => {
     
         .customer-details {
           margin-top: 20px;
+          margin-right: 30px;
         }
     
         table {
           width: 90%;
           border-collapse: collapse;
-          margin-top: 30px;
-          margin: 20px auto;
           border-radius: 10px;
           background-color: #f8f8f8;
         }
     
         th, td {
           border: 1px solid #ccc;
-          padding: 12px;
           text-align: left;
         }
     
@@ -181,25 +181,89 @@ const PrintInvoice = () => {
         .terms-conditions p {
           margin: 10px 0;
         }
-.flex {
-  display: flex;
+@page {
+  margin: 15%;
+}
+section {
+  page-break-after: always;
+  break-after: page;
+  background-color: aquamarine;
+  width: 500px;
 }
 
-.justify-between {
-  justify-content: space-between;
+
+.print-content h1,
+.print-content h2,
+.print-content p {
+  margin: 10px 0;
 }
 
-.justify-end {
-  justify-content: flex-end;
+.print-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  color:black;
 }
 
-.mb-4 {
-  margin-bottom: 1rem;
+.print-content th,
+.print-content td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  color: #000;
 }
 
-.w-25 {
-  width: 25%;
+.print-content th {
+  background-color: #f2f2f2;
+  font-weight: bold;
 }
+
+.print-content ol {
+  margin-left: 20px;
+}
+.justify-between{
+  justify-content:between;
+}
+
+.print-content ol li {
+  margin-bottom: 5px;
+}
+
+.print-content .terms-conditions {
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.print-content .terms-conditions h2 {
+  color: #DD2342;
+  font-size: 18px;
+  margin-top: 0;
+}
+
+.yhd {
+  margin-left: 2%;
+  margin-top: 1%;
+}
+
+.print-content .terms-conditions p {
+  margin: 10px 0;
+}
+
+.print-content .terms-conditions ol {
+  margin-left: 20px;
+}
+
+.print-content .terms-conditions ol li {
+  margin-bottom: 5px;
+}
+
+.print-content {
+  margin: 5%;
+}
+
       </style>
     </head>
     <body>
@@ -230,6 +294,7 @@ const PrintInvoice = () => {
         <p>UNION BANK OF INDIA (TRIPLICANE BRANCH)</p>
         <p>IFSC Code: UBIN053572</p>
       </div>
+      <script src="https://cdn.tailwindcss.com"></script>
     </body>
     </html>
     `;
@@ -260,11 +325,17 @@ const PrintInvoice = () => {
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
             <style>
+            @page {
+              size: A4;
+            }
+
             body, h1, p, table {
               margin: 10px;
               padding: 0;
               border-radius: 5px;
             }
+
+
   
             /* Global styles */
             body {
@@ -275,8 +346,7 @@ const PrintInvoice = () => {
               color: #333;
 
             }
-  
-  
+            
             /* Header styles */
             .invoice-header {
                 background-color: #f2f2f2;
@@ -365,7 +435,7 @@ const PrintInvoice = () => {
 
   const calculateSubtotal = () => {
     const subtotal = invoices.reduce(
-      (total, invoice) => total + parseFloat(invoice.total),
+      (total, invoice) => total + parseFloat(invoice.data.total),
       0
     );
     return subtotal.toFixed(2);
@@ -396,7 +466,7 @@ const PrintInvoice = () => {
         ) : selectedCustomer ? (
           <div>
             <div className="bg-white dark:bg-slate-950 p-4 shadow-lg rounded-xl print-content">
-              <div className="flex justify-between mb-4">
+              <div className="flex justify-between yhd">
                 <div>
                   <img
                     src="https://ik.imagekit.io/tealcdn2023/assets/YHD.png"
@@ -404,7 +474,7 @@ const PrintInvoice = () => {
                     className="w-25"
                     alt="Logo"
                   />
-                  <h1 className="text-3xl font-semibold uppercase text-slate-800  dark:text-white">
+                  <h1 className="text-3xl font-semibold uppercase text-slate-800 dark:text-white">
                     Yash Home Decors
                   </h1>
                   <p className="text-sm text-slate-600 dark:text-slate-300">
@@ -424,125 +494,129 @@ const PrintInvoice = () => {
                   </p>
                 </div>
 
-                <div>
+                <div className="flex-col text-end">
                   <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
                     Order Details
                   </h2>
                   <p className="text-sm text-slate-600 dark:text-slate-300">
                     Date: 19/02/2024
                   </p>
-                </div>
-              </div>
-              <div className="mt-4">
-                <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
-                  Customer Details
-                </h2>
-                <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
-                  <p>
-                    <span className="font-semibold">Customer Name:</span>{" "}
-                    {selectedCustomer.clientName}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Customer ID:</span>{" "}
-                    {selectedCustomer.cid}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Address:</span>{" "}
-                    {selectedCustomer.address}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Client Type:</span>{" "}
-                    {selectedCustomer.clientType}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Purpose:</span>{" "}
-                    {selectedCustomer.purpose}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Phone:</span>{" "}
-                    {selectedCustomer.phone}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Email:</span>{" "}
-                    {selectedCustomer.emailAddress}
-                  </p>
+
+                  <div className="mt-4 customer-details">
+                    <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl text-neutral-900 dark:text-white">
+                      <h2 className="text-2xl font-normal uppercase text-neutral-800 dark:text-white">
+                        Customer Details
+                      </h2>
+                      <p>
+                        <span className="font-semibold">Customer Name:</span>{" "}
+                        {selectedCustomer.clientName}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Customer ID:</span>{" "}
+                        {selectedCustomer.cid}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Address:</span>{" "}
+                        {selectedCustomer.address}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Client Type:</span>{" "}
+                        {selectedCustomer.clientType}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Purpose:</span>{" "}
+                        {selectedCustomer.purpose}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Phone:</span>{" "}
+                        {selectedCustomer.phone}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Email:</span>{" "}
+                        {selectedCustomer.emailAddress}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="max-w-screen mx-auto p-6 space-y-6 text-neutral-700 dark:text-neutral-100">
                 <h1 className="text-3xl font-normal mb-4">Order Invoice</h1>
 
                 <div className="overflow-y-auto overflow-x-auto rounded-xl">
-                  <table className="w-full rounded-lg text-sm text-left text-slate-500 dark:text-slate-400 bg-gray-900 dark:bg-gray-800">
-                    <thead className="rounded-lg text-sm text-blue-900 uppercase bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
-                      <tr className="bg-neutral-100 dark:bg-slate-800">
-                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                          S.No.
-                        </th>
-                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                          Particulars
-                        </th>
-                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                          Quantity
-                        </th>
-                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                          Rate
-                        </th>
-                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                          Amount
-                        </th>
-                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                          GST %
-                        </th>
-                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                          GST Amount
-                        </th>
-                        <th className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                          Total
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {invoices.length > 0 ? (
-                        invoices.map((invoice, index) => (
-                          <tr key={invoice.id}>
-                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                              {index + 1}
-                            </td>
-                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                              {invoice.area}
-                            </td>
-                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                              {invoice.quantity}
-                            </td>
-                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                              {invoice.rate}
-                            </td>
-                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                              {invoice.amount}
-                            </td>
-                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                              {invoice.gstPercentage}
-                            </td>
-                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                              {invoice.gstAmount}
-                            </td>
-                            <td className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800">
-                              {invoice.total}
-                            </td>
+                  {uniqueCategories.map((category, index) => (
+                    <div
+                      key={index}
+                      className="overflow-y-auto overflow-x-auto rounded-xl"
+                    >
+                      <h2 className="text-2xl font-medium mt-6 mb-4">
+                        {category} Invoices
+                      </h2>
+                      <table className="w-full rounded-lg text-sm text-left text-slate-500 dark:text-slate-200 bg-gray-900 dark:bg-gray-800">
+                        {/* Table header */}
+                        <thead className="rounded-lg text-sm text-blue-900 uppercase bg-blue-100 dark:bg-slate-900 dark:text-slate-200">
+                          <tr>
+                            <th scope="col" className="px-3 py-4">
+                              S.No.
+                            </th>
+                            <th scope="col" className="px-3 py-4">
+                              Particulars
+                            </th>
+                            <th scope="col" className="px-4 py-4">
+                              Quantity
+                            </th>
+                            <th scope="col" className="px-4 py-4">
+                              Rate
+                            </th>
+                            <th scope="col" className="px-4 py-4">
+                              Amount
+                            </th>
+                            <th scope="col" className="px-4 py-4">
+                              GST %
+                            </th>
+                            <th scope="col" className="px-4 py-4">
+                              GST Amount
+                            </th>
+                            <th scope="col" className="px-4 py-4">
+                              Total
+                            </th>
                           </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan="8"
-                            className="py-2 px-4 border-b border-neutral-300 dark:border-neutral-800"
-                          >
-                            No invoices available.
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
+                        </thead>
+                        <tbody>
+                          {filterInvoicesByCategory(category).map(
+                            (invoice, index) => (
+                              <tr
+                                key={invoice.id}
+                                className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700 text-slate-900 dark:text-slate-200"
+                              >
+                                <td className="py-2 px-3">{index + 1}</td>
+                                <td className="py-2 px-3">
+                                  {invoice.data.area}
+                                </td>
+                                <td className="py-2 px-4">
+                                  {invoice.data.quantity}
+                                </td>
+                                <td className="py-2 px-4">
+                                  {invoice.data.rate}
+                                </td>
+                                <td className="py-2 px-4">
+                                  {invoice.data.amount}
+                                </td>
+                                <td className="py-2 px-4">
+                                  {invoice.data.gstPercentage}
+                                </td>
+                                <td className="py-2 px-4">
+                                  {invoice.data.gstAmount}
+                                </td>
+                                <td className="py-2 px-4">
+                                  {invoice.data.total}
+                                </td>
+                              </tr>
+                            )
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  ))}
                 </div>
 
                 {/* Subtotal */}
@@ -598,7 +672,7 @@ const PrintInvoice = () => {
               </button>
               <button
                 onClick={handleGeneratePDF}
-                className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded-xl"
+                className="bg-emerald-600 hover:bg-emerald-900 text-white py-2 px-4 rounded-xl"
                 disabled={generatingPDF}
               >
                 {generatingPDF ? "Generating PDF..." : "Generate PDF"}
