@@ -85,17 +85,41 @@ const DispatchView = () => {
   const saveEditedData = async (editedData) => {
     console.log("Saving edited data:", editedData);
     try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("customerId", editedData.customerId);
+      Object.keys(editedData.data).forEach((key) => {
+        formDataToSend.append(`${key}`, editedData.data[key]);
+      });
+
       const response = await axios.put(
         `/api/dispatch/${editedData.id}`,
-        editedData,
-        getHeaders()
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Basic " + btoa("abinesh:abi"),
+          },
+        }
       );
+
       console.log("Data saved successfully:", response.data);
       setShowEditModal(false);
       setFormData((prevFormData) =>
-        prevFormData.map((item) =>
-          item.id === editedData.id ? { ...item, ...editedData.data } : item
-        )
+        prevFormData.map((item) => {
+          if (item.id === editedData.id) {
+            console.log("Updating item:", item);
+            console.log("Edited data:", editedData);
+            const updatedItem = {
+              ...item,
+              data: { ...item.data, ...editedData.data },
+            };
+            console.log("Updated item:", updatedItem);
+            return updatedItem;
+          } else {
+            console.log("Item not updated:", item);
+            return item;
+          }
+        })
       );
       setToastMessage("Dispatch updated successfully.");
       setShowToast(true);
@@ -172,29 +196,36 @@ const DispatchView = () => {
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4">
                   <EntryItem
                     title="Area of Room"
-                    value={item.data.areaOfRoom}
+                    value={item.data ? item.data.areaOfRoom : ""}
                   />
                   <EntryItem
                     title="Catalog Name"
-                    value={item.data.catalogName}
+                    value={item.data ? item.data.catalogName : ""}
                   />
+
                   <EntryItem
                     title="Fabric Code Number"
-                    value={item.data.quantity}
+                    value={item.data ? item.data.quantity : ""}
                   />
                   <EntryItem
                     title="Quantity Ordered"
-                    value={item.data.quantityOrdered}
+                    value={item.data ? item.data.quantityOrdered : ""}
                   />
                   <EntryItem
                     title="Company Name"
-                    value={item.data.companyName}
+                    value={item.data ? item.data.companyName : ""}
                   />
-                  <EntryItem title="Order Number" value={item.data.orderNum} />
-                  <EntryItem title="Doc Number" value={item.data.docNumber} />
+                  <EntryItem
+                    title="Order Number"
+                    value={item.data ? item.data.orderNum : ""}
+                  />
+                  <EntryItem
+                    title="Doc Number"
+                    value={item.data ? item.data.docNumber : ""}
+                  />
                   <EntryItem
                     title="Transit Information"
-                    value={item.data.transitInformation}
+                    value={item.data ? item.data.transitInformation : ""}
                   />
                 </div>
               </div>

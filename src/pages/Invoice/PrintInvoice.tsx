@@ -105,32 +105,12 @@ const PrintInvoice = () => {
           font-weight: 400;
           line-height: 1;
           color: #333;
-          background-image: linear-gradient(120deg, #fff 0%, #f8f8f8 100%);
           margin: 1%;
         }
 
-        .invoice-header {
-          background-color: #880D1E;
-          color: #fff;
-          padding: 25px;
-          border-radius: 6px 6px 0 0;
-        }
-
         image {
-          width: 200px;
-          height: 200px;
-        }
-
-        .invoice-header h1 {
-          margin: 0;
-          text-transform: uppercase;
-          font-size: 24px;
-        }
-    
-        .invoice-header p {
-          margin: 5px 0;
-          font-family: "Nunito", sans-serif;
-          font-weight: 300;
+          width: 180px;
+          height: 180px;
         }
     
         .customer-details {
@@ -141,13 +121,12 @@ const PrintInvoice = () => {
         table {
           width: 90%;
           border-collapse: collapse;
-          border-radius: 10px;
           background-color: #f8f8f8;
         }
     
         th, td {
           border: 1px solid #ccc;
-          text-align: left;
+          text-align: center;
         }
     
         th {
@@ -159,14 +138,14 @@ const PrintInvoice = () => {
         .terms-conditions {
           margin-top: 30px;
           background-color: #fff;
-          padding: 20px;
           border-radius: 5px;
-          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+          page-break-before: always;
         }
     
         .terms-conditions h2 {
           color: #DD2342;
           margin-top: 0;
+          font-weight: bold;
           font-size: 20px;
         }
     
@@ -187,7 +166,6 @@ const PrintInvoice = () => {
 section {
   page-break-after: always;
   break-after: page;
-  background-color: aquamarine;
   width: 500px;
 }
 
@@ -196,6 +174,9 @@ section {
 .print-content h2,
 .print-content p {
   margin: 10px 0;
+}
+.order-details {
+  margin-right: 35px;
 }
 
 .print-content table {
@@ -207,8 +188,8 @@ section {
 
 .print-content th,
 .print-content td {
+  padding: 0 !important;
   border: 1px solid #ccc;
-  padding: 8px;
   text-align: left;
   color: #000;
 }
@@ -225,16 +206,10 @@ section {
   justify-content:between;
 }
 
-.print-content ol li {
-  margin-bottom: 5px;
-}
-
 .print-content .terms-conditions {
-  margin-top: 30px;
-  padding: 20px;
+  margin-top: 10px;
   border-radius: 5px;
   background-color: #f8f8f8;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .print-content .terms-conditions h2 {
@@ -256,21 +231,25 @@ section {
   margin-left: 20px;
 }
 
-.print-content .terms-conditions ol li {
-  margin-bottom: 5px;
-}
-
 .print-content {
   margin: 5%;
+}
+
+@page {
+  margin: 1cm; 
+}
+
+.print-content table tbody tr,
+.table-category {
+  page-break-inside: avoid; 
+
+section {
+  margin-bottom: 20px; 
 }
 
       </style>
     </head>
     <body>
-      <div class="invoice-header">
-        <h1>Invoicing Preview</h1>
-        <p>Thank you for choosing us!</p>
-      </div>
       ${printContent.innerHTML}
       <div class="terms-conditions">
         <h2>Terms and Conditions:</h2>
@@ -443,7 +422,7 @@ section {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Printorder" />
+      <Breadcrumb pageName="PrintInvoice" className="font-normal" />
       <div className="container mx-auto p-4">
         <select
           value={selectedCustomer ? selectedCustomer.id : ""}
@@ -495,12 +474,14 @@ section {
                 </div>
 
                 <div className="flex-col text-end">
-                  <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
-                    Order Details
-                  </h2>
-                  <p className="text-sm text-slate-600 dark:text-slate-300">
-                    Date: 19/02/2024
-                  </p>
+                  <div className="order-details">
+                    <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
+                      Order Details
+                    </h2>
+                    <p className="text-sm text-slate-600 dark:text-slate-300">
+                      Date: 19/02/2024
+                    </p>
+                  </div>
 
                   <div className="mt-4 customer-details">
                     <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl text-neutral-900 dark:text-white">
@@ -546,7 +527,7 @@ section {
                   {uniqueCategories.map((category, index) => (
                     <div
                       key={index}
-                      className="overflow-y-auto overflow-x-auto rounded-xl"
+                      className="overflow-y-auto overflow-x-auto rounded-xl table-category"
                     >
                       <h2 className="text-2xl font-medium mt-6 mb-4">
                         {category} Invoices
@@ -622,7 +603,7 @@ section {
                 {/* Subtotal */}
                 <div className="flex justify-end">
                   <p className="font-normal text-xl">
-                    Subtotal - {calculateSubtotal()}
+                    Subtotal : {calculateSubtotal()} <br />
                   </p>
                 </div>
 

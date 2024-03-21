@@ -19,7 +19,7 @@ const DispatchForm = () => {
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const [showToast, setShowToast] = useState(false);
-  const [referenceImage, setReferenceImage] = useState(null); // New state for reference image
+  const [referenceImage, setReferenceImage] = useState(null);
 
   useEffect(() => {
     let timer;
@@ -194,7 +194,7 @@ const DispatchForm = () => {
           </select>
         </div>
         <hr></hr>
-        <div className="border border-blue-900 sm:m-2 lg:m-8 p-6 shadow-xl rounded-xl bg-blue-100 text-blue-900 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+        <div className="sm:m-2 lg:m-8 p-6 shadow-xl rounded-xl bg-blue-100 text-blue-900 dark:bg-slate-800 dark:text-white">
           <div className="flex flex-col">
             <label htmlFor="areaOfRoom" className="text-sm font-medium">
               Area of Room
