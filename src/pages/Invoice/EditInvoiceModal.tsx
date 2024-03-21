@@ -7,13 +7,21 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
     const { name, value } = e.target;
     setEditedData((prevData) => ({
       ...prevData,
-      [name]: value,
+      data: {
+        ...prevData.data,
+        [name]: value,
+      },
     }));
 
-    calculateAmountAndGst({ ...editedData, [name]: value });
+    calculateAmountAndGst({
+      ...editedData,
+      data: { ...editedData.data, [name]: value },
+    });
   };
 
-  const calculateAmountAndGst = ({ quantity, rate, gstPercentage }) => {
+  const calculateAmountAndGst = ({
+    data: { quantity, rate, gstPercentage },
+  }) => {
     if (!quantity || !rate || !gstPercentage) {
       console.error("Please fill in all required fields");
       return;
@@ -38,17 +46,25 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
 
     setEditedData((prevData) => ({
       ...prevData,
-      amount: isNaN(calculatedAmount) ? "0.00" : calculatedAmount.toFixed(2),
-      gstAmount: isNaN(calculatedGstAmount)
-        ? "0.00"
-        : calculatedGstAmount.toFixed(2),
-      total: isNaN(calculatedTotal) ? "0.00" : calculatedTotal.toFixed(2),
+      data: {
+        ...prevData.data,
+        amount: isNaN(calculatedAmount) ? "0.00" : calculatedAmount.toFixed(2),
+        gstAmount: isNaN(calculatedGstAmount)
+          ? "0.00"
+          : calculatedGstAmount.toFixed(2),
+        total: isNaN(calculatedTotal) ? "0.00" : calculatedTotal.toFixed(2),
+      },
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    saveEditedInvoice(editedData);
+    const editedDataWithId = {
+      ...editedData,
+      id: invoice.id,
+    };
+
+    saveEditedInvoice(editedDataWithId);
   };
 
   return (
@@ -93,7 +109,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                     type="text"
                     name="area"
                     id="area"
-                    value={editedData.area}
+                    value={editedData.data.area}
                     onChange={handleInputChange}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
@@ -109,7 +125,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                     type="number"
                     name="quantity"
                     id="quantity"
-                    value={editedData.quantity}
+                    value={editedData.data.quantity}
                     onChange={handleInputChange}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
@@ -125,7 +141,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                     type="number"
                     name="rate"
                     id="rate"
-                    value={editedData.rate}
+                    value={editedData.data.rate}
                     onChange={handleInputChange}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
@@ -140,7 +156,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                   <select
                     name="gstPercentage"
                     id="gstPercentage"
-                    value={editedData.gstPercentage}
+                    value={editedData.data.gstPercentage}
                     onChange={handleInputChange}
                     className="mt-1 p-2 w-full border rounded-md"
                   >
