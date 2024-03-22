@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const EditDispatchModal = ({ formData, saveEditedData, closeModal }) => {
-  const [editedData, setEditedData] = useState(formData);
+  const [editedData, setEditedData] = useState(formData || {});
+
+  useEffect(() => {
+    setEditedData(formData || {});
+  }, [formData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -7,13 +7,21 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
     const { name, value } = e.target;
     setEditedData((prevData) => ({
       ...prevData,
-      [name]: value,
+      data: {
+        ...prevData.data,
+        [name]: value,
+      },
     }));
 
-    calculateAmountAndGst({ ...editedData, [name]: value });
+    calculateAmountAndGst({
+      ...editedData,
+      data: { ...editedData.data, [name]: value },
+    });
   };
 
-  const calculateAmountAndGst = ({ quantity, rate, gstPercentage }) => {
+  const calculateAmountAndGst = ({
+    data: { quantity, rate, gstPercentage },
+  }) => {
     if (!quantity || !rate || !gstPercentage) {
       console.error("Please fill in all required fields");
       return;
@@ -38,17 +46,25 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
 
     setEditedData((prevData) => ({
       ...prevData,
-      amount: isNaN(calculatedAmount) ? "0.00" : calculatedAmount.toFixed(2),
-      gstAmount: isNaN(calculatedGstAmount)
-        ? "0.00"
-        : calculatedGstAmount.toFixed(2),
-      total: isNaN(calculatedTotal) ? "0.00" : calculatedTotal.toFixed(2),
+      data: {
+        ...prevData.data,
+        amount: isNaN(calculatedAmount) ? "0.00" : calculatedAmount.toFixed(2),
+        gstAmount: isNaN(calculatedGstAmount)
+          ? "0.00"
+          : calculatedGstAmount.toFixed(2),
+        total: isNaN(calculatedTotal) ? "0.00" : calculatedTotal.toFixed(2),
+      },
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    saveEditedInvoice(editedData);
+    const editedDataWithId = {
+      ...editedData,
+      id: invoice.id,
+    };
+
+    saveEditedInvoice(editedDataWithId);
   };
 
   return (
@@ -61,7 +77,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
         &#8203;
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all lg:max-w-lg sm:my-8 sm:align-middle sm:max-w-full sm:w-full">
           <button
-            className="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-800 focus:outline-none"
+            className="absolute top-0 right-0 mt-4 mr-4 text-slate-600 hover:text-slate-800 focus:outline-none"
             onClick={closeModal}
           >
             <svg
@@ -85,15 +101,15 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="area"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-slate-700"
                   >
-                    Area
+                    Particulars
                   </label>
                   <input
                     type="text"
                     name="area"
                     id="area"
-                    value={editedData.area}
+                    value={editedData.data.area}
                     onChange={handleInputChange}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
@@ -101,7 +117,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="quantity"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-slate-700"
                   >
                     Quantity
                   </label>
@@ -109,7 +125,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                     type="number"
                     name="quantity"
                     id="quantity"
-                    value={editedData.quantity}
+                    value={editedData.data.quantity}
                     onChange={handleInputChange}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
@@ -117,7 +133,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="rate"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-slate-700"
                   >
                     Rate
                   </label>
@@ -125,7 +141,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                     type="number"
                     name="rate"
                     id="rate"
-                    value={editedData.rate}
+                    value={editedData.data.rate}
                     onChange={handleInputChange}
                     className="mt-1 p-2 w-full border rounded-md"
                   />
@@ -133,18 +149,19 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="gstPercentage"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-slate-700"
                   >
                     GST%
                   </label>
                   <select
                     name="gstPercentage"
                     id="gstPercentage"
-                    value={editedData.gstPercentage}
+                    value={editedData.data.gstPercentage}
                     onChange={handleInputChange}
                     className="mt-1 p-2 w-full border rounded-md"
                   >
                     <option value="">Select GST%</option>
+                    <option value="0">None</option>
                     <option value="5">5%</option>
                     <option value="12">12%</option>
                     <option value="18">18%</option>
@@ -162,7 +179,7 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
               <button
                 type="button"
                 onClick={closeModal}
-                className="w-full lg:mx-2 inline-flex my-2 justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                className="w-full lg:mx-2 inline-flex my-2 justify-center rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-slate-700 shadow-sm hover:text-slate-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
               >
                 Cancel
               </button>

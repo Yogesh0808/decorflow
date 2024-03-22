@@ -16,128 +16,136 @@ import ClientList from "../../components/Customer/ClientList";
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
 const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
-    const [selectedCustomer, setSelectedCustomer] = useState(null);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [showModal, setShowModal] = useState(false);
-    const [notification, setNotification] = useState("");
-    const [formData, setFormData] = useState({
-        title: "",
-        description: "",
-        size: "",
-        shapeModel: "L-Shaped",
-        referenceImage: null,
-        fabricNameCode: "",
-        fabricImage: null,
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [notification, setNotification] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    size: "",
+    depth: { value: "", unit: "inches" },
+    floorToSeat: { value: "", unit: "inches" },
+    seatToBackHeight: { value: "", unit: "inches" },
+    shapeModel: "L-Shaped",
+    image: null,
+    fabricNameCode: "",
+    fimg: null,
+    sofaLeg: "",
+    limg: null,
+    timeOfDelivery: "",
+    remarks: "",
+    pillowSize: "",
+    pillowFabric: "",
+    timeOfDeliveryValue: "",
+    timeOfDeliveryUnit: "days",
+  });
+  const [customers, setCustomers] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getHeaders = () => {
+    const username = "abinesh";
+    const password = "abi";
+    const basicAuth = "Basic " + btoa(username + ":" + password);
+    return {
+      headers: {
+        Authorization: basicAuth,
+      },
+    };
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!selectedCustomer) {
+      console.error("Selected customer is undefined or null");
+      return;
+    }
+    setNotification("Form submitted successfully");
+    toast.success(`${selectedProduct} has been added successfully`);
+    setShowModal(false);
+    setFormData({
+      ...formData,
+      [selectedProduct]: "",
     });
-    const [customers, setCustomers] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
-    const [loading, setLoading] = useState(true);
+  };
 
-    const getHeaders = () => {
-        const username = "abinesh";
-        const password = "abi";
-        const basicAuth = "Basic " + btoa(username + ":" + password);
-        return {
-            headers: {
-                Authorization: basicAuth,
-            },
-        };
-    };
+  const productImages = {
+    Curtains: "https://ik.imagekit.io/tealcdn2023/assets/curtains.png",
+    Sofas: "https://cdn-icons-png.flaticon.com/512/5781/5781883.png",
+    Blinds: "https://ik.imagekit.io/tealcdn2023/assets/blinds.png",
+    Carpets:
+      "https://cdn.iconscout.com/icon/premium/png-256-thumb/carpet-1469898-1243937.png?f=webp",
+    Floorings: "https://ik.imagekit.io/tealcdn2023/assets/flooring.png",
+    Wallpaper: "https://ik.imagekit.io/tealcdn2023/assets/wallpaper.png",
+    Furniture: "https://ik.imagekit.io/tealcdn2023/assets/Decor.png",
+    Mattress: "https://ik.imagekit.io/tealcdn2023/assets/bed.png",
+    Headboard: "https://ik.imagekit.io/tealcdn2023/assets/Headboard.png",
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!selectedCustomer) {
-            console.error("Selected customer is undefined or null");
-            return;
-        }
-        setNotification("Form submitted successfully");
-        toast.success(`${selectedProduct} has been added successfully`);
-        setShowModal(false);
-        setFormData({
-            ...formData,
-            [selectedProduct]: "",
-        });
-    };
+  const fetchCustomers = async () => {
+    try {
+      const response = await axios.get("/api/customer/names", getHeaders());
+      setCustomers(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching customers:", error.message);
+    }
+  };
 
-    const productImages = {
-        Curtains: "https://ik.imagekit.io/tealcdn2023/assets/curtains.png",
-        Sofas: "https://cdn-icons-png.flaticon.com/512/5781/5781883.png",
-        Blinds: "https://ik.imagekit.io/tealcdn2023/assets/blinds.png",
-        Carpets:
-            "https://cdn.iconscout.com/icon/premium/png-256-thumb/carpet-1469898-1243937.png?f=webp",
-        Floorings: "https://ik.imagekit.io/tealcdn2023/assets/flooring.png",
-        Wallpaper: "https://ik.imagekit.io/tealcdn2023/assets/wallpaper.png",
-        Furniture: "https://ik.imagekit.io/tealcdn2023/assets/Decor.png",
-        Mattress: "https://ik.imagekit.io/tealcdn2023/assets/bed.png",
-        Headboard: "https://ik.imagekit.io/tealcdn2023/assets/Headboard.png",
-    };
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
 
-    const fetchCustomers = async () => {
-        try {
-            const response = await axios.get(
-                "/api/customer/names",
-                getHeaders()
-            );
-            setCustomers(response.data);
-            setLoading(false);
-        } catch (error) {
-            console.error("Error fetching customers:", error.message);
-        }
-    };
+  useEffect(() => {
+    const searchRegex = new RegExp(`^${filterValue}`, "i"); // 'i' flag for case-insensitive
 
-    useEffect(() => {
-        fetchCustomers();
-    }, []);
+    const filtered = customers.filter((client: any) =>
+      searchRegex.test(client.clientName)
+    );
 
-    useEffect(() => {
-        const searchRegex = new RegExp(`^${filterValue}`, "i"); // 'i' flag for case-insensitive
+    setFilteredData(filtered);
+  }, [filterValue]);
 
-        const filtered = customers.filter((client: any) =>
-            searchRegex.test(client.clientName)
-        );
+  const handleCategorySelect = (product) => {
+    setSelectedProduct(product);
+    setShowModal(true);
+  };
 
-        setFilteredData(filtered);
-    }, [filterValue]);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setFormData({
+      ...formData,
+      [selectedProduct]: "",
+    });
+  };
 
-    const handleCategorySelect = (product) => {
-        setSelectedProduct(product);
-        setShowModal(true);
-    };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-    const handleCloseModal = () => {
-        setShowModal(false);
-        setFormData({
-            ...formData,
-            [selectedProduct]: "",
-        });
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
-
-    const handleFormSubmit = async (formData) => {
-        try {
-            const { clientName, cid } = selectedCustomer;
-            const dataToSubmit = {
-                ...formData,
-                customerName: clientName,
-                customerId: cid,
-            };
-            console.log("Submitted Data:", dataToSubmit);
-            setShowModal(false);
-            setFormData({
-                ...formData,
-                [selectedProduct]: "",
-            });
-        } catch (error) {
-            console.error("Error submitting form:", error);
-        }
-    };
+  const handleFormSubmit = async (formData) => {
+    try {
+      const { clientName, cid } = selectedCustomer;
+      const dataToSubmit = {
+        ...formData,
+        customerName: clientName,
+        customerId: cid,
+      };
+      console.log("Submitted Data:", dataToSubmit);
+      setShowModal(false);
+      setFormData({
+        ...formData,
+        [selectedProduct]: "",
+      });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
 
     const renderProductForm = () => {
         switch (selectedProduct) {

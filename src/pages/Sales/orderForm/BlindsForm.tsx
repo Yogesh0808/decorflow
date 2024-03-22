@@ -5,13 +5,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { convertUnit } from "../../../service/UnitConverstions";
 
 interface BlindsFormProps {
-    onCloseModal: () => void;
-    selectedCustomer: { id: string; clientName: string };
+  onCloseModal: () => void;
+  selectedCustomer: { id: string; clientName: string };
 }
 
 const BlindsForm: React.FC<BlindsFormProps> = ({
-    onCloseModal,
-    selectedCustomer,
+  onCloseModal,
+  selectedCustomer,
 }) => {
     const [formData, setFormData] = useState<any>({
         title: "",
@@ -35,15 +35,15 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
         limg: null,
     });
 
-    const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const { name, value } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: value,
-        }));
-    };
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
 
     const handleFileInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files && e.target.files[0];
@@ -93,10 +93,10 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
         });
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-            setLoading(true);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
 
             formData.size = `${formData.height}H x ${formData.width}W`;
             const formDataToSend = new FormData();
@@ -113,48 +113,48 @@ const BlindsForm: React.FC<BlindsFormProps> = ({
             formDataToSend.append("customerId", selectedCustomer.id);
             formDataToSend.append("category", "Blinds");
 
-            // Append the file data
-            formDataToSend.append("image", formData.image);
+      // Append the file data
+      formDataToSend.append("image", formData.image);
 
-            const response = await axios.post(
-                `/api/products/${selectedCustomer.id}/Blinds`,
-                formDataToSend,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        Authorization: "Basic " + btoa("abinesh:abi"),
-                    },
-                }
-            );
-
-            console.log("Form submitted successfully:", response.data);
-            onCloseModal();
-            toast.success("Blinds Order has been submitted successfully!", {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } catch (error) {
-            console.error("Error submitting form:", error);
-            toast.error("Blinds Order has been cancelled", {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } finally {
-            setLoading(false);
+      const response = await axios.post(
+        `/api/products/${selectedCustomer.id}/Blinds`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Basic " + btoa("abinesh:abi"),
+          },
         }
-    };
+      );
+
+      console.log("Form submitted successfully:", response.data);
+      onCloseModal();
+      toast.success("Blinds Order has been submitted successfully!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Blinds Order has been cancelled", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
     return (
         <div className="relative  bg-gradient-to-tr from-[#DEE4EA] to-[#F9FCFF] dark:from-[#003049] from-50% dark:to-[#669bbc] rounded-lg shadow dark:bg-slate-700">

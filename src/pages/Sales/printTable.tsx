@@ -92,7 +92,7 @@ const PrintTable = () => {
 
     if (products.length === 0) {
       return (
-        <div className="flex flex-col items-center justify-center text-gray-900 text-xl mt-4">
+        <div className="flex flex-col items-center justify-center text-slate-900 text-xl mt-4">
           <img
             src="https://ik.imagekit.io/tealcdn2023/assets/No%20data-cuate.svg"
             className="w-100"
@@ -390,7 +390,7 @@ const PrintTable = () => {
             value="all"
             checked={printType === "all"}
             onChange={() => handlePrintTypeChange("all")}
-            className="mr-2 form-radio h-4 w-4 text-gray-600 transition duration-150 ease-in-out"
+            className="mr-2 form-radio h-4 w-4 text-slate-600 transition duration-150 ease-in-out"
           />
           <span className="text-sm">Customer</span>
         </label>
@@ -401,7 +401,7 @@ const PrintTable = () => {
             value="tailor"
             checked={printType === "tailor"}
             onChange={() => handlePrintTypeChange("tailor")}
-            className="mr-2 form-radio h-4 w-4 text-gray-600 transition duration-150 ease-in-out"
+            className="mr-2 form-radio h-4 w-4 text-slate-600 transition duration-150 ease-in-out"
           />
           <span className="text-sm">Tailor / Order Copy</span>
         </label>
@@ -421,19 +421,19 @@ const PrintTable = () => {
                   <h1 className="text-3xl font-semibold uppercase text-slate-800 dark:text-white">
                     Yash Home Decors
                   </h1>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
                     #174, Pycrofts Road, Royapettah, Chennai - 600014
                   </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <p className="text-sm text-slate-700 dark:text-slate-300">
                     Ph: +91-95000-05914
                   </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <p className="text-sm text-slate-700 dark:text-slate-300">
                     GSTIN/UIN: 33CJWPM2113B1ZJ
                   </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <p className="text-sm text-slate-700 dark:text-slate-300">
                     Tamil Nadu, Code: 33
                   </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <p className="text-sm text-slate-700 dark:text-slate-300">
                     Email: yashdecoratives@gmail.com
                   </p>
                 </div>
@@ -442,7 +442,7 @@ const PrintTable = () => {
                   <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
                     Order Details
                   </h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
                     Date: 19/02/2024
                   </p>
                 </div>
@@ -450,7 +450,7 @@ const PrintTable = () => {
 
               {printType === "all" && (
                 <div className="mt-4">
-                  <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
                     Customer Details
                   </h2>
                   <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">

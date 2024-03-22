@@ -4,13 +4,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { convertUnit } from "../../../service/UnitConverstions";
 interface CurtainsFormProps {
-    onCloseModal: () => void;
-    selectedCustomer: { id: string; clientName: string };
+  onCloseModal: () => void;
+  selectedCustomer: { id: string; clientName: string };
 }
 
 const CurtainsForm: React.FC<CurtainsFormProps> = ({
-    onCloseModal,
-    selectedCustomer,
+  onCloseModal,
+  selectedCustomer,
 }) => {
     const [formData, setFormData] = useState<any>({
         title: "",
@@ -71,37 +71,37 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         }
     };
 
-    const compressImage = (file: File) => {
-        return new Promise<File>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (event: any) => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement("canvas");
-                    const ctx = canvas.getContext("2d")!;
-                    canvas.width = 700; // Adjust width as needed
-                    canvas.height = 800; // Adjust height as needed
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    canvas.toBlob(
-                        (blob) => {
-                            if (!blob) {
-                                reject(new Error("Failed to compress image."));
-                                return;
-                            }
-                            const compressedFile = new File([blob], file.name, {
-                                type: "image/jpeg", // Adjust mime type as needed
-                            });
-                            resolve(compressedFile);
-                        },
-                        "image/jpeg",
-                        0.6
-                    ); // Adjust quality as needed
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
-    };
+  const compressImage = (file: File) => {
+    return new Promise<File>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d")!;
+          canvas.width = 700; // Adjust width as needed
+          canvas.height = 800; // Adjust height as needed
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                reject(new Error("Failed to compress image."));
+                return;
+              }
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg", // Adjust mime type as needed
+              });
+              resolve(compressedFile);
+            },
+            "image/jpeg",
+            0.6
+          ); // Adjust quality as needed
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -135,34 +135,34 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                 }
             );
 
-            console.log("Form submitted successfully:", response.data);
-            onCloseModal();
-            toast.success("Curtains Order has been submitted successfully!", {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } catch (error) {
-            console.error("Error submitting form:", error);
-            toast.error("Curtains Order has been cancelled", {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
+      console.log("Form submitted successfully:", response.data);
+      onCloseModal();
+      toast.success("Curtains Order has been submitted successfully!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Curtains Order has been cancelled", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
     return (
         <div className="relative  bg-gradient-to-tr from-[#DEE4EA] to-[#F9FCFF] dark:from-[#003049] from-50% dark:to-[#669bbc] rounded-lg shadow dark:bg-slate-700">

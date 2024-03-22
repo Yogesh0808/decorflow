@@ -108,6 +108,50 @@ const DispatchForm = () => {
     });
   };
 
+  const handleFileInputChange = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      try {
+        const compressedImage = await compressImage(file);
+        setReferenceImage(compressedImage);
+      } catch (error) {
+        console.error("Error compressing image:", error);
+      }
+    }
+  };
+
+  const compressImage = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = 700; // Adjust width as needed
+          canvas.height = 800; // Adjust height as needed
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                reject(new Error("Failed to compress image."));
+                return;
+              }
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg", // Adjust mime type as needed
+              });
+              resolve(compressedFile);
+            },
+            "image/jpeg",
+            0.6
+          ); // Adjust quality as needed
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -194,7 +238,7 @@ const DispatchForm = () => {
           </select>
         </div>
         <hr></hr>
-        <div className="border border-blue-900 sm:m-2 lg:m-8 p-6 shadow-xl rounded-xl bg-blue-100 text-blue-900 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+        <div className="sm:m-2 lg:m-8 p-6 shadow-xl rounded-xl bg-blue-100 text-blue-900 dark:bg-slate-800 dark:text-white">
           <div className="flex flex-col">
             <label htmlFor="areaOfRoom" className="text-sm font-medium">
               Area of Room
