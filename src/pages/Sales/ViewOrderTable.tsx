@@ -10,6 +10,7 @@ import MattressOrdersTable from "./orderTable/MattressOrdersTable";
 import HeadboardOrdersTable from "./orderTable/HeadboardOrdersTable";
 import Loader from "../../common/Loader/index";
 import SkeletonRow from "./SkeletonRow";
+import ViewOrder from "../../components/Customer/ViewOrder";
 
 axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
@@ -51,15 +52,18 @@ const ViewOrderComponent = ({
     }
   };
 
-  const fetchCustomers = async () => {
-    try {
-      const response = await axios.get("/api/customer/names", getHeaders());
-      setCustomers(response.data);
-      setSkeleLoading(false);
-    } catch (error) {
-      console.error("Error fetching customers:", error.message);
-    }
-  };
+    const fetchCustomers = async () => {
+        try {
+            const response = await axios.get(
+                "/api/customer/names",
+                getHeaders()
+            );
+            setCustomers(response.data);
+            setSkeleLoading(false);
+        } catch (error: any) {
+            console.error("Error fetching customers:", error.message);
+        }
+    };
 
   const fetchProducts = async (customerId) => {
     try {
@@ -77,8 +81,8 @@ const ViewOrderComponent = ({
     }
   };
 
-  const editProduct = (productId, editedData) => {
-    const index = products.findIndex((product) => product.id === productId);
+    const editProduct = (productId: any, editedData: any) => {
+        const index = products.findIndex((product) => product.id === productId);
 
     if (index !== -1) {
       setProducts((prevProducts) => {
@@ -253,63 +257,53 @@ const ViewOrderComponent = ({
     });
   };
 
-  return (
-    <div>
-      {!selectedCustomer && (
-        <>
-          {skeleLoading ? (
-            <SkeletonRow />
-          ) : filterValue ? (
-            <>
-              <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
-                <li className="p-3 font-bold w-1/6 text-center">Client ID</li>
-                <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
-                  Client Name
-                </li>
-              </ul>
-              {filteredData.map((customer: any, index) => (
-                <ul
-                  className="flex w-full justify-around bg-blue-100 text-graydark my-3 rounded-xl"
-                  key={index}
-                  onClick={() => {
-                    setSelectedCustomer(customer);
-                    handleSelectCustomer(customer.id);
-                  }}
-                >
-                  <li className="p-3 w-1/6 text-center">{customer.cid}</li>
-                  <li className="p-3 w-5/6 text-center">
-                    {customer.clientName}
-                  </li>
-                </ul>
-              ))}
-            </>
-          ) : (
-            <>
-              <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
-                <li className="p-3 font-bold w-1/6 text-center">Client ID</li>
-                <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
-                  Client Name
-                </li>
-              </ul>
-              {customers.map((customer: any, index) => (
-                <ul
-                  className="flex w-full justify-around bg-blue-100 text-graydark my-3 rounded-xl"
-                  key={index}
-                  onClick={() => {
-                    setSelectedCustomer(customer);
-                    handleSelectCustomer(customer.id);
-                  }}
-                >
-                  <li className="p-3 w-1/6 text-center">{customer.cid}</li>
-                  <li className="p-3 w-5/6 text-center">
-                    {customer.clientName}
-                  </li>
-                </ul>
-              ))}
-            </>
-          )}
-        </>
-      )}
+    return (
+        <div>
+            {!selectedCustomer && (
+                <>
+                    {skeleLoading ? (
+                        <SkeletonRow />
+                    ) : filterValue ? (
+                        <>
+                            <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
+                                <li className="p-3 font-bold w-1/6 text-center">
+                                    Client ID
+                                </li>
+                                <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
+                                    Client Name
+                                </li>
+                            </ul>
+                            {filteredData.map((customer: any, index) => (
+                                <ViewOrder
+                                    key={index}
+                                    customer={customer}
+                                    handleSelectCustomer={handleSelectCustomer}
+                                    setSelectedCustomer={setSelectedCustomer}
+                                />
+                            ))}
+                        </>
+                    ) : (
+                        <>
+                            <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
+                                <li className="p-3 font-bold w-1/6 text-center">
+                                    Client ID
+                                </li>
+                                <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
+                                    Client Name
+                                </li>
+                            </ul>
+                            {customers.map((customer: any, index) => (
+                                <ViewOrder
+                                    key={index}
+                                    customer={customer}
+                                    handleSelectCustomer={handleSelectCustomer}
+                                    setSelectedCustomer={setSelectedCustomer}
+                                />
+                            ))}
+                        </>
+                    )}
+                </>
+            )}
 
       {selectedCustomer && (
         <>

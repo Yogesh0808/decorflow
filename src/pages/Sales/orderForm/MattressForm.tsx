@@ -26,8 +26,19 @@ const MattressForm: React.FC<MattressFormProps> = ({
         bedProtectorColor: "",
         image: null,
         deliveryTime: "",
+        width: "",
+        height: "",
+        unit1: "in",
+        unit2: "in",
+        timeOfDeliveryValue: "",
+        timeOfDeliveryUnit: "days",
     });
     const [loading, setLoading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<any>({
+        image: null,
+        fimg: null,
+        limg: null,
+    });
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -50,8 +61,13 @@ const MattressForm: React.FC<MattressFormProps> = ({
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
         const file = e.target.files && e.target.files[0];
+        const name = e.target.name;
         if (file) {
             try {
+                setSelectedImage({
+                    ...selectedImage,
+                    [name]: URL.createObjectURL(file),
+                });
                 const compressedImage = await compressImage(file);
                 setFormData((prevFormData: any) => ({
                     ...prevFormData,
@@ -101,9 +117,18 @@ const MattressForm: React.FC<MattressFormProps> = ({
         try {
             setLoading(true);
 
+            formData.size = `${formData.height}H x ${formData.width}W`;
+            formData.deliveryTime = `${formData.timeOfDeliveryValue} ${formData.timeOfDeliveryUnit}`;
             const formDataToSend = new FormData();
+            // Set file name to "image.jpg"
+            if (formData.image) {
+                formDataToSend.append("image", formData.image, "image.jpg");
+            }
+
             Object.keys(formData).forEach((key) => {
-                formDataToSend.append(key, formData[key]);
+                if (key !== "image") {
+                    formDataToSend.append(key, formData[key]);
+                }
             });
             formDataToSend.append("customerId", selectedCustomer.id);
             formDataToSend.append("category", "Mattress");
@@ -216,22 +241,80 @@ const MattressForm: React.FC<MattressFormProps> = ({
                                 <option value="Hybrid">Hybrid</option>
                             </select>
                         </div>
-                        <div className="col-span-2">
+                        <div className="col-span-2 space-y-2">
                             <label
                                 htmlFor="size"
                                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white">
                                 Size
                             </label>
-                            <input
-                                type="text"
-                                id="size"
-                                name="size"
-                                value={formData.size}
-                                onChange={handleInputChange}
-                                required
-                                className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter size"
-                            />
+                            <div className="inputGrp w-full flex">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="height"
+                                    name="height"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.height}
+                                    placeholder="Height"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit1"
+                                    name="unit1"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit2: e.target.value,
+                                            unit1: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit1}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">Inch</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
+                            <div className="inputGrp w-full flex items-center">
+                                <input
+                                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    type="number"
+                                    id="width"
+                                    name="width"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                    }}
+                                    value={formData.width}
+                                    placeholder="width"
+                                />
+                                <select
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                                    id="unit2"
+                                    name="unit2"
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        // Set the value of the other dropdown to match the selected value
+                                        setFormData({
+                                            ...formData,
+                                            unit1: e.target.value,
+                                            unit2: e.target.value,
+                                        });
+                                    }}
+                                    value={formData.unit2}>
+                                    <option value="mm">mm</option>
+                                    <option value="in">Inch</option>
+                                    <option value="cm">cm</option>
+                                    <option value="yd">yd</option>
+                                    <option value="ft">ft</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
                         </div>
                         <div className="col-span-2">
                             <label
@@ -350,23 +433,42 @@ const MattressForm: React.FC<MattressFormProps> = ({
                                 required
                                 className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             />
+                            {selectedImage.image && (
+                                <div className="mt-2">
+                                    <img
+                                        src={selectedImage.image}
+                                        alt="Selected"
+                                        className="w-full rounded-lg border border-gray-300"
+                                    />
+                                </div>
+                            )}
                         </div>
                         <div className="col-span-2">
                             <label
-                                htmlFor="deliveryTime"
+                                htmlFor="timeOfDelivery"
                                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white">
                                 Time of Delivery
                             </label>
-                            <input
-                                type="text"
-                                id="deliveryTime"
-                                name="deliveryTime"
-                                value={formData.deliveryTime}
-                                onChange={handleInputChange}
-                                required
-                                className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Enter time of delivery"
-                            />
+                            <div className="flex items-center">
+                                <input
+                                    type="text"
+                                    id="timeOfDelivery"
+                                    name="timeOfDeliveryValue"
+                                    value={formData.timeOfDeliveryValue}
+                                    onChange={handleInputChange}
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Enter time of delivery"
+                                />
+                                <select
+                                    value={formData.timeOfDeliveryUnit}
+                                    name="timeOfDeliveryUnit"
+                                    onChange={handleInputChange}
+                                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option value="days">days</option>
+                                    <option value="weeks">weeks</option>
+                                    <option value="months">months</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <button

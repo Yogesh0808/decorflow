@@ -8,15 +8,27 @@ const EditBlindOrderForm = ({
   editProduct,
 }) => {
   const [formData, setFormData] = useState({
-    title: selectedProduct.data.title,
-    description: selectedProduct.data.description,
-    size: selectedProduct.data.size,
-    quantity: selectedProduct.data.quantity,
-    typeOfBlinds: selectedProduct.data.typeOfBlinds,
-    catalogueName: selectedProduct.data.catalogueName,
-    fabricCode: selectedProduct.data.fabricCode,
-    remarks: selectedProduct.data.remarks,
+    title: selectedProduct.data.title || "",
+    description: selectedProduct.data.description || "",
+    size: selectedProduct.data.size || "",
+    height: selectedProduct.data.height || "",
+    width: selectedProduct.data.width || "",
+    unit1: selectedProduct.data.unit1 || "in",
+    unit2: selectedProduct.data.unit2 || "in",
+    quantity: selectedProduct.data.quantity || "",
+    typeOfBlinds: selectedProduct.data.typeOfBlinds || "",
+    catalogueName: selectedProduct.data.catalogueName || "",
+    fabricCode: selectedProduct.data.fabricCode || "",
+    image: selectedProduct.data.image || null,
+    remarks: selectedProduct.data.remarks || "",
   });
+  const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<any>({
+    image: null,
+    fimg: null,
+    limg: null,
+  });
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,6 +40,7 @@ const EditBlindOrderForm = ({
 
   const handleFileInputChange = async (e) => {
     const file = e.target.files && e.target.files[0];
+    const name = e.target.name;
     if (file) {
       try {
         const compressedImage = await compressImage(file);
@@ -76,9 +89,17 @@ const EditBlindOrderForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      formData.size = `${formData.height}H x ${formData.width}W`;
       const formDataToSend = new FormData();
+      // Set file name to "image.jpg"
+      if (formData.image) {
+        formDataToSend.append("image", formData.image, "image.jpg");
+      }
+
       Object.keys(formData).forEach((key) => {
-        formDataToSend.append(key, formData[key]);
+        if (key !== "image") {
+          formDataToSend.append(key, formData[key]);
+        }
       });
 
       // Make the PUT request to update the product
@@ -140,7 +161,7 @@ const EditBlindOrderForm = ({
             Edit Blinds Order Form
           </h3>
           <hr></hr>
-          <form
+          {/* <form
             className="p-4 md:p-5"
             onSubmit={handleSubmit}
             encType="multipart/form-data"
@@ -313,6 +334,309 @@ const EditBlindOrderForm = ({
               className="bg-purple-600 p-2 text-white rounded"
             >
               Save
+            </button>
+          </form> */}
+          <form
+            className="p-4 md:p-5"
+            onSubmit={handleSubmit}
+            encType="multipart/form-data">
+            <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
+              <div className="col-span-2">
+                <label
+                  htmlFor="title"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter title"
+                />
+              </div>
+              <div className="col-span-2 ">
+                <label
+                  htmlFor="description"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  rows={4}
+                  className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Write product description here"
+                />
+              </div>
+              <div className="col-span-2 space-y-2">
+                <label
+                  htmlFor="size"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Size
+                </label>
+                <div className="inputGrp w-full flex">
+                  <input
+                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    type="number"
+                    id="height"
+                    name="height"
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    value={formData.height}
+                    placeholder="Height"
+                  />
+                  <select
+                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                    id="unit1"
+                    name="unit1"
+                    onChange={(e) => {
+                      handleInputChange(e);
+                      // Set the value of the other dropdown to match the selected value
+                      setFormData({
+                        ...formData,
+                        unit2: e.target.value,
+                        unit1: e.target.value,
+                      });
+                    }}
+                    value={formData.unit1}>
+                    <option value="mm">mm</option>
+                    <option value="in">Inch</option>
+                    <option value="cm">cm</option>
+                    <option value="yd">yd</option>
+                    <option value="ft">ft</option>
+                    <option value="m">m</option>
+                  </select>
+                </div>
+                <div className="inputGrp w-full flex items-center">
+                  <input
+                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    type="number"
+                    id="width"
+                    name="width"
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    value={formData.width}
+                    placeholder="width"
+                  />
+                  <select
+                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                    id="unit2"
+                    name="unit2"
+                    onChange={(e) => {
+                      handleInputChange(e);
+                      // Set the value of the other dropdown to match the selected value
+                      setFormData({
+                        ...formData,
+                        unit1: e.target.value,
+                        unit2: e.target.value,
+                      });
+                    }}
+                    value={formData.unit2}>
+                    <option value="mm">mm</option>
+                    <option value="in">Inch</option>
+                    <option value="cm">cm</option>
+                    <option value="yd">yd</option>
+                    <option value="ft">ft</option>
+                    <option value="m">m</option>
+                  </select>
+                </div>
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="quantity"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Quantity
+                </label>
+                <input
+                  type="text"
+                  id="quantity"
+                  name="quantity"
+                  value={formData.quantity}
+                  onChange={handleInputChange}
+                  onClick={() => {
+                    if (formData.width !== "") {
+                      let unit = "";
+                      switch (formData.unit1) {
+                        case "mm":
+                          unit = "mm";
+                          break;
+                        case "in":
+                          unit = "inches";
+                          break;
+                        case "cm":
+                          unit = "cm";
+                          break;
+                        case "yd":
+                          unit = "yard";
+                          break;
+                        case "ft":
+                          unit = "feet";
+                          break;
+                        case "m":
+                          unit = "meter";
+                          break;
+                        case "sqm":
+                          unit = "squareMeter";
+                          break;
+                        case "syd":
+                          unit = "squareYard";
+                          break;
+                        default:
+                          unit = "";
+                      }
+                      let W = convertUnit(
+                        formData.width,
+                        unit,
+                        "feet"
+                      );
+                      let H = convertUnit(
+                        formData.height,
+                        unit,
+                        "feet"
+                      );
+                      let quan: number = Math.ceil(W * H);
+                      setFormData({
+                        ...formData,
+                        quantity: quan,
+                      });
+                    }
+                  }}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter Quantity"
+                />
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="typeOfBlinds"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Type of Blinds
+                </label>
+                <select
+                  id="typeOfBlinds"
+                  name="typeOfBlinds"
+                  value={formData.typeOfBlinds}
+                  onChange={() => handleInputChange}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                  <option value="Roman Blinds">
+                    Roman Blinds
+                  </option>
+                  <option value="Roller Blinds">
+                    Roller Blinds
+                  </option>
+                  <option value="Zebra Blinds">
+                    Zebra Blinds
+                  </option>
+                  <option value="Wooden Blinds">
+                    Wooden Blinds
+                  </option>
+                  <option value="Aluminium Blinds">
+                    Aluminium Blinds
+                  </option>
+                  <option value="Skylight Blinds">
+                    Skylight Blinds
+                  </option>
+                  <option value="Vertical Blinds">
+                    Vertical Blinds
+                  </option>
+                  <option value="Honeycomb Blinds">
+                    Honeycomb Blinds
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
+              <div>
+                <label
+                  htmlFor="catalogueName"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Catalogue Name
+                </label>
+                <input
+                  type="text"
+                  id="catalogueName"
+                  name="catalogueName"
+                  value={formData.catalogueName}
+                  onChange={handleInputChange}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter Catalog name"
+                />
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="fabricCode"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Fabric Code
+                </label>
+                <input
+                  type="text"
+                  id="fabricCode"
+                  name="fabricCode"
+                  value={formData.fabricCode}
+                  onChange={handleInputChange}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter fabric code"
+                />
+              </div>
+              <div className="col-span-2">
+                <label
+                  htmlFor="image"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Fabric Image
+                </label>
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleFileInputChange}
+                  className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+                {selectedImage.image && (
+                  <div className="mt-2">
+                    <img
+                      src={selectedImage.image}
+                      alt="Selected"
+                      className="w-full rounded-lg border border-gray-300"
+                    />
+                  </div>
+                )}
+              </div>
+              <div className="col-span-2">
+                <label
+                  htmlFor="remarks"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Remarks
+                </label>
+                <textarea
+                  id="remarks"
+                  name="remarks"
+                  value={formData.remarks}
+                  onChange={handleInputChange}
+                  rows={2}
+                  className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Add any additional remarks here"
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="btn bg-pink-800 px-2 p-1 text-white rounded-xl mx-1"
+            >
+              Save Changes
+            </button>
+            <button
+              type="button"
+              onClick={onCloseModal}
+              className="btn bg-purple-800 px-2 p-1 text-white rounded-xl mx-1"
+            >
+              Cancel
             </button>
           </form>
         </div>

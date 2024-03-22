@@ -158,19 +158,16 @@ const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
       total: 0,
     });
     setShowQuoteForm(false);
-    setStep(0); // Reset step back to 0
+    setStep(0); 
   };
 
   const handleBackButtonClick = () => {
     if (showQuoteForm) {
-      // If showing quote form, go back to category selection
       setShowQuoteForm(false);
     } else if (selectedCustomer) {
-      // If selected customer, go back to customer selection
       setSelectedCustomer(null);
       setStep(0);
     } else {
-      // Otherwise, go back to search bar
       setSearchBar(true);
       setFilterValue("");
     }
@@ -183,7 +180,6 @@ const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
           {loading ? (
             <SkeletonRow />
           ) : filterValue ? (
-            // Render filtered customer list
             <>
               <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
                 <li className="p-3 font-bold w-1/6 text-center">Client ID</li>
@@ -197,7 +193,7 @@ const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
                   key={index}
                   onClick={() => {
                     setSelectedCustomer(customer);
-                    setStep(1); // Move to the next step
+                    setStep(1);
                   }}
                 >
                   <li className="p-3 w-1/6 text-center">{customer.cid}</li>
@@ -208,7 +204,6 @@ const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
               ))}
             </>
           ) : (
-            // Render complete customer list
             <>
               <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
                 <li className="p-3 font-bold w-1/6 text-center">Client ID</li>
@@ -222,7 +217,7 @@ const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
                   key={index}
                   onClick={() => {
                     setSelectedCustomer(customer);
-                    setStep(1); // Move to the next step
+                    setStep(1);
                   }}
                 >
                   <li className="p-3 w-1/6 text-center">{customer.cid}</li>

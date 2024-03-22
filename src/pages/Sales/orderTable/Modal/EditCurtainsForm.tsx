@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { convertUnit } from "../../../../service/UnitConverstions";
 
 const EditCurtainsForm = ({
   selectedProduct,
@@ -11,15 +12,27 @@ const EditCurtainsForm = ({
     title: "",
     description: "",
     size: "",
+    height: "", // Add height field corresponding to new order form data
+    width: "", // Add width field corresponding to new order form data
+    unit1: "in", // Add unit1 field corresponding to new order form data
+    unit2: "in", // Add unit2 field corresponding to new order form data
     widthOfFabric: "",
     noOfPieces: "",
     noOfPanels: "",
     modelOfStitching: "",
     fabricName: "",
     fabricCode: "",
-    remarks: "",
-    tieOption: "",
+    hookType: "", // Add hookType field corresponding to new order form data
+    trackType: "", // Add trackType field corresponding to new order form data
     image: null,
+    tieOption: "",
+    remarks: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<any>({
+    image: null,
+    fimg: null,
+    limg: null,
   });
 
   useEffect(() => {
@@ -28,17 +41,24 @@ const EditCurtainsForm = ({
         title: selectedProduct.data.title || "",
         description: selectedProduct.data.description || "",
         size: selectedProduct.data.size || "",
+        height: selectedProduct.data.height || "", // Update height field assignment
+        width: selectedProduct.data.width || "", // Update width field assignment
+        unit1: selectedProduct.data.unit1 || "in", // Update unit1 field assignment
+        unit2: selectedProduct.data.unit2 || "in", // Update unit2 field assignment
         widthOfFabric: selectedProduct.data.widthOfFabric || "",
         noOfPieces: selectedProduct.data.noOfPieces || "",
         noOfPanels: selectedProduct.data.noOfPanels || "",
         modelOfStitching: selectedProduct.data.modelOfStitching || "",
         fabricName: selectedProduct.data.fabricName || "",
         fabricCode: selectedProduct.data.fabricCode || "",
+        hookType: selectedProduct.data.hookType || "", // Update hookType field assignment
+        trackType: selectedProduct.data.trackType || "", // Update trackType field assignment
         remarks: selectedProduct.data.remarks || "",
         tieOption: selectedProduct.data.tieOption || "",
       });
     }
   }, [selectedProduct]);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -48,12 +68,19 @@ const EditCurtainsForm = ({
     }));
   };
 
-  const handleFileInputChange = async (e) => {
+  const handleFileInputChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
       try {
+        setSelectedImage((prevState: any) => ({
+          ...prevState,
+          [e.target.name]: URL.createObjectURL(file),
+        }));
+
         const compressedImage = await compressImage(file);
-        setFormData((prevFormData) => ({
+        setFormData((prevFormData: any) => ({
           ...prevFormData,
           image: compressedImage,
         }));
@@ -62,6 +89,7 @@ const EditCurtainsForm = ({
       }
     }
   };
+
 
   const compressImage = (file) => {
     return new Promise((resolve, reject) => {
@@ -98,20 +126,21 @@ const EditCurtainsForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formDataToSend = new FormData();
+      formData.size = `${formData.height}H x ${formData.width}W`;
 
+
+      const formDataToSend = new FormData();
       // Set file name to "image.jpg"
       if (formData.image) {
         formDataToSend.append("image", formData.image, "image.jpg");
       }
 
-      // Append other form data
       Object.keys(formData).forEach((key) => {
         if (key !== "image") {
           formDataToSend.append(key, formData[key]);
         }
       });
-
+      // Make the PUT request to update the product
       const response = await axios.put(
         `/api/products/${selectedProduct.id}`,
         formDataToSend,
@@ -170,7 +199,7 @@ const EditCurtainsForm = ({
             Edit Curtains Order Form
           </h3>
           <hr></hr>
-          <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+          {/* <form className="p-4 md:p-5" onSubmit={handleSubmit}>
             <div className="grid gap-4 mb-4 grid-cols-2">
               <div className="col-span-2">
                 <label
@@ -382,6 +411,407 @@ const EditCurtainsForm = ({
                   className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Enter tie option"
                 />
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="btn bg-pink-800 px-2 p-1 text-white rounded-xl mx-1"
+            >
+              Save Changes
+            </button>
+            <button
+              type="button"
+              onClick={onCloseModal}
+              className="btn bg-purple-800 px-2 p-1 text-white rounded-xl mx-1"
+            >
+              Cancel
+            </button>
+          </form> */}
+          <form
+            className="p-4 md:p-5"
+            onSubmit={handleSubmit}
+            encType="multipart/form-data">
+            <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
+              <div className="col-span-2">
+                <label
+                  htmlFor="title"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter title"
+                />
+              </div>
+              <div className="col-span-2 md:col-span-2">
+                <label
+                  htmlFor="description"
+                  className="block mb-2 text-sm font-medium  text-gray-900 dark:text-white">
+                  Description
+                </label>
+                <textarea
+                  type={"text"}
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  rows={4}
+                  onChange={handleInputChange}
+                  className="block p-2.5 w-full text-sm col-span-2 text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Write product description here"></textarea>
+              </div>
+              <div className="col-span-2  wrap w-full space-y-2">
+                <label
+                  htmlFor="description"
+                  className="block mb-2 text-sm font-medium  text-gray-900 dark:text-white">
+                  Size
+                </label>
+                <div className="inputGrp w-full flex">
+                  <input
+                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    type="number"
+                    id="height"
+                    name="height"
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    value={formData.height}
+                    placeholder="Height"
+                  />
+                  <select
+                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                    id="unit1"
+                    name="unit1"
+                    onChange={(e) => {
+                      handleInputChange(e);
+                      // Set the value of the other dropdown to match the selected value
+                      setFormData({
+                        ...formData,
+                        unit2: e.target.value,
+                        unit1: e.target.value,
+                      });
+                    }}
+                    value={formData.unit1}>
+                    <option value="mm">mm</option>
+                    <option value="in">Inch</option>
+                    <option value="cm">cm</option>
+                    <option value="yd">yd</option>
+                    <option value="ft">ft</option>
+                    <option value="m">m</option>
+                  </select>
+                </div>
+                <div className="inputGrp w-full flex items-center">
+                  <input
+                    className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    type="number"
+                    id="width"
+                    name="width"
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    value={formData.width}
+                    placeholder="width"
+                  />
+                  <select
+                    className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0"
+                    id="unit2"
+                    name="unit2"
+                    onChange={(e) => {
+                      handleInputChange(e);
+                      // Set the value of the other dropdown to match the selected value
+                      setFormData({
+                        ...formData,
+                        unit1: e.target.value,
+                        unit2: e.target.value,
+                      });
+                    }}
+                    value={formData.unit2}>
+                    <option value="mm">mm</option>
+                    <option value="in">Inch</option>
+                    <option value="cm">cm</option>
+                    <option value="yd">yd</option>
+                    <option value="ft">ft</option>
+                    <option value="m">m</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="widthOfFabric"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Width of Fabric
+                </label>
+                <input
+                  type="text"
+                  id="widthOfFabric"
+                  name="widthOfFabric"
+                  value={formData.widthOfFabric}
+                  onChange={(e) => handleInputChange(e)}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter width of fabric"
+                  list="widthOfFabricOptions"
+                />
+                <datalist id="widthOfFabricOptions">
+                  <option value="48" />
+                  <option value="54" />
+                  <option value="118" />
+                  <option value="125" />
+                  <option value="128" />
+                  <option value="129" />
+                </datalist>
+              </div>
+
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="noOfPieces"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Number of Pieces
+                </label>
+                <input
+                  type="text"
+                  id="noOfPieces"
+                  name="noOfPieces"
+                  value={formData.noOfPieces}
+                  onChange={(e) => handleInputChange(e)}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter number of pieces"
+                />
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="noOfPanels"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Number of Panels
+                </label>
+                <input
+                  type="number"
+                  id="noOfPanels"
+                  name="noOfPanels"
+                  value={formData.noOfPanels}
+                  onClick={() => {
+                    if (formData.width !== "") {
+                      let unit = "";
+                      switch (formData.unit1) {
+                        case "mm":
+                          unit = "mm";
+                          break;
+                        case "in":
+                          unit = "inches";
+                          break;
+                        case "cm":
+                          unit = "cm";
+                          break;
+                        case "yd":
+                          unit = "yard";
+                          break;
+                        case "ft":
+                          unit = "feet";
+                          break;
+                        case "m":
+                          unit = "meter";
+                          break;
+                        case "sqm":
+                          unit = "squareMeter";
+                          break;
+                        case "syd":
+                          unit = "squareYard";
+                          break;
+                        default:
+                          unit = "";
+                      }
+
+                      let widthInch = convertUnit(
+                        formData.width,
+                        unit,
+                        "inches"
+                      );
+                      let noPanels: number = Math.ceil(
+                        widthInch / 20
+                      );
+                      setFormData({
+                        ...formData,
+                        noOfPanels: noPanels,
+                      });
+                    }
+                  }}
+                  onChange={(e) => handleInputChange(e)}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter number of panels"
+                />
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="modelOfStitching"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Model of Stitching
+                </label>
+                <input
+                  type="text"
+                  id="modelOfStitching"
+                  name="modelOfStitching"
+                  value={formData.modelOfStitching}
+                  onChange={(e) => handleInputChange(e)}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter width of fabric"
+                  list="stitching"
+                />
+                <datalist id="stitching">
+                  <option value="1 pleat"></option>
+                  <option value="2 pleat"></option>
+                  <option value="3 pleat"></option>
+                  <option value="ring model"></option>
+                  <option value="ripple fold"></option>
+                  <option value="tailored pleat"></option>
+                  <option value="inverted pleat"></option>
+                  <option value="goblet"></option>
+                  <option value="cubicle"></option>
+                  <option value="rod pocket"></option>
+                </datalist>
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="hookType"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Hook
+                </label>
+                <select
+                  id="hookType"
+                  name="hookType"
+                  value={formData.hookType}
+                  onChange={(e) => handleInputChange(e)}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                  <option value="Track Hook">Track Hook</option>
+                  <option value="Rod Hook">Rod Hook</option>
+                </select>
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="trackType"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Track
+                </label>
+                <input
+                  className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  list="tracksLists"
+                  name="trackType"
+                  type="text"
+                  value={formData.trackType}
+                  onChange={(e) => handleInputChange(e)}
+                />
+                <datalist id="tracksLists">
+                  <option value="SS Rod">SS Rod</option>
+                  <option value="M Track">M Track</option>
+                  <option value="I Track">I Track</option>
+                  <option value="Hospital Track">
+                    Hospital Track
+                  </option>
+                  <option value="Silent Track">
+                    Silent Track
+                  </option>
+                </datalist>
+              </div>
+            </div>
+            <hr className="my-4" />
+            <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-2">
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="fabricName"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Fabric Name
+                </label>
+                <input
+                  type="text"
+                  id="fabricName"
+                  name="fabricName"
+                  value={formData.fabricName}
+                  onChange={(e) => handleInputChange(e)}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter fabric name"
+                />
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="fabricCode"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Fabric Code
+                </label>
+                <input
+                  type="text"
+                  id="fabricCode"
+                  name="fabricCode"
+                  value={formData.fabricCode}
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="Enter fabric code"
+                  onChange={(e) => handleInputChange(e)}
+                />
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="tieOption"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Tie Option
+                </label>
+                <select
+                  id="tieOption"
+                  name="tieOption"
+                  className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  onChange={(e: any) => handleInputChange(e)}
+                  value={formData.tieOption}>
+                  <option value="No Tie">No Tie</option>
+                  <option value="Attached">
+                    Attached in curtain
+                  </option>
+                  <option value="Separate">
+                    Separate with tie back holder
+                  </option>
+                </select>
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <label
+                  htmlFor="remarks"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Remarks
+                </label>
+                <textarea
+                  id="remarks"
+                  name="remarks"
+                  rows={4}
+                  className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Add any additional remarks here"
+                  value={formData.remarks}
+                  onChange={(e) =>
+                    handleInputChange(e)
+                  }></textarea>
+              </div>
+
+              <div className="col-span-2 ">
+                <label
+                  htmlFor="image"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Fabric Image
+                </label>
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleFileInputChange}
+                  className="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+                {selectedImage.image && (
+                  <div className="mt-2">
+                    <img
+                      src={selectedImage.image}
+                      alt="Selected"
+                      className="w-full rounded-lg border border-gray-300"
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <button
