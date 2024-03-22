@@ -143,10 +143,8 @@ const PrintTable = () => {
     setPrintType(type);
 
     if (type === "all") {
-      // Fetch customer details and products when switching to 'all' print type
       await handleSelectCustomer(selectedCustomer.id);
     } else {
-      // Reset selectedCustomer to null when switching to 'tailor' print type
       setSelectedCustomer(null);
     }
   };
@@ -391,8 +389,8 @@ const PrintTable = () => {
         {selectedCustomer && (
           <div>
             <div className="bg-white dark:bg-slate-950 p-4 shadow-lg rounded-xl print-content">
-              <div className="flex justify-between yhd">
-                <div>
+              <div className="flex justify-between yhd flex-col md:flex-row">
+                <div className="md:w-1/2">
                   <img
                     src="https://ik.imagekit.io/tealcdn2023/assets/YHD.png"
                     width="100"
@@ -419,7 +417,7 @@ const PrintTable = () => {
                   </p>
                 </div>
 
-                <div className="flex-col text-end">
+                <div className="md:w-1/2 mt-4 md:mt-0 md:text-end">
                   <div className="order-details">
                     <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
                       Order Details
@@ -430,7 +428,7 @@ const PrintTable = () => {
                   </div>
 
                   {printType === "all" && (
-                    <div className="mt-4 order-details">
+                    <div className="mt-4 customer-details">
                       <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
                         Customer Details
                       </h2>
@@ -468,6 +466,7 @@ const PrintTable = () => {
                   )}
                 </div>
               </div>
+
               {renderProductTables()}
             </div>
 

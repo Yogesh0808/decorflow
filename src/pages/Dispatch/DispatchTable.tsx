@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import EditDispatchModal from "./EditDispatchModal";
+import Loader from "../../common/Loader/index";
 import trash from "../../images/icon/trash.svg";
 import edit from "../../images/icon/edit.svg";
 
@@ -10,8 +11,9 @@ const DispatchView = () => {
   const [customers, setCustomers] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [showEditModal, setShowEditModal] = useState(false); // State variable to manage the visibility of the edit modal
+  const [showEditModal, setShowEditModal] = useState(false); 
   const [editedFormData, setEditedFormData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   //For Zooming Images ra P*nda
   const [showImageModal, setShowImageModal] = useState(false);
@@ -37,6 +39,7 @@ const DispatchView = () => {
     try {
       const response = await axios.get("/api/customer/names", getHeaders());
       setCustomers(response.data);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching customers:", error.message);
     }
@@ -69,14 +72,17 @@ const DispatchView = () => {
 
   const fetchFormData = async (customerId) => {
     try {
+      setIsLoading(true);
       const response = await axios.get(
         `/api/dispatch/${customerId}`,
         getHeaders()
       );
       setFormData(response.data);
+      setIsLoading(false);
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching form data:", error.message);
+      setIsLoading(false);
     }
   };
 
@@ -178,8 +184,13 @@ const DispatchView = () => {
           </select>
         </div>
       </div>
-
-      {formData &&
+      {isLoading && (
+        <div className="text-center mt-4">
+          <Loader />
+        </div>
+      )}{" "}
+      {!isLoading &&
+        formData &&
         formData.map((item) => (
           <div
             key={item.id}

@@ -136,7 +136,6 @@ const ViewOrderTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
     if (loading) {
       return (
         <div className="text-center mt-4">
-          Loading...
           <Loader />
         </div>
       );

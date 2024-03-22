@@ -431,15 +431,12 @@ section {
         </select>
 
         {loading ? (
-          <div className="text-center mt-4">
-            Loading...
-            <Loader />
-          </div>
+          <Loader />
         ) : selectedCustomer ? (
           <div>
             <div className="bg-white dark:bg-slate-950 p-4 shadow-lg rounded-xl print-content">
-              <div className="flex justify-between yhd">
-                <div>
+              <div className="flex justify-between yhd flex-col md:flex-row">
+                <div className="md:w-1/2">
                   <img
                     src="https://ik.imagekit.io/tealcdn2023/assets/YHD.png"
                     width="100"
@@ -466,7 +463,7 @@ section {
                   </p>
                 </div>
 
-                <div className="flex-col text-end">
+                <div className="md:w-1/3 mt-4 md:mt-0 sm:text-start md:text-end">
                   <div className="order-details">
                     <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
                       Order Details
@@ -513,8 +510,9 @@ section {
                   </div>
                 </div>
               </div>
+
               <div className="max-w-screen mx-auto p-6 space-y-6 text-neutral-700 dark:text-neutral-100">
-                <h1 className="text-3xl font-normal mb-4">Order Invoice</h1>
+                <h1 className="text-3xl font-normal">Order Invoice</h1>
 
                 <div className="overflow-y-auto overflow-x-auto rounded-xl">
                   {uniqueCategories.map((category, index) => (
