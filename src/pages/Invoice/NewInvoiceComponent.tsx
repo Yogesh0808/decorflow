@@ -25,6 +25,7 @@ const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
     gstAmount: 0,
     total: 0,
   });
+  const [step, setStep] = useState(0); // Track the current step
 
   const productImages = {
     Curtains: "https://ik.imagekit.io/tealcdn2023/assets/curtains.png",
@@ -157,16 +158,27 @@ const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
       total: 0,
     });
     setShowQuoteForm(false);
+    setStep(0); // Reset step back to 0
   };
 
   const handleBackButtonClick = () => {
-    setSelectedCategory("");
-    setShowQuoteForm(false);
+    if (showQuoteForm) {
+      // If showing quote form, go back to category selection
+      setShowQuoteForm(false);
+    } else if (selectedCustomer) {
+      // If selected customer, go back to customer selection
+      setSelectedCustomer(null);
+      setStep(0);
+    } else {
+      // Otherwise, go back to search bar
+      setSearchBar(true);
+      setFilterValue("");
+    }
   };
 
   return (
     <div>
-      {!selectedCustomer && (
+      {!selectedCustomer && !showQuoteForm && (
         <>
           {loading ? (
             <SkeletonRow />
@@ -181,9 +193,12 @@ const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
               </ul>
               {filteredData.map((customer, index) => (
                 <ul
-                  className="flex w-full justify-around bg-blue-100 text-graydark my-3 rounded-xl"
+                  className="flex w-full justify-around bg-blue-100 text-graydark my-3 rounded-xl cursor-pointer"
                   key={index}
-                  onClick={() => setSelectedCustomer(customer)}
+                  onClick={() => {
+                    setSelectedCustomer(customer);
+                    setStep(1); // Move to the next step
+                  }}
                 >
                   <li className="p-3 w-1/6 text-center">{customer.cid}</li>
                   <li className="p-3 w-5/6 text-center">
@@ -203,9 +218,12 @@ const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
               </ul>
               {customers.map((customer, index) => (
                 <ul
-                  className="flex w-full justify-around bg-blue-100 text-graydark my-3 rounded-xl"
+                  className="flex w-full justify-around bg-blue-100 text-graydark my-3 rounded-xl cursor-pointer"
                   key={index}
-                  onClick={() => setSelectedCustomer(customer)}
+                  onClick={() => {
+                    setSelectedCustomer(customer);
+                    setStep(1); // Move to the next step
+                  }}
                 >
                   <li className="p-3 w-1/6 text-center">{customer.cid}</li>
                   <li className=" w-5/6 text-center p-3 ">
@@ -218,82 +236,64 @@ const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
         </>
       )}
 
-      {selectedCustomer && !showQuoteForm && (
+      {(selectedCustomer || showQuoteForm) && (
         <>
           <button
-            onClick={() => {
-              setSelectedCustomer(null);
-              setSearchBar(true);
-              setFilterValue("");
-            }}
+            onClick={handleBackButtonClick}
             className="top-4 right-4 my-4 flex text-stone-950 bg-white p-2 rounded-full dark:text-whiten dark:bg-slate-900"
           >
             <img src={left} />
             Go Back
           </button>
           <h2 className="text-center text-slate-700 dark:text-slate-50 text-2xl">
-            New Invoice For {selectedCustomer.clientName} -{" "}
-            {selectedCustomer.cid}
+            New Invoice For {selectedCustomer?.clientName} -{" "}
+            {selectedCustomer?.cid}
           </h2>
-          <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100 dark:bg-gray-800">
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-              {[
-                "Curtains",
-                "Sofas",
-                "Blinds",
-                "Floorings",
-                "Wallpaper",
-                "Furniture",
-                "Mattress",
-                "Headboard",
-              ].map((product, index) => (
-                <div
-                  key={index}
-                  onClick={() => handleCategorySelect(product)}
-                  className="rounded-lg bg-gradient-to-bl from-blue-300 via-sky-300 to-indigo-300 dark:from-blue-600 dark:via-sky-600 dark:to-indigo-500 shadow-md overflow-hidden cursor-pointer hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
-                >
-                  <img
-                    src={productImages[product]}
-                    alt={product}
-                    className="w-full lg:h-32 sm:h-28 p-4 px-5"
-                  />
-                  <div className="p-3.5">
-                    <p className="text-center text-blue-800 bg-blue-50 dark:text-white dark:bg-blue-800 rounded-xl p-1.5 text-xl font-normal">
-                      {product}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </>
       )}
 
-      {selectedCustomer && showQuoteForm && (
-        <>
-          <button
-            onClick={() => {
-              setSelectedCustomer(null);
-              setSearchBar(true);
-              setFilterValue("");
-            }}
-            className="top-4 right-4 my-4 flex text-stone-950 bg-white p-2 rounded-full dark:text-whiten dark:bg-slate-900"
-          >
-            <img src={left} />
-            Go Back
-          </button>
-          <h2 className="text-center text-slate-700 dark:text-slate-50 text-2xl">
-            New Invoice For {selectedCustomer.clientName} -{" "}
-            {selectedCustomer.cid}
-          </h2>
-          <QuoteForm
-            selectedCustomer={selectedCustomer}
-            selectedCategory={selectedCategory}
-            formData={formData}
-            handleInputChange={handleInputChange}
-            handleSubmit={handleSubmit}
-          />
-        </>
+      {selectedCustomer && !showQuoteForm && (
+        <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100 dark:bg-gray-800">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            {[
+              "Curtains",
+              "Sofas",
+              "Blinds",
+              "Floorings",
+              "Wallpaper",
+              "Furniture",
+              "Mattress",
+              "Headboard",
+            ].map((product, index) => (
+              <div
+                key={index}
+                onClick={() => handleCategorySelect(product)}
+                className="rounded-lg bg-gradient-to-bl from-blue-300 via-sky-300 to-indigo-300 dark:from-blue-600 dark:via-sky-600 dark:to-indigo-500 shadow-md overflow-hidden cursor-pointer hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+              >
+                <img
+                  src={productImages[product]}
+                  alt={product}
+                  className="w-full lg:h-32 sm:h-28 p-4 px-5"
+                />
+                <div className="p-3.5">
+                  <p className="text-center text-blue-800 bg-blue-50 dark:text-white dark:bg-blue-800 rounded-xl p-1.5 text-xl font-normal">
+                    {product}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {showQuoteForm && (
+        <QuoteForm
+          selectedCustomer={selectedCustomer}
+          selectedCategory={selectedCategory}
+          formData={formData}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}
+        />
       )}
 
       <ToastContainer
