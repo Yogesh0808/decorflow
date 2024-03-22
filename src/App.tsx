@@ -24,7 +24,7 @@ import NewInvoice from "./pages/Invoice/NewInvoice";
 import ViewInvoice from "./pages/Invoice/ViewInvoice";
 import PrintInvoice from "./pages/Invoice/PrintInvoice";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
+axios.defaults.baseURL = "https://real-plum-meerkat-vest.cyclic.app";
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);

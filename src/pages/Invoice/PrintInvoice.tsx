@@ -4,8 +4,6 @@ import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Loader from "../../common/Loader/index";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
-
 const PrintInvoice = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [customers, setCustomers] = useState([]);
@@ -136,10 +134,11 @@ const PrintInvoice = () => {
     
         /* Terms and conditions styles */
         .terms-conditions {
-          margin-top: 30px;
-          background-color: #fff;
+          margin: 30px 60px;
+          background-color: rgb(241 245 249);
           border-radius: 5px;
           page-break-before: always;
+          padding: 10px;
         }
     
         .terms-conditions h2 {
@@ -149,16 +148,8 @@ const PrintInvoice = () => {
           font-size: 20px;
         }
     
-        .terms-conditions ol {
-          margin-left: 20px;
-        }
-    
         .terms-conditions ol li {
-          margin-bottom: 10px;
-        }
-    
-        .terms-conditions p {
-          margin: 10px 0;
+          margin-bottom: 5px;
         }
 @page {
   margin: 15%;
@@ -266,12 +257,14 @@ section {
           <li>Final installation will be done after complete payment.</li>
           <li>TRANSPORATION AND INSTALLATION WILL BE EXTRA</li>
         </ol>
+        <hr/>
+        <br/>
         <p><strong>GST TIN NO:</strong> 33CJWPM2113B1ZJ</p>
         <p><strong>Our Bank Details:</strong></p>
-        <p>ACCOUNT NO: 357201010036581</p>
-        <p>A/C NAME: Yash Home Decors</p>
+        <p><strong>ACCOUNT NO:</strong>357201010036581</p>
+        <p><strong>A/C NAME:</strong> Yash Home Decors</p>
         <p>UNION BANK OF INDIA (TRIPLICANE BRANCH)</p>
-        <p>IFSC Code: UBIN053572</p>
+        <p><strong>IFSC Code:</strong> UBIN053572</p>
       </div>
       <script src="https://cdn.tailwindcss.com"></script>
     </body>

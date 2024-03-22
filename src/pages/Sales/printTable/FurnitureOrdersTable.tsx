@@ -33,6 +33,7 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
       </h1>
       <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
         <table className="w-full rounded-lg text-sm text-left rtl:text-right text-slate-500 dark:text-slate-400 bg-gray-900 dark:bg-gray-800">
+          {/* Table Header */}
           <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
             <tr>
               <th scope="col" className="px-3 py-4">
@@ -61,6 +62,7 @@ const FurnitureProductsTable: React.FC<FurnitureProductsTableProps> = ({
               </th>
             </tr>
           </thead>
+          {/* Table Body */}
           <tbody>
             {products.map((product) => (
               <tr

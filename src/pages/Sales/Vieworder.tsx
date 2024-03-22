@@ -14,8 +14,6 @@ const Vieworder = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Vieworder" />
-
-      {/* <!-- ====== Vieworder Section Start ====== --> */}
       <h1 className="text-3xl font-extralight">View Order Section</h1>
       {searchBar && (
         <form className="max-w-lg mx-auto my-4">

@@ -4,8 +4,6 @@ import EditDispatchModal from "./EditDispatchModal";
 import trash from "../../images/icon/trash.svg";
 import edit from "../../images/icon/edit.svg";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
-
 const DispatchView = () => {
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const [formData, setFormData] = useState(null);

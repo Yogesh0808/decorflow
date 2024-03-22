@@ -6,8 +6,6 @@ import SkeletonRow from "./SkeletonRow";
 import QuoteForm from "./QuoteForm";
 import left from "../../images/icon/left-arrow.svg";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
-
 const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -158,7 +156,7 @@ const NewInvoice = ({ filterValue, setSearchBar, setFilterValue }) => {
       total: 0,
     });
     setShowQuoteForm(false);
-    setStep(0); 
+    setStep(0);
   };
 
   const handleBackButtonClick = () => {

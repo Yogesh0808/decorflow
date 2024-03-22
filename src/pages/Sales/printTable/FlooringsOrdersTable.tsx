@@ -13,11 +13,14 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
         Flooring Orders
       </h1>
       <div className="overflow-y-auto overflow-x-auto max-h-screen rounded-xl">
-        <table className="w-full rounded-lg text-sm text-left rtl:text-right text-slate-500 dark:text-slate-400 bg-gray-900 dark:bg-gray-800">
+        <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
           <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
             <tr>
               <th scope="col" className="px-3 py-4">
                 Order ID
+              </th>
+              <th scope="col" className="px-3 py-4">
+                Title
               </th>
               <th scope="col" className="px-3 py-4">
                 Description
@@ -29,7 +32,10 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 Number of Sqft
               </th>
               <th scope="col" className="px-4 py-4">
-                Catalog Code and Number
+                Fabric Name
+              </th>
+              <th scope="col" className="px-4 py-4">
+                Fabric Code
               </th>
               <th scope="col" className="px-4 py-4">
                 Flooring Image
@@ -45,15 +51,15 @@ const FlooringOrdersTable = ({ products, editProduct, deleteProduct }) => {
                 key={product.id}
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
-                <td className="py-2 text-slate-900 whitespace-nowrap text-center dark:text-white">
+                <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                   {++serialNumber}
                 </td>
+                <td className="px-3 py-2">{product.data.title}</td>
                 <td className="px-3 py-2">{product.data.description}</td>
-                <td className="px-4 py-2">{product.data.sizeOfFloor}</td>
+                <td className="px-4 py-2">{product.data.size}</td>
                 <td className="px-4 py-2">{product.data.numberOfSqft}</td>
-                <td className="px-4 py-2">
-                  {product.data.catalogCodeAndNumber}
-                </td>
+                <td className="px-4 py-2">{product.data.fabricName}</td>
+                <td className="px-4 py-2">{product.data.fabricCode}</td>
                 <td className="px-4 py-2">
                   {product.images.length > 0 ? (
                     <img

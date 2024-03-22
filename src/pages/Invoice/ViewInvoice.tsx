@@ -6,8 +6,6 @@ import EditInvoiceModal from "./EditInvoiceModal";
 import edit from "../../images/icon/edit.svg";
 import trash from "../../images/icon/trash.svg";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
-
 const ViewInvoice = () => {
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const [customers, setCustomers] = useState([]);

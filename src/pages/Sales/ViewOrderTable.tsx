@@ -11,14 +11,9 @@ import HeadboardOrdersTable from "./orderTable/HeadboardOrdersTable";
 import Loader from "../../common/Loader/index";
 import SkeletonRow from "./SkeletonRow";
 import ViewOrder from "../../components/Customer/ViewOrder";
+import left from "../../images/icon/left-arrow.svg";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
-
-const ViewOrderComponent = ({
-  filterValue,
-  setSearchBar,
-  setFilterValue,
-}: any) => {
+const ViewOrderTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
@@ -52,18 +47,15 @@ const ViewOrderComponent = ({
     }
   };
 
-    const fetchCustomers = async () => {
-        try {
-            const response = await axios.get(
-                "/api/customer/names",
-                getHeaders()
-            );
-            setCustomers(response.data);
-            setSkeleLoading(false);
-        } catch (error: any) {
-            console.error("Error fetching customers:", error.message);
-        }
-    };
+  const fetchCustomers = async () => {
+    try {
+      const response = await axios.get("/api/customer/names", getHeaders());
+      setCustomers(response.data);
+      setSkeleLoading(false);
+    } catch (error: any) {
+      console.error("Error fetching customers:", error.message);
+    }
+  };
 
   const fetchProducts = async (customerId) => {
     try {
@@ -81,8 +73,8 @@ const ViewOrderComponent = ({
     }
   };
 
-    const editProduct = (productId: any, editedData: any) => {
-        const index = products.findIndex((product) => product.id === productId);
+  const editProduct = (productId: any, editedData: any) => {
+    const index = products.findIndex((product) => product.id === productId);
 
     if (index !== -1) {
       setProducts((prevProducts) => {
@@ -257,53 +249,49 @@ const ViewOrderComponent = ({
     });
   };
 
-    return (
-        <div>
-            {!selectedCustomer && (
-                <>
-                    {skeleLoading ? (
-                        <SkeletonRow />
-                    ) : filterValue ? (
-                        <>
-                            <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
-                                <li className="p-3 font-bold w-1/6 text-center">
-                                    Client ID
-                                </li>
-                                <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
-                                    Client Name
-                                </li>
-                            </ul>
-                            {filteredData.map((customer: any, index) => (
-                                <ViewOrder
-                                    key={index}
-                                    customer={customer}
-                                    handleSelectCustomer={handleSelectCustomer}
-                                    setSelectedCustomer={setSelectedCustomer}
-                                />
-                            ))}
-                        </>
-                    ) : (
-                        <>
-                            <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
-                                <li className="p-3 font-bold w-1/6 text-center">
-                                    Client ID
-                                </li>
-                                <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
-                                    Client Name
-                                </li>
-                            </ul>
-                            {customers.map((customer: any, index) => (
-                                <ViewOrder
-                                    key={index}
-                                    customer={customer}
-                                    handleSelectCustomer={handleSelectCustomer}
-                                    setSelectedCustomer={setSelectedCustomer}
-                                />
-                            ))}
-                        </>
-                    )}
-                </>
-            )}
+  return (
+    <div>
+      {!selectedCustomer && (
+        <>
+          {skeleLoading ? (
+            <SkeletonRow />
+          ) : filterValue ? (
+            <>
+              <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
+                <li className="p-3 font-bold w-1/6 text-center">Client ID</li>
+                <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
+                  Client Name
+                </li>
+              </ul>
+              {filteredData.map((customer: any, index) => (
+                <ViewOrder
+                  key={index}
+                  customer={customer}
+                  handleSelectCustomer={handleSelectCustomer}
+                  setSelectedCustomer={setSelectedCustomer}
+                />
+              ))}
+            </>
+          ) : (
+            <>
+              <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
+                <li className="p-3 font-bold w-1/6 text-center">Client ID</li>
+                <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
+                  Client Name
+                </li>
+              </ul>
+              {customers.map((customer: any, index) => (
+                <ViewOrder
+                  key={index}
+                  customer={customer}
+                  handleSelectCustomer={handleSelectCustomer}
+                  setSelectedCustomer={setSelectedCustomer}
+                />
+              ))}
+            </>
+          )}
+        </>
+      )}
 
       {selectedCustomer && (
         <>
@@ -314,9 +302,10 @@ const ViewOrderComponent = ({
               setSearchBar(true);
               setFilterValue("");
             }}
-            className="top-4 right-4 my-4"
+            className="top-4 right-4 my-4 flex text-stone-950 bg-white p-2 rounded-full dark:text-whiten dark:bg-slate-900"
           >
-            Back
+            <img src={left} />
+            Go Back
           </button>
           <p className="text-center text-slate-700 dark:text-slate-50 text-2xl">
             View Order For {selectedCustomer.clientName} -{" "}
@@ -329,4 +318,4 @@ const ViewOrderComponent = ({
   );
 };
 
-export default ViewOrderComponent;
+export default ViewOrderTable;

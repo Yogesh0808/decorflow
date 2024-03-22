@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
-
 const DispatchForm = () => {
   const [formData, setFormData] = useState({
     customerName: "",
@@ -84,8 +82,8 @@ const DispatchForm = () => {
         img.onload = () => {
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");
-          canvas.width = 700; // Adjust width as needed
-          canvas.height = 800; // Adjust height as needed
+          canvas.width = (90 / 100) * img.width;
+          canvas.height = (90 / 100) * img.height;
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           canvas.toBlob(
             (blob) => {
@@ -99,7 +97,7 @@ const DispatchForm = () => {
               resolve(compressedFile);
             },
             "image/jpeg",
-            0.6
+            0.9
           ); // Adjust quality as needed
         };
         img.src = event.target.result;
@@ -194,7 +192,7 @@ const DispatchForm = () => {
           </select>
         </div>
         <hr></hr>
-        <div className="sm:m-2 lg:m-8 p-6 shadow-xl rounded-xl bg-blue-100 text-blue-900 dark:bg-slate-800 dark:text-white">
+        <div className="sm:m-2 lg:m-8 p-6 rounded-xl text-blue-950 dark:text-white">
           <div className="flex flex-col">
             <label htmlFor="areaOfRoom" className="text-sm font-medium">
               Area of Room

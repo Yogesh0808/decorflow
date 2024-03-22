@@ -11,8 +11,6 @@ import HeadboardOrdersTable from "./printTable/HeadboardOrdersTable";
 import Logo from "../../images/logo/Logo.png";
 import Loader from "../../common/Loader/index";
 
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
-
 const PrintTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [customers, setCustomers] = useState([]);
@@ -98,7 +96,8 @@ const PrintTable = () => {
             className="w-100"
             alt="No data available"
           />
-          <p>Oops! It seems there are no products available.</p>
+          <p>Oh Oh! It seems there are no products available.</p>
+          <p className="text-sm">No Worries Still you can Add Products</p>
         </div>
       );
     }
@@ -163,77 +162,57 @@ const PrintTable = () => {
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
           <style>
-          body, h1, p, table {
-            margin: 10px;
-            padding: 0;
-            border-radius: 5px;
+          .yhd {
+            margin-left: 2%;
+            margin-top: 1%;
           }
-
-          /* Global styles */
-          body {
-            font-family: "Inter", sans-serif;
-            font-optical-sizing: auto;
-            font-weight: 400;
-            line-height: 1;
-            color: #333;
+          .order-details {
+            margin-right: 35px;
           }
-
-
-          /* Header styles */
-          .invoice-header {
-              background-color: #f2f2f2;
-              padding: 10px;
-              border-bottom: 1px solid #ccc;
-          }
-
-          .invoice-header h1 {
-              margin: 0;
-              text-transform: uppercase;
-          }
-
-          .invoice-header p {
-              margin: 5px 0;
-              color: #666;
-              font-family: "Nunito",sans-serif;
-              font-weight: 300;
-          }
-
-          /* Customer details styles */
-          .customer-details {
-              margin-top: 10px;
-          }
-
-          /* Table styles */
-          table {
-              width: 75%;
-              border-collapse: collapse;
-              margin-top: 20px;
-              border-radius:5px;
-              margin: 0 20px;
-          }
-
-          th, td {
-              border: 1px solid #ccc;
-              padding: 8px;
-              text-align: left;
-          }
-
-          th {
-              background-color: #f2f2f2;
-              font-weight: bold;
-              padding: 10px auto;
-          }
-
-          /* Image styles */
-          img {
-              max-width: 160px;
-              height: auto;
-          }
+          
+            @media print {
+              body, h1, p, table {
+                margin: 10px;
+                padding: 0;
+                border-radius: 5px;
+              }
+              body {
+                font-family: "Inter", sans-serif;
+                font-weight: 400;
+                color: #333;
+              }
+              .print-content {
+                margin: 20px; /* Add margin to the print content */
+              }
+              table {
+                width: 100%; /* Make tables fill the available width */
+                table-layout: fixed; /* Fix the layout of the table */
+              }
+              th, td {
+                border-bottom: 1px solid #ccc;
+                padding: 8px;
+                text-align: left;
+                word-wrap: break-word; /* Allow long words to wrap */
+              }
+              
+              @media print {
+                table {
+                  page-break-inside: avoid;
+                }
+              }
+              .print-table {
+                page-break-before: always;
+              }
+              td {
+                color: #444 !important;
+              }
+            }
           </style>
-          </head>
-          <body>
-            ${printContent.innerHTML}
-          </body>
+        </head>
+        <body>
+          ${printContent.innerHTML}
+          <script src="https://cdn.tailwindcss.com"></script>
+        </body>
       </html>
     `;
     newWindow.document.write(htmlContent);
@@ -316,6 +295,7 @@ const PrintTable = () => {
                 padding: 8px;
                 text-align: left;
             }
+            
   
             th {
                 background-color: #f2f2f2;
@@ -411,10 +391,11 @@ const PrintTable = () => {
         {selectedCustomer && (
           <div>
             <div className="bg-white dark:bg-slate-950 p-4 shadow-lg rounded-xl print-content">
-              <div className="flex justify-between mb-4">
+              <div className="flex justify-between yhd">
                 <div>
                   <img
                     src="https://ik.imagekit.io/tealcdn2023/assets/YHD.png"
+                    width="100"
                     className="w-25"
                     alt="Logo"
                   />
@@ -438,53 +419,55 @@ const PrintTable = () => {
                   </p>
                 </div>
 
-                <div>
-                  <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
-                    Order Details
-                  </h2>
-                  <p className="text-sm text-slate-600 dark:text-slate-300">
-                    Date: 19/02/2024
-                  </p>
-                </div>
-              </div>
-
-              {printType === "all" && (
-                <div className="mt-4">
-                  <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
-                    Customer Details
-                  </h2>
-                  <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
-                    <p>
-                      <span className="font-semibold">Customer Name:</span>{" "}
-                      {selectedCustomer.clientName}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Customer ID:</span>{" "}
-                      {selectedCustomer.cid}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Address:</span>{" "}
-                      {selectedCustomer.address}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Client Type:</span>{" "}
-                      {selectedCustomer.clientType}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Purpose:</span>{" "}
-                      {selectedCustomer.purpose}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Phone:</span>{" "}
-                      {selectedCustomer.phone}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Email:</span>{" "}
-                      {selectedCustomer.emailAddress}
+                <div className="flex-col text-end">
+                  <div className="order-details">
+                    <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
+                      Order Details
+                    </h2>
+                    <p className="text-sm text-slate-600 dark:text-slate-300">
+                      Date: 19/02/2024
                     </p>
                   </div>
+
+                  {printType === "all" && (
+                    <div className="mt-4 order-details">
+                      <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                        Customer Details
+                      </h2>
+                      <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-xl text-slate-800">
+                        <p>
+                          <span className="font-semibold">Customer Name:</span>{" "}
+                          {selectedCustomer.clientName}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Customer ID:</span>{" "}
+                          {selectedCustomer.cid}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Address:</span>{" "}
+                          {selectedCustomer.address}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Client Type:</span>{" "}
+                          {selectedCustomer.clientType}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Purpose:</span>{" "}
+                          {selectedCustomer.purpose}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Phone:</span>{" "}
+                          {selectedCustomer.phone}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Email:</span>{" "}
+                          {selectedCustomer.emailAddress}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
               {renderProductTables()}
             </div>
 

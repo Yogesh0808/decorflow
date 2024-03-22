@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-axios.defaults.baseURL = "https://cors-h05i.onrender.com";
 
 const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
   const [formData, setFormData] = useState({

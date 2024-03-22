@@ -16,15 +16,15 @@ const CurtainsOrdersTable = ({ products, editClient, deleteClient }) => {
           <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
             <tr>
               <th scope="col" className="px-3 py-4">
-                S.NO
+                Order ID
               </th>
               <th scope="col" className="px-3 py-4">
                 Title
               </th>
-              <th scope="col" className="px-4 py-4">
+              <th scope="col" className="px-3 py-4">
                 Description
               </th>
-              <th scope="col" className="px-4 py-4">
+              <th scope="col" className="px-4 py-">
                 Size
               </th>
               <th scope="col" className="px-4 py-4">
@@ -57,18 +57,16 @@ const CurtainsOrdersTable = ({ products, editClient, deleteClient }) => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product, index) => (
+            {products.map((product) => (
               <tr
-                key={index}
+                key={product.id}
                 className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
               >
                 <td className="py-2 text-slate-900 whitespace-nowrap text-center dark:text-white">
                   {++serialNumber}
                 </td>
-                <td className="py-2 text-slate-900 whitespace-nowrap text-center dark:text-white">
-                  {product.data.title}
-                </td>
-                <td className="px-4 py-2">{product.data.description}</td>
+                <td className="px-3 py-2">{product.data.title}</td>
+                <td className="px-3 py-2">{product.data.description}</td>
                 <td className="px-4 py-2">{product.data.size}</td>
                 <td className="px-4 py-2">{product.data.widthOfFabric}</td>
                 <td className="px-4 py-2">{product.data.noOfPieces}</td>
@@ -86,7 +84,7 @@ const CurtainsOrdersTable = ({ products, editClient, deleteClient }) => {
                     "No Image Available"
                   )}
                 </td>
-                <td className="px-4 py-2">{product.data.Remarks}</td>
+                <td className="px-4 py-2">{product.data.remarks}</td>
                 <td className="px-4 py-2">{product.data.tieOption}</td>
               </tr>
             ))}
