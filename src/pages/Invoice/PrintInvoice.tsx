@@ -158,6 +158,7 @@ const PrintInvoice = () => {
         }
 @page {
   margin: 15%;
+  size: landscape;
 }
 section {
   page-break-after: always;
@@ -242,8 +243,9 @@ section {
 section {
   margin-bottom: 20px; 
 }
-
-      </style>
+@page {
+  size: landscape;
+}      </style>
     </head>
     <body>
       ${printContent.innerHTML}
@@ -430,6 +432,7 @@ section {
   
   @page {
     margin: 1px; 
+    size:landscape;
   }
   
   .print-content table tbody tr,
