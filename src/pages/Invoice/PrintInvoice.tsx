@@ -294,105 +294,197 @@ section {
       setGeneratingPDF(true);
       const printContent = document.querySelector(".print-content");
       const htmlContent = `
-        <html>
-          <head>
-            <title>Invoicing Preview</title>
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-            <style>
-            @page {
-              size: A4;
-            }
-
-            body, h1, p, table {
-              margin: 10px;
-              padding: 0;
-              border-radius: 5px;
-            }
-
-
+      <html>
+      <head>
+      <title>Invoicing</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+        <style>
+          body {
+            font-family: "Inter", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            line-height: 1;
+            color: #333;
+            margin: 1%;
+          }
   
-            /* Global styles */
-            body {
-              font-family: "Inter", sans-serif;
-              font-optical-sizing: auto;
-              font-weight: 400;
-              line-height: 1;
-              color: #333;
-
-            }
-            
-            /* Header styles */
-            .invoice-header {
-                background-color: #f2f2f2;
-                padding: 10px;
-                border-bottom: 1px solid #ccc;
-            }
+          image {
+            width: 180px;
+            height: 180px;
+          }
+      
+          .customer-details {
+            margin-top: 20px;
+            margin-right: 30px;
+          }
+      
+          table {
+            width: 90%;
+            border-collapse: collapse;
+            background-color: #f8f8f8;
+          }
+      
+          th, td {
+            border: 1px solid #ccc;
+            text-align: center;
+          }
+      
+          th {
+            background-color: #880D1E !important;
+            color: #fff;
+          }
+      
+          /* Terms and conditions styles */
+          .terms-conditions {
+            margin: 30px 60px;
+            background-color: rgb(241 245 249);
+            border-radius: 5px;
+            page-break-before: always;
+            padding: 10px;
+          }
+      
+          .terms-conditions h2 {
+            color: #DD2342;
+            margin-top: 0;
+            font-weight: bold;
+            font-size: 20px;
+          }
+      
+          .terms-conditions ol li {
+            margin-bottom: 5px;
+          }
+  section {
+    page-break-after: always;
+    break-after: page;
+    width: 500px;
+  }
   
-            .invoice-header h1 {
-                margin: 0;
-                text-transform: uppercase;
-            }
   
-            .invoice-header p {
-                margin: 5px 0;
-                color: #666;
-                font-family: "Nunito",sans-serif;
-                font-weight: 300;
-            }
+  .print-content h1,
+  .print-content h2,
+  .print-content p {
+    margin: 10px 0;
+  }
+  .order-details {
+    margin-right: 35px;
+  }
   
-            /* Customer details styles */
-            .customer-details {
-                margin-top: 10px;
-            }
+  .print-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color:black;
+  }
   
-            /* Table styles */
-            table {
-                width: 75%;
-                border-collapse: collapse;
-                margin-top: 20px;
-                border-radius:5px;
-                margin: 0 20px;
-            }
+  .print-content th,
+  .print-content td {
+    padding: 0 !important;
+    border: 1px solid #ccc;
+    text-align: left;
+    color: #000;
+  }
   
-            th, td {
-                border: 1px solid #ccc;
-                padding: 8px;
-                text-align: left;
-            }
+  .print-content th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
   
-            th {
-                background-color: #f2f2f2;
-                font-weight: bold;
-                padding: 10px auto;
-            }
+  .print-content ol {
+    margin-left: 20px;
+  }
+  .justify-between{
+    justify-content:between;
+  }
   
-            /* Image styles */
-            img {
-                max-width: 160px;
-                height: auto;
-            }
-            </style>
-            </head>
-            <body>
-              ${printContent.innerHTML}
-            </body>
-        </html>
+  .print-content .terms-conditions {
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: #f8f8f8;
+  }
+  
+  .print-content .terms-conditions h2 {
+    color: #DD2342;
+    font-size: 18px;
+    margin-top: 0;
+  }
+  
+  .yhd {
+    margin-left: 2%;
+    margin-top: 1%;
+  }
+  
+  .print-content .terms-conditions p {
+    margin: 10px 0;
+  }
+  
+  .print-content .terms-conditions ol {
+    margin-left: 20px;
+  }
+  
+  .print-content {
+    margin: 5%;
+  }
+  
+  @page {
+    margin: 1px; 
+  }
+  
+  .print-content table tbody tr,
+  .table-category {
+    page-break-inside: avoid; 
+  
+  section {
+    margin-bottom: 20px; 
+  }
+  
+        </style>
+      </head>
+      <body>
+        ${printContent.innerHTML}
+        <div class="terms-conditions">
+          <h2>Terms and Conditions:</h2>
+          <ol>
+            <li>50% advance payment to be made in favor of “YASH HOME DECORS”</li>
+            <li>Delivery period 45 to 60 days on receipt of the payment.</li>
+            <li>Our Responsibility Ceases as soon as the goods leave our hands.</li>
+            <li>Order once placed cannot be taken back or exchanged.</li>
+            <li>Service will be given if any damage occurred (not immediate).</li>
+            <li>Finished Product should be collected at CHOOLAI showroom.</li>
+            <li>In case of outstation work there will be extra charges levied.</li>
+            <li>At the time of installation ladders & scaffolding should be provided by the clients.</li>
+            <li>Material not mentioned in the quote will be extra.</li>
+            <li>Final installation will be done after complete payment.</li>
+            <li>TRANSPORATION AND INSTALLATION WILL BE EXTRA</li>
+          </ol>
+          <hr/>
+          <br/>
+          <p><strong>GST TIN NO:</strong> 33CJWPM2113B1ZJ</p>
+          <p><strong>Our Bank Details:</strong></p>
+          <p><strong>ACCOUNT NO:</strong>357201010036581</p>
+          <p><strong>A/C NAME:</strong> Yash Home Decors</p>
+          <p>UNION BANK OF INDIA (TRIPLICANE BRANCH)</p>
+          <p><strong>IFSC Code:</strong> UBIN053572</p>
+        </div>
+        <script src="https://cdn.tailwindcss.com"></script>
+      </body>
+      </html>
       `;
-      const response = await fetch("http://3.106.227.95:3000/generate-pdf", {
+      const serverUrl = "https://cors-1-4v2k.onrender.com/convert";
+
+      const response = await fetch(`${serverUrl}`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "text/html",
         },
-        body: JSON.stringify({ htmlContent: htmlContent }),
+        body: htmlContent,
       });
 
       if (!response.ok) {
         throw new Error("Failed to generate PDF");
       }
 
-      // Download the PDF file
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -402,6 +494,7 @@ section {
       a.click();
       a.remove();
 
+      console.log("PDF file downloaded successfully.");
       setGeneratingPDF(false);
     } catch (error) {
       console.error("Error generating PDF:", error.message);

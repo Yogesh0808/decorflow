@@ -160,6 +160,11 @@ const PrintTable = () => {
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
           <style>
+          @media print {
+            @page {
+              size: landscape;
+            }
+
           .yhd {
             margin-left: 2%;
             margin-top: 1%;
@@ -232,100 +237,85 @@ const PrintTable = () => {
       setGeneratingPDF(true);
       const printContent = document.querySelector(".print-content");
       const htmlContent = `
-        <html>
-          <head>
-            <title>Invoicing Preview</title>
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-            <style>
-            body, h1, p, table {
-              margin: 10px;
-              padding: 0;
-              border-radius: 5px;
+      <html>
+        <head>
+          <title>Invoicing Preview</title>
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+          <style>
+          @media print {
+            @page {
+              size: landscape;
             }
-  
-            /* Global styles */
-            body {
-              font-family: "Inter", sans-serif;
-              font-optical-sizing: auto;
-              font-weight: 400;
-              line-height: 1;
-              color: #333;
-            }
-  
-  
-            /* Header styles */
-            .invoice-header {
-                background-color: #f2f2f2;
-                padding: 10px;
+
+          .yhd {
+            margin-left: 2%;
+            margin-top: 1%;
+          }
+          .order-details {
+            margin-right: 35px;
+          }
+          
+            @media print {
+              body, h1, p, table {
+                margin: 10px;
+                padding: 0;
+                border-radius: 5px;
+              }
+              body {
+                font-family: "Inter", sans-serif;
+                font-weight: 400;
+                color: #333;
+              }
+              .print-content {
+                margin: 20px; 
+              }
+              table {
+                width: 100%; 
+                table-layout: fixed; 
+              }
+              th, td {
                 border-bottom: 1px solid #ccc;
-            }
-  
-            .invoice-header h1 {
-                margin: 0;
-                text-transform: uppercase;
-            }
-  
-            .invoice-header p {
-                margin: 5px 0;
-                color: #666;
-                font-family: "Nunito",sans-serif;
-                font-weight: 300;
-            }
-  
-            /* Customer details styles */
-            .customer-details {
-                margin-top: 10px;
-            }
-  
-            /* Table styles */
-            table {
-                width: 75%;
-                border-collapse: collapse;
-                margin-top: 20px;
-                border-radius:5px;
-                margin: 0 20px;
-            }
-  
-            th, td {
-                border: 1px solid #ccc;
                 padding: 8px;
                 text-align: left;
+                word-wrap: break-word; /* Allow long words to wrap */
+              }
+              
+              @media print {
+                table {
+                  page-break-inside: avoid;
+                }
+              }
+              .print-table {
+                page-break-before: always;
+              }
+              td {
+                color: #444 !important;
+              }
             }
-            
-  
-            th {
-                background-color: #f2f2f2;
-                font-weight: bold;
-                padding: 10px auto;
-            }
-  
-            /* Image styles */
-            img {
-                max-width: 160px;
-                height: auto;
-            }
-            </style>
-            </head>
-            <body>
-              ${printContent.innerHTML}
-            </body>
-        </html>
-      `;
-      const response = await fetch("http://3.106.227.95:3000/generate-pdf", {
+          </style>
+        </head>
+        <body>
+          ${printContent.innerHTML}
+          <script src="https://cdn.tailwindcss.com"></script>
+        </body>
+      </html>
+    `;
+      const serverUrl = "https://cors-1-4v2k.onrender.com/convert";
+
+      const response = await fetch(`${serverUrl}`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "text/html",
         },
-        body: JSON.stringify({ htmlContent: htmlContent }),
+        body: htmlContent,
       });
 
       if (!response.ok) {
         throw new Error("Failed to generate PDF");
       }
 
-      // Download the PDF file
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -335,6 +325,7 @@ const PrintTable = () => {
       a.click();
       a.remove();
 
+      console.log("PDF file downloaded successfully.");
       setGeneratingPDF(false);
     } catch (error) {
       console.error("Error generating PDF:", error.message);
@@ -417,7 +408,7 @@ const PrintTable = () => {
                   </p>
                 </div>
 
-                <div className="md:w-1/2 mt-4 md:mt-0 md:text-end">
+                <div className="md:w-1/4 mt-4 md:mt-0 md:text-end">
                   <div className="order-details">
                     <h2 className="text-xl font-normal uppercase text-slate-600 dark:text-white">
                       Order Details
