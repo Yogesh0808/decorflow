@@ -32,6 +32,8 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         tieOption: "",
         remarks: "",
         motorType: "Wired motor",
+        tenMtr: "",
+        twenMtr: "",
     });
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState<any>({
@@ -410,6 +412,84 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 placeholder="Enter number of panels"
                             />
                         </div>
+                        <div
+                            className="col-span-2"
+                            onClick={() => {
+                                console.log("panel cal");
+                                if (formData.height !== "") {
+                                    let unit = "";
+                                    switch (formData.unit1) {
+                                        case "mm":
+                                            unit = "mm";
+                                            break;
+                                        case "in":
+                                            unit = "inches";
+                                            break;
+                                        case "cm":
+                                            unit = "cm";
+                                            break;
+                                        case "yd":
+                                            unit = "yard";
+                                            break;
+                                        case "ft":
+                                            unit = "feet";
+                                            break;
+                                        case "m":
+                                            unit = "meter";
+                                            break;
+                                        case "sqm":
+                                            unit = "squareMeter";
+                                            break;
+                                        case "syd":
+                                            unit = "squareYard";
+                                            break;
+                                        default:
+                                            unit = "";
+                                    }
+
+                                    let heightInch = convertUnit(
+                                        formData.height,
+                                        unit,
+                                        "inches"
+                                    );
+                                    let heightTen = heightInch + 10;
+                                    let heightTwen = heightInch + 20;
+                                    let tenMtr = convertUnit(
+                                        heightTen,
+                                        "inches",
+                                        "meter"
+                                    );
+                                    let twenMtr = convertUnit(
+                                        heightTwen,
+                                        "inches",
+                                        "meter"
+                                    );
+                                    setFormData({
+                                        ...formData,
+                                        tenMtr: tenMtr.toFixed(3),
+                                        twenMtr: twenMtr.toFixed(3),
+                                    });
+                                }
+                            }}>
+                            <label
+                                htmlFor="noOfPanels"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Panel Calculations
+                            </label>
+                            <h1 className="">
+                                Panel per Mtr(+10) :{" "}
+                                <span className="text-red-900">
+                                    {formData.tenMtr}
+                                </span>
+                            </h1>
+                            <h1 className="">
+                                Panel per Mtr(+20) :{" "}
+                                <span className="text-red-900">
+                                    {formData.twenMtr}
+                                </span>
+                            </h1>
+                        </div>
+
                         <div className="col-span-2 md:col-span-1">
                             <label
                                 htmlFor="modelOfStitching"
