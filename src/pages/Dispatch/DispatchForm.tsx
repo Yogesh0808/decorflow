@@ -227,7 +227,7 @@ const DispatchForm = () => {
               Fabric Code Number:
             </label>
             <input
-              type="number"
+              type="text"
               id="quantity"
               name="quantity"
               value={formData.quantity}

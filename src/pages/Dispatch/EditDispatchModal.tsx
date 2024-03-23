@@ -62,7 +62,7 @@ const EditDispatchModal = ({ formData, saveEditedData, closeModal }) => {
               Fabric Code Number:
             </label>
             <input
-              type="number"
+              type="text"
               id="quantity"
               name="quantity"
               value={editedData.data.quantity}
