@@ -182,7 +182,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
   };
 
     return (
-        <div className="relative bg-sky-100 rounded-lg shadow dark:bg-slate-700">
+        <div className="relative  bg-gradient-to-tr from-[#DEE4EA] to-[#F9FCFF] dark:from-[#003049] from-50% dark:to-[#669bbc] rounded-lg shadow dark:bg-slate-700 mt-20">
             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
                     Sofa Order Form
@@ -283,7 +283,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
                                     placeholder="Enter depth"
                                 />
                                 <select
-                                name="depthUnit"
+                                    name="depthUnit"
                                     value={formData.depthUnit}
                                     onChange={handleInputChange}
                                     className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
