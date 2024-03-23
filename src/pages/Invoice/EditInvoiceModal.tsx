@@ -13,16 +13,19 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
       },
     }));
 
-    calculateAmountAndGst({
-      ...editedData,
-      data: { ...editedData.data, [name]: value },
-    });
+    // Calculate amount, GST amount, and total only after entering the discount percentage
+    if (name === "discountPercentage") {
+      calculateAmountAndGst({
+        ...editedData,
+        data: { ...editedData.data, [name]: value },
+      });
+    }
   };
 
   const calculateAmountAndGst = ({
-    data: { quantity, rate, gstPercentage },
+    data: { quantity, rate, gstPercentage, discountPercentage },
   }) => {
-    if (!quantity || !rate || !gstPercentage) {
+    if (!quantity || !rate || !gstPercentage || !discountPercentage) {
       console.error("Please fill in all required fields");
       return;
     }
@@ -30,11 +33,13 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
     const parsedQuantity = parseFloat(quantity);
     const parsedRate = parseFloat(rate);
     const parsedGstPercentage = parseFloat(gstPercentage);
+    const parsedDiscountPercentage = parseFloat(discountPercentage);
 
     if (
       isNaN(parsedQuantity) ||
       isNaN(parsedRate) ||
-      isNaN(parsedGstPercentage)
+      isNaN(parsedGstPercentage) ||
+      isNaN(parsedDiscountPercentage)
     ) {
       console.error("Invalid input values");
       return;
@@ -42,7 +47,11 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
 
     const calculatedAmount = parsedQuantity * parsedRate;
     const calculatedGstAmount = (calculatedAmount * parsedGstPercentage) / 100;
-    const calculatedTotal = calculatedAmount + calculatedGstAmount;
+    const calculatedDiscountAmount =
+      (calculatedAmount + calculatedGstAmount) *
+      (parsedDiscountPercentage / 100);
+    const calculatedTotal =
+      calculatedAmount + calculatedGstAmount - calculatedDiscountAmount;
 
     setEditedData((prevData) => ({
       ...prevData,
@@ -52,6 +61,9 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
         gstAmount: isNaN(calculatedGstAmount)
           ? "0.00"
           : calculatedGstAmount.toFixed(2),
+        discountAmount: isNaN(calculatedDiscountAmount)
+          ? "0.00"
+          : calculatedDiscountAmount.toFixed(2),
         total: isNaN(calculatedTotal) ? "0.00" : calculatedTotal.toFixed(2),
       },
     }));
@@ -166,6 +178,22 @@ const EditInvoiceModal = ({ invoice, saveEditedInvoice, closeModal }) => {
                     <option value="12">12%</option>
                     <option value="18">18%</option>
                   </select>
+                </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="discountPercentage"
+                    className="block text-sm font-medium text-slate-700"
+                  >
+                    Discount%
+                  </label>
+                  <input
+                    type="number"
+                    name="discountPercentage"
+                    id="discountPercentage"
+                    value={editedData.data.discountPercentage}
+                    onChange={handleInputChange}
+                    className="mt-1 p-2 w-full border rounded-md"
+                  />
                 </div>
               </div>
             </div>

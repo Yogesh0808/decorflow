@@ -7,8 +7,10 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
     quantity: "",
     rate: "",
     gstPercentage: "",
+    discountPercentage: 0,
     amount: 0,
     gstAmount: 0,
+    discountAmount: 0,
     total: 0,
   });
 
@@ -47,18 +49,19 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
 
   const calculateAmountAndGst = ({ quantity, rate, gstPercentage }) => {
     // Check if all required fields are filled
-    if (!quantity || !rate || !gstPercentage) {
+    if (!quantity || !rate || !gstPercentage || !discountPercentage) {
       return;
     }
-
     const parsedQuantity = parseFloat(quantity);
     const parsedRate = parseFloat(rate);
     const parsedGstPercentage = parseFloat(gstPercentage);
+    const parsedDiscountPercentage = parseFloat(formData.discountPercentage);
 
     if (
       isNaN(parsedQuantity) ||
       isNaN(parsedRate) ||
-      isNaN(parsedGstPercentage)
+      isNaN(parsedGstPercentage) ||
+      isNaN(parsedDiscountPercentage)
     ) {
       console.error("Invalid input values");
       return;
@@ -66,7 +69,11 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
 
     const calculatedAmount = parsedQuantity * parsedRate;
     const calculatedGstAmount = (calculatedAmount * parsedGstPercentage) / 100;
-    const calculatedTotal = calculatedAmount + calculatedGstAmount;
+    const calculatedDiscountAmount =
+      (calculatedAmount + calculatedGstAmount) *
+      (parsedDiscountPercentage / 100);
+    const calculatedTotal =
+      calculatedAmount + calculatedGstAmount - calculatedDiscountAmount;
 
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -74,6 +81,9 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
       gstAmount: isNaN(calculatedGstAmount)
         ? "0.00"
         : calculatedGstAmount.toFixed(2),
+      discountAmount: isNaN(calculatedDiscountAmount)
+        ? "0.00"
+        : calculatedDiscountAmount.toFixed(2),
       total: isNaN(calculatedTotal) ? "0.00" : calculatedTotal.toFixed(2),
     }));
   };
@@ -90,11 +100,13 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
           gstPercentage,
           amount,
           gstAmount,
+          discountPercentage,
+          discountAmount,
           total,
         } = formData;
 
         // Construct the URL with parameters
-        const url = `/api/invoice/${selectedCustomer.id}/${selectedCategory}?area=${area}&quantity=${quantity}&rate=${rate}&gstPercentage=${gstPercentage}&amount=${amount}&gstAmount=${gstAmount}&total=${total}`;
+        const url = `/api/invoice/${selectedCustomer.id}/${selectedCategory}?area=${area}&quantity=${quantity}&rate=${rate}&gstPercentage=${gstPercentage}&amount=${amount}&gstAmount=${gstAmount}&discountPercentage=${discountPercentage}&discountAmount=${discountAmount}&total=${total}`;
         const response = await axios.post(url, {}, getHeaders());
 
         console.log("Form submitted successfully:", response.data);
@@ -107,15 +119,16 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
       console.error("Error submitting form:", error);
     }
   };
-
   const clearForm = () => {
     setFormData({
       area: "",
       quantity: "",
       rate: "",
       gstPercentage: "",
+      discountPercentage: 0,
       amount: 0,
       gstAmount: 0,
+      discountAmount: 0,
       total: 0,
     });
     // setSelectedCustomer(null);
@@ -216,6 +229,24 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
                     <option value="18">18%</option>
                   </select>
                 </div>
+                {/* Discount Percentage input */}
+                <div className="flex flex-col">
+                  <label
+                    htmlFor="discountPercentage"
+                    className="text-sm font-medium"
+                  >
+                    Discount %
+                  </label>
+                  <input
+                    type="number"
+                    id="discountPercentage"
+                    name="discountPercentage"
+                    value={formData.discountPercentage}
+                    onChange={handleInputChange}
+                    className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-800 dark:bg-slate-900"
+                    required
+                  />
+                </div>
                 <div className="flex flex-col">
                   <label htmlFor="amount" className="text-sm font-medium">
                     Amount
@@ -243,6 +274,22 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
                   />
                 </div>
                 <div className="flex flex-col">
+                  <label
+                    htmlFor="discountAmount"
+                    className="text-sm font-medium"
+                  >
+                    Discount Amount
+                  </label>
+                  <input
+                    type="text"
+                    id="discountAmount"
+                    name="discountAmount"
+                    value={formData.discountAmount}
+                    readOnly
+                    className="rounded-md py-2 px-3 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+                  />
+                </div>
+                <div className="flex flex-col">
                   <label htmlFor="total" className="text-sm font-medium">
                     Total
                   </label>
@@ -255,6 +302,7 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
                     className="rounded-md py-2 px-3 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
                   />
                 </div>
+
                 <button
                   type="submit"
                   className="bg-red-700 text-white py-2 px-4 rounded-md hover:bg-red-800"
