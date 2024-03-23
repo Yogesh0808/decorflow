@@ -83,7 +83,11 @@ const PrintInvoice = () => {
   };
 
   const uniqueCategories = Array.from(
-    new Set(invoices.map((invoice) => invoice.category))
+    new Set(
+      invoices && invoices.length > 0
+        ? invoices.map((invoice) => invoice.category)
+        : []
+    )
   );
 
   const handlePrint = () => {
@@ -406,11 +410,18 @@ section {
   };
 
   const calculateSubtotal = () => {
-    const subtotal = invoices.reduce(
-      (total, invoice) => total + parseFloat(invoice.data.total),
-      0
-    );
-    return subtotal.toFixed(2);
+    if (!Array.isArray(invoices)) {
+      return 0;
+    }
+    if (invoices.length > 0) {
+      const subtotal = invoices.reduce(
+        (total, invoice) => total + parseFloat(invoice.data.total),
+        0
+      );
+      return subtotal.toFixed(2);
+    } else {
+      return 0;
+    }
   };
 
   return (

@@ -96,7 +96,7 @@ const PrintTable = () => {
             className="w-100"
             alt="No data available"
           />
-          <p>Oh Oh! It seems there are no products available.</p>
+          <p>Oh Oh! It seems there are no Invoices available.</p>
           <p className="text-sm">No Worries Still you can Add Products</p>
         </div>
       );

@@ -119,14 +119,16 @@ const ViewInvoice = () => {
     }
   };
 
-  // Function to filter invoices by category
   const filterInvoicesByCategory = (category) => {
     return invoices.filter((invoice) => invoice.category === category);
   };
 
-  // Get unique categories from invoices
   const uniqueCategories = Array.from(
-    new Set(invoices.map((invoice) => invoice.category))
+    new Set(
+      invoices && invoices.length > 0
+        ? invoices.map((invoice) => invoice.category)
+        : []
+    )
   );
 
   return (
@@ -158,88 +160,106 @@ const ViewInvoice = () => {
             </select>
           </div>
         </div>
-        {isLoading && <Loader />}{" "}
-        {!isLoading &&
-          uniqueCategories.map((category, index) => (
-            <div
-              key={index}
-              className="overflow-y-auto overflow-x-auto rounded-xl"
-            >
-              <h2 className="text-2xl font-medium mt-6 mb-4">
-                {category} Invoices
-              </h2>
-              <table className="w-full rounded-lg text-sm text-left text-slate-500 dark:text-slate-400 bg-gray-900 dark:bg-gray-800">
-                {/* Table header */}
-                <thead className="rounded-lg text-sm text-blue-900 uppercase bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
-                  <tr>
-                    <th scope="col" className="px-3 py-4">
-                      S.No.
-                    </th>
-                    <th scope="col" className="px-3 py-4">
-                      Particulars
-                    </th>
-                    <th scope="col" className="px-4 py-4">
-                      Quantity
-                    </th>
-                    <th scope="col" className="px-4 py-4">
-                      Rate
-                    </th>
-                    <th scope="col" className="px-4 py-4">
-                      Amount
-                    </th>
-                    <th scope="col" className="px-4 py-4">
-                      GST %
-                    </th>
-                    <th scope="col" className="px-4 py-4">
-                      GST Amt
-                    </th>
-                    <th scope="col" className="px-4 py-4">
-                      Total
-                    </th>
-                    <th scope="col" className="px-4 py-4">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                {/* Table body */}
-                <tbody>
-                  {filterInvoicesByCategory(category).map((invoice, index) => (
-                    <tr
-                      key={invoice.id}
-                      className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
-                    >
-                      <td className="py-2 px-3 text-slate-900">{index + 1}</td>
-                      <td className="py-2 px-3">{invoice.data.area}</td>
-                      <td className="py-2 px-4">{invoice.data.quantity}</td>
-                      <td className="py-2 px-4">{invoice.data.rate}</td>
-                      <td className="py-2 px-4">{invoice.data.amount}</td>
-                      <td className="py-2 px-4">
-                        {invoice.data.gstPercentage}
-                      </td>
-                      <td className="py-2 px-4">{invoice.data.gstAmount}</td>
-                      <td className="py-2 px-4">{invoice.data.total}</td>
-                      <td className="py-2 px-4">
-                        <button onClick={() => editInvoice(invoice)}>
-                          <img
-                            src={edit}
-                            className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
-                            alt="Edit Button"
-                          ></img>
-                        </button>
-                        <button onClick={() => deleteInvoice(invoice.id)}>
-                          <img
-                            src={trash}
-                            className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
-                            alt="Trash Icon"
-                          />
-                        </button>
-                      </td>
+        {isLoading && <Loader />}
+        {!isLoading && invoices.length === 0 && (
+          <div className="flex flex-col items-center justify-center text-gray-900 text-xl mt-4">
+            <img
+              src="https://ik.imagekit.io/tealcdn2023/assets/No%20data-cuate.svg"
+              className="w-100"
+              alt="No data available"
+            />
+            <p>Oops! It seems there are no Quotes available.</p>
+          </div>
+        )}
+        {!isLoading && Array.isArray(invoices) && invoices.length > 0 && (
+          <>
+            {uniqueCategories.map((category, index) => (
+              <div
+                key={index}
+                className="overflow-y-auto overflow-x-auto rounded-xl"
+              >
+                <h2 className="text-2xl font-medium mt-6 mb-4">
+                  {category} Invoices
+                </h2>
+                <table className="w-full rounded-lg text-sm text-left text-slate-500 dark:text-slate-400 bg-gray-900 dark:bg-gray-800">
+                  {/* Table header */}
+                  <thead className="rounded-lg text-sm text-blue-900 uppercase bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
+                    <tr>
+                      <th scope="col" className="px-3 py-4">
+                        S.No.
+                      </th>
+                      <th scope="col" className="px-3 py-4">
+                        Particulars
+                      </th>
+                      <th scope="col" className="px-4 py-4">
+                        Quantity
+                      </th>
+                      <th scope="col" className="px-4 py-4">
+                        Rate
+                      </th>
+                      <th scope="col" className="px-4 py-4">
+                        Amount
+                      </th>
+                      <th scope="col" className="px-4 py-4">
+                        GST %
+                      </th>
+                      <th scope="col" className="px-4 py-4">
+                        GST Amt
+                      </th>
+                      <th scope="col" className="px-4 py-4">
+                        Total
+                      </th>
+                      <th scope="col" className="px-4 py-4">
+                        Actions
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ))}
+                  </thead>
+                  <tbody>
+                    {filterInvoicesByCategory(category).map(
+                      (invoice, index) => (
+                        <tr
+                          key={invoice.id}
+                          className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700"
+                        >
+                          <td className="py-2 px-3 text-slate-900">
+                            {index + 1}
+                          </td>
+                          <td className="py-2 px-3">{invoice.data.area}</td>
+                          <td className="py-2 px-4">{invoice.data.quantity}</td>
+                          <td className="py-2 px-4">{invoice.data.rate}</td>
+                          <td className="py-2 px-4">{invoice.data.amount}</td>
+                          <td className="py-2 px-4">
+                            {invoice.data.gstPercentage}
+                          </td>
+                          <td className="py-2 px-4">
+                            {invoice.data.gstAmount}
+                          </td>
+                          <td className="py-2 px-4">{invoice.data.total}</td>
+                          <td className="py-2 px-4">
+                            <button onClick={() => editInvoice(invoice)}>
+                              <img
+                                src={edit}
+                                className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                                alt="Edit Button"
+                              ></img>
+                            </button>
+                            <button onClick={() => deleteInvoice(invoice.id)}>
+                              <img
+                                src={trash}
+                                className="hover:scale-125 transition-transform duration-300 ease-in-out cursor-pointer"
+                                alt="Trash Icon"
+                              />
+                            </button>
+                          </td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            ))}
+          </>
+        )}
         {showEditModal && (
           <EditInvoiceModal
             invoice={editedInvoice}
