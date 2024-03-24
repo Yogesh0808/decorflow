@@ -255,6 +255,15 @@ const EditFlooringOrderForm = ({
                                     <input
                                         className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         type="number"
+                                        onWheel={(e) => e.target.blur()}
+                                        onKeyDown={(event) => {
+                                            if (
+                                                event.keyCode === 38 ||
+                                                event.keyCode === 40
+                                            ) {
+                                                event.preventDefault();
+                                            }
+                                        }}
                                         id="height"
                                         name="height"
                                         onChange={(e) => {
@@ -289,6 +298,15 @@ const EditFlooringOrderForm = ({
                                     <input
                                         className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         type="number"
+                                        onWheel={(e) => e.target.blur()}
+                                        onKeyDown={(event) => {
+                                            if (
+                                                event.keyCode === 38 ||
+                                                event.keyCode === 40
+                                            ) {
+                                                event.preventDefault();
+                                            }
+                                        }}
                                         id="width"
                                         name="width"
                                         onChange={(e) => {
@@ -437,7 +455,6 @@ const EditFlooringOrderForm = ({
                             Cancel
                         </button>
                     </form>
-                    
                 </div>
             </div>
         </div>
