@@ -280,3 +280,15 @@ input[type="number"]::-webkit-outer-spin-button {
     appearance: none;
     margin: 0;
 }
+
+/* custom style */
+.red-card-header {
+    @apply bg-gradient-to-br from-[#ba181b]/90  to-[#ff5a5f]/80 backdrop-filter backdrop-blur-lg;
+}
+.red-card-body {
+    /* @apply bg-gradient-to-br from-[#ef6351]/90  to-[#fbc3bc] backdrop-filter backdrop-blur-lg; */
+    @apply bg-[#ffccd5]/90 backdrop-filter backdrop-blur-lg;
+}
+.red-card-body:hover {
+    @apply shadow-md shadow-[#252525]/40 transition ease-in-out duration-300;
+}

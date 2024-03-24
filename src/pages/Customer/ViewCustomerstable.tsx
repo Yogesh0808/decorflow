@@ -130,7 +130,7 @@ function ViewCustomers({ filterValue }: any) {
                 ) : clients.length ? (
                     <div className="overflow-y-auto overflow-x-auto rounded-xl">
                         <table className="w-full rounded-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-900 dark:bg-gray-800">
-                            <thead className="text-sm text-blue-900 uppercase rounded-lg bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
+                            <thead className="text-sm text-slate-900 uppercase rounded-lg red-card-header dark:text-slate-300">
                                 <tr>
                                     <th scope="col" className="px-3 py-4">
                                         ID
@@ -172,7 +172,7 @@ function ViewCustomers({ filterValue }: any) {
                                     ? clients.map((client: any) => (
                                           <tr
                                               key={client.id}
-                                              className="bg-white border-b border-zinc-200 dark:bg-slate-800 dark:border-slate-700">
+                                              className="bg-gray-3 border-b border-zinc-200  dark:border-slate-700">
                                               <td className="py-2 text-gray-900 whitespace-nowrap text-center dark:text-white">
                                                   {client.cid}
                                               </td>
