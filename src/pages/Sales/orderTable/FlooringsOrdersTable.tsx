@@ -85,6 +85,15 @@ const FlooringOrdersTable = ({ products, deleteProduct, editProduct }: any) => {
                                 Number of Sqft
                             </th>
                             <th scope="col" className="px-4 py-4">
+                                Width of Floor
+                            </th>
+                            <th scope="col" className="px-4 py-4">
+                                Type of Floor
+                            </th>
+                            <th scope="col" className="px-4 py-4">
+                                Floor Thickness
+                            </th>
+                            <th scope="col" className="px-4 py-4">
                                 Fabric Name
                             </th>
                             <th scope="col" className="px-4 py-4">
@@ -120,6 +129,15 @@ const FlooringOrdersTable = ({ products, deleteProduct, editProduct }: any) => {
                                 </td>
                                 <td className="px-4 py-2">
                                     {product.data.numberOfSqft}
+                                </td>
+                                <td className="px-4 py-2">
+                                    {product.data.widthOfFloor}
+                                </td>
+                                <td className="px-4 py-2">
+                                    {product.data.typesOfFlooring}
+                                </td>
+                                <td className="px-4 py-2">
+                                    {product.data.flooringThickness}
                                 </td>
                                 <td className="px-4 py-2">
                                     {product.data.fabricName}

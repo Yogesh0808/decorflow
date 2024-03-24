@@ -386,23 +386,21 @@ const MattressForm: React.FC<MattressFormProps> = ({
                                 </label>
                             </div>
                         </div>
-                        {!formData.complimentaryPillows && (
-                            <div className="col-span-2">
-                                <label
-                                    htmlFor="pillowRemarks"
-                                    className="block mb-2 text-sm font-medium text-slate-900 dark:text-white">
-                                    Pillow Remarks
-                                </label>
-                                <textarea
-                                    id="pillowRemarks"
-                                    name="pillowRemarks"
-                                    rows={2}
-                                    value={formData.pillowRemarks}
-                                    onChange={handleInputChange}
-                                    className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Add any additional remarks for pillows"></textarea>
-                            </div>
-                        )}
+                        <div className="col-span-2">
+                            <label
+                                htmlFor="pillowRemarks"
+                                className="block mb-2 text-sm font-medium text-slate-900 dark:text-white">
+                                Pillow Remarks
+                            </label>
+                            <textarea
+                                id="pillowRemarks"
+                                name="pillowRemarks"
+                                rows={2}
+                                value={formData.pillowRemarks}
+                                onChange={handleInputChange}
+                                className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Add any additional remarks for pillows"></textarea>
+                        </div>
                         <div className="col-span-2">
                             <label
                                 htmlFor="bedProtectorSize"
