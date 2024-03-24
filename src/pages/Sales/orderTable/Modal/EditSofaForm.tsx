@@ -77,9 +77,46 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
         }));
     };
 
-    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const compressImage = (file: File) => {
+        return new Promise<File>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event: any) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d")!;
+                    canvas.width = 700; // Adjust width as needed
+                    canvas.height = 800; // Adjust height as needed
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    canvas.toBlob(
+                        (blob) => {
+                            if (!blob) {
+                                reject(new Error("Failed to compress image."));
+                                return;
+                            }
+                            const compressedFile = new File([blob], file.name, {
+                                type: "image/jpeg", // Adjust mime type as needed
+                            });
+                            resolve(compressedFile);
+                        },
+                        "image/jpeg",
+                        0.6
+                    ); // Adjust quality as needed
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    };
+
+    const handleFileInputChange = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         const file = e.target.files && e.target.files[0];
+        const name = e.target.name;
+
         if (file) {
+            const compressedImage = await compressImage(file);
             setSelectedImage((prevState) => ({
                 ...prevState,
                 [name]: URL.createObjectURL(file),
@@ -90,25 +127,43 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
             }));
             setFormData((prevFormData) => ({
                 ...prevFormData,
-                [name]: file,
-            }));
-            const name = e.target.name;
-            const fileType = file.type;
-            let newName = "";
-            if (fileType === "image/jpeg") {
-                newName = `${name}.jpeg`;
-            } else if (fileType === "image/jpg") {
-                newName = `${name}.jpg`;
-            } else {
-                newName = file.name;
-            }
-            const renamedFile = new File([file], newName, { type: file.type });
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                [name]: renamedFile,
+                [name]: compressedImage,
             }));
         }
     };
+
+    // const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const file = e.target.files && e.target.files[0];
+    //     if (file) {
+    //         setSelectedImage((prevState) => ({
+    //             ...prevState,
+    //             [name]: URL.createObjectURL(file),
+    //         }));
+    //         setFileNames((prevFileNames) => ({
+    //             ...prevFileNames,
+    //             [name]: file.name,
+    //         }));
+    //         setFormData((prevFormData) => ({
+    //             ...prevFormData,
+    //             [name]: file,
+    //         }));
+    //         const name = e.target.name;
+    //         const fileType = file.type;
+    //         let newName = "";
+    //         if (fileType === "image/jpeg") {
+    //             newName = `${name}.jpeg`;
+    //         } else if (fileType === "image/jpg") {
+    //             newName = `${name}.jpg`;
+    //         } else {
+    //             newName = file.name;
+    //         }
+    //         const renamedFile = new File([file], newName, { type: file.type });
+    //         setFormData((prevFormData) => ({
+    //             ...prevFormData,
+    //             [name]: renamedFile,
+    //         }));
+    //     }
+    // };
 
     const handleTimeOfDeliveryChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -273,7 +328,9 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                             value={formData.depthUnit}
                                             onChange={handleInputChange}
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            <option value="inches">inches</option>
+                                            <option value="inches">
+                                                inches
+                                            </option>
                                             <option value="feet">feet</option>
                                             <option value="cm">cm</option>
                                             <option value="mm">mm</option>
@@ -302,7 +359,9 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                             value={formData.floorToSeatUnit}
                                             onChange={handleInputChange}
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            <option value="inches">inches</option>
+                                            <option value="inches">
+                                                inches
+                                            </option>
                                             <option value="feet">feet</option>
                                             <option value="cm">cm</option>
                                             <option value="mm">mm</option>
@@ -328,10 +387,14 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                         />
                                         <select
                                             name="seatToBackHeightUnit"
-                                            value={formData.seatToBackHeightUnit}
+                                            value={
+                                                formData.seatToBackHeightUnit
+                                            }
                                             onChange={handleInputChange}
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            <option value="inches">inches</option>
+                                            <option value="inches">
+                                                inches
+                                            </option>
                                             <option value="feet">feet</option>
                                             <option value="cm">cm</option>
                                             <option value="mm">mm</option>
@@ -352,7 +415,9 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                         className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                         <option value="Squared">Squared</option>
                                         <option value="Normal">Normal</option>
-                                        <option value="L-Shaped">L-Shaped</option>
+                                        <option value="L-Shaped">
+                                            L-Shaped
+                                        </option>
                                         <option value="Poufs">Poufs</option>
                                         <option value="Ottoman">Ottoman</option>
                                         <option value="Cot and Bed Side">
@@ -364,7 +429,9 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                         <option value="Sofa cum Sofa">
                                             Sofa cum Bed
                                         </option>
-                                        <option value="Corner Sofa">Corner Sofa</option>
+                                        <option value="Corner Sofa">
+                                            Corner Sofa
+                                        </option>
                                         <option value="Seatout Cushion">
                                             Seatout Cushion
                                         </option>
@@ -500,18 +567,24 @@ const EditSofaOrderForm: React.FC<EditSofaOrderFormProps> = ({
                                             id="timeOfDelivery"
                                             name="timeOfDeliveryValue"
                                             value={formData.timeOfDeliveryValue}
-                                            onChange={handleTimeOfDeliveryChange}
+                                            onChange={
+                                                handleTimeOfDeliveryChange
+                                            }
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             placeholder="Enter time of delivery"
                                         />
                                         <select
                                             value={formData.timeOfDeliveryUnit}
                                             name="timeOfDeliveryUnit"
-                                            onChange={handleTimeOfDeliveryChange}
+                                            onChange={
+                                                handleTimeOfDeliveryChange
+                                            }
                                             className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                             <option value="days">days</option>
                                             <option value="weeks">weeks</option>
-                                            <option value="months">months</option>
+                                            <option value="months">
+                                                months
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
