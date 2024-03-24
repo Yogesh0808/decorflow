@@ -227,19 +227,20 @@ const MattressForm: React.FC<MattressFormProps> = ({
                                 className="block mb-2 text-sm font-medium text-slate-900 dark:text-white">
                                 Description
                             </label>
-                            <select
-                                id="description"
+                            <input
+                                className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                list="description"
                                 name="description"
+                                type="text"
                                 value={formData.description}
-                                onChange={handleInputChange}
-                                required
-                                className="bg-purple-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option value="">Select description</option>
+                                onChange={(e) => handleInputChange(e)}
+                            />
+                            <datalist id="description">
                                 <option value="Foam">Foam</option>
                                 <option value="Spring">Spring</option>
                                 <option value="Memory Foam">Memory Foam</option>
                                 <option value="Hybrid">Hybrid</option>
-                            </select>
+                            </datalist>
                         </div>
                         <div className="col-span-2 space-y-2">
                             <label

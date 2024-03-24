@@ -4,13 +4,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface WallpaperFormProps {
-  onCloseModal: () => void;
-  selectedCustomer: { id: string; clientName: string };
+    onCloseModal: () => void;
+    selectedCustomer: { id: string; clientName: string };
 }
 
 const WallpaperForm: React.FC<WallpaperFormProps> = ({
-  onCloseModal,
-  selectedCustomer,
+    onCloseModal,
+    selectedCustomer,
 }) => {
     const [formData, setFormData] = useState<any>({
         title: "",
@@ -28,20 +28,20 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
     });
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState<any>({
-      image: null,
-      fimg: null,
-      limg: null,
+        image: null,
+        fimg: null,
+        limg: null,
     });
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    };
 
     const handleFileInputChange = async (
         e: React.ChangeEvent<HTMLInputElement>
@@ -49,11 +49,10 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
         const file = e.target.files && e.target.files[0];
         const name = e.target.name;
         if (file) {
-
             setSelectedImage({
                 ...selectedImage,
-                [name]: URL.createObjectURL(file)
-            })
+                [name]: URL.createObjectURL(file),
+            });
             try {
                 const compressedImage = await compressImage(file);
                 setFormData((prevFormData) => ({
@@ -66,56 +65,56 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
         }
     };
 
-  const compressImage = (file: File) => {
-    return new Promise<File>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d")!;
-          canvas.width = 700; // Adjust width as needed
-          canvas.height = 800; // Adjust height as needed
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          canvas.toBlob(
-            (blob) => {
-              if (!blob) {
-                reject(new Error("Failed to compress image."));
-                return;
-              }
-              const compressedFile = new File([blob], file.name, {
-                type: "image/jpeg", // Adjust mime type as needed
-              });
-              resolve(compressedFile);
-            },
-            "image/jpeg",
-            0.6
-          ); // Adjust quality as needed
-        };
-        img.src = event.target.result;
-      };
-      reader.readAsDataURL(file);
-    });
-  };
+    const compressImage = (file: File) => {
+        return new Promise<File>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event: any) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d")!;
+                    canvas.width = 700; // Adjust width as needed
+                    canvas.height = 800; // Adjust height as needed
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    canvas.toBlob(
+                        (blob) => {
+                            if (!blob) {
+                                reject(new Error("Failed to compress image."));
+                                return;
+                            }
+                            const compressedFile = new File([blob], file.name, {
+                                type: "image/jpeg", // Adjust mime type as needed
+                            });
+                            resolve(compressedFile);
+                        },
+                        "image/jpeg",
+                        0.6
+                    ); // Adjust quality as needed
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("Wallpaper handleSubmit Called!");
-    e.preventDefault();
-    try {
-      setLoading(true);
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        console.log("Wallpaper handleSubmit Called!");
+        e.preventDefault();
+        try {
+            setLoading(true);
 
             formData.size = `${formData.height}H x ${formData.width}W`;
             const formDataToSend = new FormData();
-           // Set file name to "image.jpg"
-      if (formData.image) {
-        formDataToSend.append("image", formData.image, "image.jpg");
-      }
+            // Set file name to "image.jpg"
+            if (formData.image) {
+                formDataToSend.append("image", formData.image, "image.jpg");
+            }
 
-      Object.keys(formData).forEach((key) => {
-        if (key !== "image") {
-          formDataToSend.append(key, formData[key]);
-        }
-      });
+            Object.keys(formData).forEach((key) => {
+                if (key !== "image") {
+                    formDataToSend.append(key, formData[key]);
+                }
+            });
             formDataToSend.append("customerId", selectedCustomer.id);
             formDataToSend.append("category", "Wallpaper");
             console.log(formDataToSend);
@@ -130,34 +129,34 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
                 }
             );
 
-      console.log("Form submitted successfully:", response.data);
-      onCloseModal();
-      toast.success("Wallpaper Order has been submitted successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Wallpaper Order has been cancelled", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+            console.log("Form submitted successfully:", response.data);
+            onCloseModal();
+            toast.success("Wallpaper Order has been submitted successfully!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            toast.error("Wallpaper Order has been cancelled", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="relative  bg-gradient-to-tr from-[#DEE4EA] to-[#F9FCFF] dark:from-[#003049] from-50% dark:to-[#669bbc] rounded-lg shadow dark:bg-slate-700">
@@ -320,7 +319,7 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
                             <label
                                 htmlFor="catalogCode"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Catalog Code
+                                Fabric Name
                             </label>
                             <input
                                 type="text"
@@ -336,7 +335,7 @@ const WallpaperForm: React.FC<WallpaperFormProps> = ({
                             <label
                                 htmlFor="catalogNumber"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Catalog Number
+                                Fabric Code
                             </label>
                             <input
                                 type="text"

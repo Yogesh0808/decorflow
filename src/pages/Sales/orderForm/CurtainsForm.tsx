@@ -4,13 +4,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { convertUnit } from "../../../service/UnitConverstions";
 interface CurtainsFormProps {
-  onCloseModal: () => void;
-  selectedCustomer: { id: string; clientName: string };
+    onCloseModal: () => void;
+    selectedCustomer: { id: string; clientName: string };
 }
 
 const CurtainsForm: React.FC<CurtainsFormProps> = ({
-  onCloseModal,
-  selectedCustomer,
+    onCloseModal,
+    selectedCustomer,
 }) => {
     const [formData, setFormData] = useState<any>({
         title: "",
@@ -31,6 +31,9 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         image: null,
         tieOption: "",
         remarks: "",
+        motorType: "Wired motor",
+        tenMtr: "",
+        twenMtr: "",
     });
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState<any>({
@@ -71,37 +74,37 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         }
     };
 
-  const compressImage = (file: File) => {
-    return new Promise<File>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d")!;
-          canvas.width = 700; // Adjust width as needed
-          canvas.height = 800; // Adjust height as needed
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          canvas.toBlob(
-            (blob) => {
-              if (!blob) {
-                reject(new Error("Failed to compress image."));
-                return;
-              }
-              const compressedFile = new File([blob], file.name, {
-                type: "image/jpeg", // Adjust mime type as needed
-              });
-              resolve(compressedFile);
-            },
-            "image/jpeg",
-            0.6
-          ); // Adjust quality as needed
-        };
-        img.src = event.target.result;
-      };
-      reader.readAsDataURL(file);
-    });
-  };
+    const compressImage = (file: File) => {
+        return new Promise<File>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event: any) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d")!;
+                    canvas.width = 700; // Adjust width as needed
+                    canvas.height = 800; // Adjust height as needed
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    canvas.toBlob(
+                        (blob) => {
+                            if (!blob) {
+                                reject(new Error("Failed to compress image."));
+                                return;
+                            }
+                            const compressedFile = new File([blob], file.name, {
+                                type: "image/jpeg", // Adjust mime type as needed
+                            });
+                            resolve(compressedFile);
+                        },
+                        "image/jpeg",
+                        0.6
+                    ); // Adjust quality as needed
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -110,7 +113,6 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
 
             formData.size = `${formData.height}H x ${formData.width}W`;
 
-            
             const formDataToSend = new FormData();
             // Set file name to "image.jpg"
             if (formData.image) {
@@ -119,7 +121,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
             Object.keys(formData).forEach((key) => {
                 if (key !== "image") {
                     formDataToSend.append(key, formData[key]);
-                  }
+                }
             });
             formDataToSend.append("customerId", selectedCustomer.id);
             formDataToSend.append("category", "Curtains");
@@ -135,34 +137,34 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                 }
             );
 
-      console.log("Form submitted successfully:", response.data);
-      onCloseModal();
-      toast.success("Curtains Order has been submitted successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Curtains Order has been cancelled", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+            console.log("Form submitted successfully:", response.data);
+            onCloseModal();
+            toast.success("Curtains Order has been submitted successfully!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            toast.error("Curtains Order has been cancelled", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="relative  bg-gradient-to-tr from-[#DEE4EA] to-[#F9FCFF] dark:from-[#003049] from-50% dark:to-[#669bbc] rounded-lg shadow dark:bg-slate-700">
@@ -410,6 +412,84 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 placeholder="Enter number of panels"
                             />
                         </div>
+                        <div
+                            className="col-span-2"
+                            onClick={() => {
+                                console.log("panel cal");
+                                if (formData.height !== "") {
+                                    let unit = "";
+                                    switch (formData.unit1) {
+                                        case "mm":
+                                            unit = "mm";
+                                            break;
+                                        case "in":
+                                            unit = "inches";
+                                            break;
+                                        case "cm":
+                                            unit = "cm";
+                                            break;
+                                        case "yd":
+                                            unit = "yard";
+                                            break;
+                                        case "ft":
+                                            unit = "feet";
+                                            break;
+                                        case "m":
+                                            unit = "meter";
+                                            break;
+                                        case "sqm":
+                                            unit = "squareMeter";
+                                            break;
+                                        case "syd":
+                                            unit = "squareYard";
+                                            break;
+                                        default:
+                                            unit = "";
+                                    }
+
+                                    let heightInch = convertUnit(
+                                        formData.height,
+                                        unit,
+                                        "inches"
+                                    );
+                                    let heightTen = heightInch + 10;
+                                    let heightTwen = heightInch + 20;
+                                    let tenMtr = convertUnit(
+                                        heightTen,
+                                        "inches",
+                                        "meter"
+                                    );
+                                    let twenMtr = convertUnit(
+                                        heightTwen,
+                                        "inches",
+                                        "meter"
+                                    );
+                                    setFormData({
+                                        ...formData,
+                                        tenMtr: tenMtr.toFixed(3),
+                                        twenMtr: twenMtr.toFixed(3),
+                                    });
+                                }
+                            }}>
+                            <label
+                                htmlFor="noOfPanels"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Panel Calculations
+                            </label>
+                            <h1 className="">
+                                Panel per Mtr(+10) :{" "}
+                                <span className="text-red-900">
+                                    {formData.tenMtr}
+                                </span>
+                            </h1>
+                            <h1 className="">
+                                Panel per Mtr(+20) :{" "}
+                                <span className="text-red-900">
+                                    {formData.twenMtr}
+                                </span>
+                            </h1>
+                        </div>
+
                         <div className="col-span-2 md:col-span-1">
                             <label
                                 htmlFor="modelOfStitching"
@@ -430,6 +510,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 <option value="1 pleat"></option>
                                 <option value="2 pleat"></option>
                                 <option value="3 pleat"></option>
+                                <option value="roman blinds"></option>
                                 <option value="ring model"></option>
                                 <option value="ripple fold"></option>
                                 <option value="tailored pleat"></option>
@@ -438,6 +519,27 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 <option value="cubicle"></option>
                                 <option value="rod pocket"></option>
                             </datalist>
+                        </div>
+                        <div className="col-span-2 md:col-span-1">
+                            <label
+                                htmlFor="hookType"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Motor Type
+                            </label>
+                            <select
+                                id="motorType"
+                                name="motorType"
+                                value={formData.motorType}
+                                onChange={(e) => handleInputChange(e)}
+                                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <option value="Battery motor">
+                                    Battery motor
+                                </option>
+                                <option value="Wired motor">Wired motor</option>
+                                <option value="Tubular motor">
+                                    Tubular motor
+                                </option>
+                            </select>
                         </div>
                         <div className="col-span-2 md:col-span-1">
                             <label
@@ -470,6 +572,12 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 onChange={(e) => handleInputChange(e)}
                             />
                             <datalist id="tracksLists">
+                                <option value="dolphinr track">
+                                    dolphinr track
+                                </option>
+                                <option value="dooya track">dooya track</option>
+                                <option value="tube track">tube track</option>
+                                <option value="somfy track">somfy track</option>
                                 <option value="SS Rod">SS Rod</option>
                                 <option value="M Track">M Track</option>
                                 <option value="I Track">I Track</option>
