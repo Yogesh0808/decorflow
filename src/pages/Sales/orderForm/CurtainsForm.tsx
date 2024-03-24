@@ -26,10 +26,10 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         modelOfStitching: "",
         fabricName: "",
         fabricCode: "",
-        hookType: "",
+        hookType: "Track Hook",
         trackType: "",
         image: null,
-        tieOption: "",
+        tieOption: "No Tie",
         remarks: "",
         motorType: "Wired motor",
         tenMtr: "",
@@ -478,13 +478,13 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                             </label>
                             <h1 className="">
                                 Panel per Mtr(+10) :{" "}
-                                <span className="text-red-900">
+                                <span className="text-red-900 font-bold">
                                     {formData.tenMtr}
                                 </span>
                             </h1>
                             <h1 className="">
                                 Panel per Mtr(+20) :{" "}
-                                <span className="text-red-900">
+                                <span className="text-red-900 font-bold">
                                     {formData.twenMtr}
                                 </span>
                             </h1>
@@ -522,7 +522,7 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                         </div>
                         <div className="col-span-2 md:col-span-1">
                             <label
-                                htmlFor="hookType"
+                                htmlFor="motorType"
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Motor Type
                             </label>
