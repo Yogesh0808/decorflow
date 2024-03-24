@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { convertUnit } from "../../../service/UnitConverstions";
 
 interface FlooringFormProps {
     onSubmit: (formData: any) => void;
@@ -19,7 +20,10 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
         description: "Vinyl Roll",
         size: "",
         numberOfSqft: "",
-        unit: "Mtr",
+        widthOfFloor: "",
+        typesOfFlooring: "",
+        flooringThickness: "",
+        unit: "SqFt",
         width: "",
         height: "",
         unit1: "in",
@@ -339,6 +343,54 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
                                     name="numberOfSqft"
                                     id="numberOfSqft"
                                     value={formData.numberOfSqft}
+                                    onClick={() => {
+                                        if (formData.width !== "") {
+                                            let unit = "";
+                                            switch (formData.unit1) {
+                                                case "mm":
+                                                    unit = "mm";
+                                                    break;
+                                                case "in":
+                                                    unit = "inches";
+                                                    break;
+                                                case "cm":
+                                                    unit = "cm";
+                                                    break;
+                                                case "yd":
+                                                    unit = "yard";
+                                                    break;
+                                                case "ft":
+                                                    unit = "feet";
+                                                    break;
+                                                case "m":
+                                                    unit = "meter";
+                                                    break;
+                                                case "sqm":
+                                                    unit = "squareMeter";
+                                                    break;
+                                                case "syd":
+                                                    unit = "squareYard";
+                                                    break;
+                                                default:
+                                                    unit = "";
+                                            }
+                                            let W = convertUnit(
+                                                formData.width,
+                                                unit,
+                                                "feet"
+                                            );
+                                            let H = convertUnit(
+                                                formData.height,
+                                                unit,
+                                                "feet"
+                                            );
+                                            let quan: number = Math.ceil(W * H);
+                                            setFormData({
+                                                ...formData,
+                                                numberOfSqft: quan,
+                                            });
+                                        }
+                                    }}
                                     onChange={handleInputChange}
                                     required
                                     className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -353,9 +405,101 @@ const FlooringForm: React.FC<FlooringFormProps> = ({
                                     }}
                                     className="bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-r-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 m-0">
                                     <option value="SqFt">SqFt</option>
-                                    <option value="Mts">Mts</option>
+                                    <option value="Mtr">Mtr</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div className="col-span-2 md:col-span-1">
+                            <label
+                                htmlFor="widthOfFloor"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Width of Floor
+                            </label>
+                            <input
+                                type="text"
+                                id="widthOfFloor"
+                                name="widthOfFloor"
+                                value={formData.widthOfFloor}
+                                onChange={(e) => handleInputChange(e)}
+                                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Enter width of Floor"
+                                list="widthOfFloors"
+                            />
+                            <datalist id="widthOfFloors">
+                                <option value="6 feet" />
+                                <option value="6.5 feet" />
+                                <option value="13 feet" />
+                                <option value="5 feet" />
+                                <option value="12 feet" />
+                                <option value="4 feet" />
+                                <option value="3 feet" />
+                                <option value="2 feet" />
+                            </datalist>
+                        </div>
+                        <div className="col-span-2 md:col-span-1">
+                            <label
+                                htmlFor="flooringThickness"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Flooring Thickness
+                            </label>
+                            <input
+                                type="text"
+                                id="flooringThickness"
+                                name="flooringThickness"
+                                value={formData.flooringThickness}
+                                onChange={(e) => handleInputChange(e)}
+                                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Enter flooring thickness"
+                                list="flooringThicknessOptions"
+                            />
+                            <datalist id="flooringThicknessOptions">
+                                <option value="0.45mm" />
+                                <option value="0.5mm" />
+                                <option value="0.6mm" />
+                                <option value="0.8mm" />
+                                <option value="1mm" />
+                                <option value="1.2mm" />
+                                <option value="1.3mm" />
+                                <option value="1.5mm" />
+                                <option value="2mm" />
+                                <option value="3mm" />
+                                <option value="4mm" />
+                                <option value="5mm" />
+                                <option value="6mm" />
+                                <option value="7mm" />
+                                <option value="8mm" />
+                                <option value="9mm" />
+                                <option value="10mm" />
+                                <option value="11mm" />
+                                <option value="12mm" />
+                                <option value="13mm" />
+                                <option value="14mm" />
+                                <option value="15mm" />
+                                <option value="16mm" />
+                                <option value="17mm" />
+                                <option value="18mm" />
+                            </datalist>
+                        </div>
+                        <div className="col-span-2 md:col-span-1">
+                            <label
+                                htmlFor="typesOfFlooring"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Type of Floorings
+                            </label>
+                            <input
+                                type="text"
+                                id="typesOfFlooring"
+                                name="typesOfFlooring"
+                                value={formData.typesOfFlooring}
+                                onChange={(e) => handleInputChange(e)}
+                                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Enter Type of Floor"
+                                list="typesOfFloorings"
+                            />
+                            <datalist id="typesOfFloorings">
+                                <option value="Artificial grass" />
+                            </datalist>
                         </div>
 
                         <div className="col-span-2">
