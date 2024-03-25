@@ -228,7 +228,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
             <SkeletonRow />
           ) : filterValue ? (
             <>
-              <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
+              <ul className="flex w-full justify-around mt-3 text-boxdark red-card-header rounded-xl">
                 <li className="p-3 font-bold w-1/6 text-center">Client ID</li>
                 <li className="p-3 font-bold w-5/6 text-center flex justify-center items-center">
                   Client Name
@@ -245,7 +245,7 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
             </>
           ) : (
             <>
-              <ul className="flex w-full justify-around mt-3 text-boxdark bg-blue-300 rounded-xl">
+              <ul className="flex w-full justify-around mt-3 text-boxdark red-card-header rounded-xl">
                 <li className="p-3 font-bold w-1/6 text-center">Client ID</li>
                 <li className=" w-5/6 text-center p-3 font-bold flex justify-center items-center">
                   Client Name

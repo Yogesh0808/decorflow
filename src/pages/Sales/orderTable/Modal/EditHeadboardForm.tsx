@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -60,28 +61,53 @@ const EditHeadboardForm = ({
         }));
     };
 
-    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const compressImage = (file: File) => {
+        return new Promise<File>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event: any) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d")!;
+                    canvas.width = 700; // Adjust width as needed
+                    canvas.height = 800; // Adjust height as needed
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    canvas.toBlob(
+                        (blob) => {
+                            if (!blob) {
+                                reject(new Error("Failed to compress image."));
+                                return;
+                            }
+                            const compressedFile = new File([blob], file.name, {
+                                type: "image/jpeg", // Adjust mime type as needed
+                            });
+                            resolve(compressedFile);
+                        },
+                        "image/jpeg",
+                        0.6
+                    ); // Adjust quality as needed
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    };
+
+    const handleFileInputChange = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         const file = e.target.files && e.target.files[0];
         const name = e.target.name;
+
         if (file) {
-            const name = e.target.name;
-            const fileType = file.type;
-            let newName = "";
-            if (fileType === "image/jpeg") {
-                newName = `${name}.jpeg`;
-            } else if (fileType === "image/jpg") {
-                newName = `${name}.jpg`;
-            } else {
-                newName = file.name;
-            }
-            const renamedFile = new File([file], newName, { type: file.type });
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                [name]: renamedFile,
-            }));
+            const compressedImage = await compressImage(file);
             setSelectedImage((prevState) => ({
                 ...prevState,
                 [name]: URL.createObjectURL(file),
+            }));
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: compressedImage,
             }));
         }
     };
@@ -209,6 +235,15 @@ const EditHeadboardForm = ({
                                         <input
                                             className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             type="number"
+                                            onWheel={(e) => e.target.blur()}
+                                            onKeyDown={(event) => {
+                                                if (
+                                                    event.keyCode === 38 ||
+                                                    event.keyCode === 40
+                                                ) {
+                                                    event.preventDefault();
+                                                }
+                                            }}
                                             id="height"
                                             name="height"
                                             onChange={(e) => {
@@ -243,6 +278,15 @@ const EditHeadboardForm = ({
                                         <input
                                             className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             type="number"
+                                            onWheel={(e) => e.target.blur()}
+                                            onKeyDown={(event) => {
+                                                if (
+                                                    event.keyCode === 38 ||
+                                                    event.keyCode === 40
+                                                ) {
+                                                    event.preventDefault();
+                                                }
+                                            }}
                                             id="width"
                                             name="width"
                                             onChange={(e) => {

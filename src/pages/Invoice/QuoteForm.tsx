@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
+
   const [formData, setFormData] = useState({
     area: "",
     quantity: "",
@@ -14,38 +15,39 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
     total: 0,
   });
 
-  const [customers, setCustomers] = useState([]);
-  const [showToast, setShowToast] = useState(false);
+    const [customers, setCustomers] = useState([]);
+    const [showToast, setShowToast] = useState(false);
 
-  useEffect(() => {
-    let timer;
-    if (showToast) {
-      timer = setTimeout(() => {
-        setShowToast(false);
-      }, 3500);
-    }
-    return () => clearTimeout(timer);
-  }, [showToast]);
+    useEffect(() => {
+        let timer;
+        if (showToast) {
+            timer = setTimeout(() => {
+                setShowToast(false);
+            }, 3500);
+        }
+        return () => clearTimeout(timer);
+    }, [showToast]);
 
-  const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
-    return {
-      headers: {
-        Authorization: basicAuth,
-      },
+    const getHeaders = () => {
+        const username = "abinesh";
+        const password = "abi";
+        const basicAuth = "Basic " + btoa(username + ":" + password);
+        return {
+            headers: {
+                Authorization: basicAuth,
+            },
+        };
     };
-  };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-    calculateAmountAndGst({ ...formData, [name]: value });
-  };
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+        calculateAmountAndGst({ ...formData, [name]: value });
+    };
+
 
   const calculateAmountAndGst = ({ quantity, rate, gstPercentage }) => {
     // Check if all required fields are filled
@@ -336,11 +338,8 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
             <div className="ms-2 text-sm text-slate-800 font-normal">
               {selectedCategory} Quote has been Submitted.
             </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default QuoteForm;

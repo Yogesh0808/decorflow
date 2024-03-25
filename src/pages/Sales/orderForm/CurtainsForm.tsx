@@ -26,12 +26,14 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
         modelOfStitching: "",
         fabricName: "",
         fabricCode: "",
-        hookType: "",
+        hookType: "Track Hook",
         trackType: "",
         image: null,
-        tieOption: "",
+        tieOption: "No Tie",
         remarks: "",
-        motorType: "Wired motor",
+
+        motorType: "none",
+
         tenMtr: "",
         twenMtr: "",
     });
@@ -242,6 +244,15 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 <input
                                     className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     type="number"
+                                    onWheel={(e) => e.target.blur()}
+                                    onKeyDown={(event) => {
+                                        if (
+                                            event.keyCode === 38 ||
+                                            event.keyCode === 40
+                                        ) {
+                                            event.preventDefault();
+                                        }
+                                    }}
                                     id="height"
                                     name="height"
                                     onChange={(e) => {
@@ -276,6 +287,15 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 <input
                                     className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     type="number"
+                                    onWheel={(e) => e.target.blur()}
+                                    onKeyDown={(event) => {
+                                        if (
+                                            event.keyCode === 38 ||
+                                            event.keyCode === 40
+                                        ) {
+                                            event.preventDefault();
+                                        }
+                                    }}
                                     id="width"
                                     name="width"
                                     onChange={(e) => {
@@ -358,6 +378,15 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                             </label>
                             <input
                                 type="number"
+                                onWheel={(e) => e.target.blur()}
+                                onKeyDown={(event) => {
+                                    if (
+                                        event.keyCode === 38 ||
+                                        event.keyCode === 40
+                                    ) {
+                                        event.preventDefault();
+                                    }
+                                }}
                                 id="noOfPanels"
                                 name="noOfPanels"
                                 value={formData.noOfPanels}
@@ -478,13 +507,17 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                             </label>
                             <h1 className="">
                                 Panel per Mtr(+10) :{" "}
-                                <span className="text-red-900">
+
+                                <span className="text-red-900 font-bold">
+
                                     {formData.tenMtr}
                                 </span>
                             </h1>
                             <h1 className="">
                                 Panel per Mtr(+20) :{" "}
-                                <span className="text-red-900">
+
+                                <span className="text-red-900 font-bold">
+
                                     {formData.twenMtr}
                                 </span>
                             </h1>
@@ -519,6 +552,29 @@ const CurtainsForm: React.FC<CurtainsFormProps> = ({
                                 <option value="cubicle"></option>
                                 <option value="rod pocket"></option>
                             </datalist>
+                        </div>
+                        <div className="col-span-2 md:col-span-1">
+                            <label
+                                htmlFor="motorType"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Motor Type
+                            </label>
+                            <select
+                                id="motorType"
+                                name="motorType"
+                                value={formData.motorType}
+                                onChange={(e) => handleInputChange(e)}
+                                className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                {" "}
+                                <option value="None">None</option>
+                                <option value="Battery motor">
+                                    Battery motor
+                                </option>
+                                <option value="Wired motor">Wired motor</option>
+                                <option value="Tubular motor">
+                                    Tubular motor
+                                </option>
+                            </select>
                         </div>
                         <div className="col-span-2 md:col-span-1">
                             <label
