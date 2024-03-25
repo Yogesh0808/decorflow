@@ -58,9 +58,13 @@ const AddCustomer = () => {
   };
 
   const handleChange = (value) => {
-    setFormData({ ...formData, phone: value });
-    setValid(validatePhoneNumber(value));
-  };
+  const cleanedValue = value.replace(/\D/g, '');
+  // Format the phone number with symbols or dashes
+  const formattedPhoneNumber = cleanedValue.replace(/(\d{2})(\d{4})(\d{4})/, '+$1-$2-$3');
+  
+  setFormData({ ...formData, phone: formattedPhoneNumber });
+  setValid(validatePhoneNumber(formattedPhoneNumber));
+};
 
   const validatePhoneNumber = (phoneNumber) => {
     const phoneNumberPattern = /^\+?[1-9]\d{1,14}$/;
