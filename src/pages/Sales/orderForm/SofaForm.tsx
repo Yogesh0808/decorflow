@@ -9,8 +9,8 @@ interface SofaFormProps {
 }
 
 const SofaForm: React.FC<SofaFormProps> = ({
-  onCloseModal,
-  selectedCustomer,
+    onCloseModal,
+    selectedCustomer,
 }) => {
     const [formData, setFormData] = useState<any>({
         title: "",
@@ -50,26 +50,26 @@ const SofaForm: React.FC<SofaFormProps> = ({
         limg: "",
     });
 
-  const getHeaders = () => {
-    const username = "abinesh";
-    const password = "abi";
-    const basicAuth = "Basic " + btoa(username + ":" + password);
-    return {
-      headers: {
-        Authorization: basicAuth,
-      },
+    const getHeaders = () => {
+        const username = "abinesh";
+        const password = "abi";
+        const basicAuth = "Basic " + btoa(username + ":" + password);
+        return {
+            headers: {
+                Authorization: basicAuth,
+            },
+        };
     };
-  };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    };
 
     const handleTimeOfDeliveryChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -80,8 +80,6 @@ const SofaForm: React.FC<SofaFormProps> = ({
             [name]: value,
         }));
     };
-
-    
 
     const handleUnitChange = (
         e: React.ChangeEvent<HTMLSelectElement>,
@@ -97,12 +95,47 @@ const SofaForm: React.FC<SofaFormProps> = ({
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setIncludePillows(e.target.checked); // Update state based on checkbox value
     };
+    
+    const compressImage = (file: File) => {
+        return new Promise<File>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event: any) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d")!;
+                    canvas.width = 700; // Adjust width as needed
+                    canvas.height = 800; // Adjust height as needed
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    canvas.toBlob(
+                        (blob) => {
+                            if (!blob) {
+                                reject(new Error("Failed to compress image."));
+                                return;
+                            }
+                            const compressedFile = new File([blob], file.name, {
+                                type: "image/jpeg", // Adjust mime type as needed
+                            });
+                            resolve(compressedFile);
+                        },
+                        "image/jpeg",
+                        0.6
+                    ); // Adjust quality as needed
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    };
 
-    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileInputChange = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         const file = e.target.files && e.target.files[0];
         const name = e.target.name;
 
         if (file) {
+            const compressedImage = await compressImage(file);
             setSelectedImage((prevState) => ({
                 ...prevState,
                 [name]: URL.createObjectURL(file),
@@ -113,7 +146,7 @@ const SofaForm: React.FC<SofaFormProps> = ({
             }));
             setFormData((prevFormData) => ({
                 ...prevFormData,
-                [name]: file,
+                [name]: compressedImage,
             }));
         }
     };
@@ -140,46 +173,46 @@ const SofaForm: React.FC<SofaFormProps> = ({
             dataToSubmit.append("customerName", selectedCustomer.clientName);
             dataToSubmit.append("customerId", selectedCustomer.id);
 
-      const response = await axios.post(
-        `/api/products/${selectedCustomer.id}/Sofa`,
-        dataToSubmit,
-        getHeaders()
-      );
+            const response = await axios.post(
+                `/api/products/${selectedCustomer.id}/Sofa`,
+                dataToSubmit,
+                getHeaders()
+            );
 
-      console.log("Form submitted successfully:", response.data);
-      onCloseModal();
-      toast.success("Sofa Order has been submitted successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Sofa Order has been cancelled", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+            console.log("Form submitted successfully:", response.data);
+            onCloseModal();
+            toast.success("Sofa Order has been submitted successfully!", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            toast.error("Sofa Order has been cancelled", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Sofa Data:", formData);
-    await submitFormData(formData);
-  };
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log("Sofa Data:", formData);
+        await submitFormData(formData);
+    };
 
     return (
         <div className="relative  bg-gradient-to-tr from-[#DEE4EA] to-[#F9FCFF] dark:from-[#003049] from-50% dark:to-[#669bbc] rounded-lg shadow dark:bg-slate-700 mt-20">

@@ -22,7 +22,7 @@ const ViewOrderTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    fetchCustomers(); // Fetch customers when component mounts
+    fetchCustomers();
   }, []);
 
   useEffect(() => {
@@ -37,10 +37,7 @@ const ViewOrderTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
 
   const handleDelete = async (productId) => {
     try {
-      // Make DELETE request to delete the product
       await axios.delete(`/api/products/${productId}`);
-      // Update UI by removing the deleted product from the products list
-      // deleteProduct(productId);
     } catch (error) {
       console.error("Error deleting product:", error);
       // Handle error, show error message or retry option

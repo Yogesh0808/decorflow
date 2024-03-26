@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { convertUnit } from "../../../../service/UnitConverstions";
@@ -243,6 +244,15 @@ const EditCurtainsForm = ({
                                     <input
                                         className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         type="number"
+                                        onWheel={(e) => e.target.blur()}
+                                        onKeyDown={(event) => {
+                                            if (
+                                                event.keyCode === 38 ||
+                                                event.keyCode === 40
+                                            ) {
+                                                event.preventDefault();
+                                            }
+                                        }}
                                         id="height"
                                         name="height"
                                         onChange={(e) => {
@@ -277,6 +287,15 @@ const EditCurtainsForm = ({
                                     <input
                                         className=" bg-sky-50 border border-slate-400 text-slate-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         type="number"
+                                        onWheel={(e) => e.target.blur()}
+                                        onKeyDown={(event) => {
+                                            if (
+                                                event.keyCode === 38 ||
+                                                event.keyCode === 40
+                                            ) {
+                                                event.preventDefault();
+                                            }
+                                        }}
                                         id="width"
                                         name="width"
                                         onChange={(e) => {
@@ -359,6 +378,15 @@ const EditCurtainsForm = ({
                                 </label>
                                 <input
                                     type="number"
+                                    onWheel={(e) => e.target.blur()}
+                                    onKeyDown={(event) => {
+                                        if (
+                                            event.keyCode === 38 ||
+                                            event.keyCode === 40
+                                        ) {
+                                            event.preventDefault();
+                                        }
+                                    }}
                                     id="noOfPanels"
                                     name="noOfPanels"
                                     value={formData.noOfPanels}
@@ -454,6 +482,10 @@ const EditCurtainsForm = ({
                                     value={formData.motorType}
                                     onChange={(e) => handleInputChange(e)}
                                     className="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    {" "}
+                                    <option value="None">
+                                        None
+                                    </option>
                                     <option value="Battery motor">
                                         Battery motor
                                     </option>
@@ -627,3 +659,4 @@ const EditCurtainsForm = ({
 };
 
 export default EditCurtainsForm;
+

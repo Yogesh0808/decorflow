@@ -12,8 +12,13 @@ import MattressForm from "./orderForm/MattressForm";
 import SkeletonRow from "./SkeletonRow";
 import HeadboardForm from "./orderForm/HeadboardForm";
 import ClientList from "../../components/Customer/ClientList";
+import left from "../../images/icon/left-arrow.svg";
 
-const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
+const NeworderComponent = ({
+  filterValue,
+  setSearchBar,
+  setFilterValue,
+}: any) => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -52,6 +57,12 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
       },
     };
   };
+
+  useEffect(() => {
+    if (selectedCustomer) {
+      setSearchBar(false);
+    }
+  }, [selectedCustomer]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -265,17 +276,19 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
       )}
       {selectedCustomer && (
         <>
-          {setSearchBar(false)}
-          <button
-            onClick={() => {
-              setSelectedCustomer(null);
-              setSearchBar(true);
-              setFilterValue("");
-            }}
-            className="top-4 right-4 my-4"
-          >
-            Back
-          </button>
+          <>
+            <button
+              onClick={() => {
+                setSelectedCustomer(null);
+                setSearchBar(true);
+                setFilterValue("");
+              }}
+              className="top-4 right-4 my-4 flex text-stone-950 bg-white p-2 rounded-full dark:text-whiten dark:bg-slate-900"
+            >
+              <img src={left} />
+              Go Back
+            </button>
+          </>
           <p className="text-center text-slate-700 dark:text-slate-50 text-2xl">
             New Order For {selectedCustomer && selectedCustomer.clientName}
             {" - "}
@@ -345,4 +358,4 @@ const CustomerTable = ({ filterValue, setSearchBar, setFilterValue }: any) => {
   );
 };
 
-export default CustomerTable;
+export default NeworderComponent;

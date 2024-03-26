@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../../layout/DefaultLayout";
 import NeworderComponent from "./NeworderComponent";
@@ -7,10 +7,16 @@ const Neworder = () => {
   const [filterValue, setFilterValue] = useState("");
   const [searchBar, setSearchBar] = useState(true);
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e) => {
     const { value } = e.target;
-    setFilterValue(() => value);
+    setFilterValue(value);
   };
+
+  useEffect(() => {
+    // Update searchBar and filterValue here if needed
+    // This effect will run after the initial render and subsequent updates
+  }, [searchBar, filterValue]);
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Neworder" />
@@ -62,3 +68,4 @@ const Neworder = () => {
 };
 
 export default Neworder;
+   
