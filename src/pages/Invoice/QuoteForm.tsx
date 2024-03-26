@@ -1,31 +1,34 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
+const QuoteForm = ({
+  selectedCustomer,
+  selectedCategory,
+  setSelectedCustomer,
+  customers,
+}) => {
   const [formData, setFormData] = useState({
     area: "",
     quantity: "",
     rate: "",
     gstPercentage: "",
-    discountPercentage: 0,
+    discountPercentage: "",
     amount: 0,
     gstAmount: 0,
     discountAmount: 0,
     total: 0,
   });
 
-  const [customers, setCustomers] = useState([]);
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    let timer;
-    if (showToast) {
-      timer = setTimeout(() => {
-        setShowToast(false);
-      }, 3500);
-    }
-    return () => clearTimeout(timer);
-  }, [showToast]);
+    calculateValues();
+  }, [
+    formData.quantity,
+    formData.rate,
+    formData.gstPercentage,
+    formData.discountPercentage,
+  ]);
 
   const getHeaders = () => {
     const username = "abinesh";
@@ -38,53 +41,55 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
     };
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-    calculateAmountAndGst({ ...formData, [name]: value });
-  };
-
-  const calculateAmountAndGst = ({ quantity, rate, gstPercentage }) => {
-    // Check if all required fields are filled
-    if (!quantity || !rate || !gstPercentage || !discountPercentage) {
-      return;
-    }
-    const parsedQuantity = parseFloat(quantity);
-    const parsedRate = parseFloat(rate);
-    const parsedGstPercentage = parseFloat(gstPercentage);
-    const parsedDiscountPercentage = parseFloat(formData.discountPercentage);
-
-    if (
-      isNaN(parsedQuantity) ||
-      isNaN(parsedRate) ||
-      isNaN(parsedGstPercentage) ||
-      isNaN(parsedDiscountPercentage)
-    ) {
-      console.error("Invalid input values");
-      return;
-    }
+  const calculateValues = () => {
+    const { quantity, rate, gstPercentage, discountPercentage } = formData;
+    const parsedQuantity = parseFloat(quantity) || 0;
+    const parsedRate = parseFloat(rate) || 0;
+    const parsedGstPercentage = parseFloat(gstPercentage) || 0;
+    const parsedDiscountPercentage = parseFloat(discountPercentage) || 0;
 
     const calculatedAmount = parsedQuantity * parsedRate;
     const calculatedGstAmount = (calculatedAmount * parsedGstPercentage) / 100;
     const calculatedDiscountAmount =
-      (calculatedAmount + calculatedGstAmount) *
-      (parsedDiscountPercentage / 100);
-    const calculatedTotal =
+      (calculatedAmount * parsedDiscountPercentage) / 100;
+    const total =
       calculatedAmount + calculatedGstAmount - calculatedDiscountAmount;
 
     setFormData((prevFormData) => ({
       ...prevFormData,
-      amount: isNaN(calculatedAmount) ? "0.00" : calculatedAmount.toFixed(2),
-      gstAmount: isNaN(calculatedGstAmount)
-        ? "0.00"
-        : calculatedGstAmount.toFixed(2),
-      discountAmount: isNaN(calculatedDiscountAmount)
-        ? "0.00"
-        : calculatedDiscountAmount.toFixed(2),
-      total: isNaN(calculatedTotal) ? "0.00" : calculatedTotal.toFixed(2),
+      amount: calculatedAmount.toFixed(2),
+      gstAmount: calculatedGstAmount.toFixed(2),
+      discountAmount: calculatedDiscountAmount.toFixed(2),
+      total: total.toFixed(2),
+    }));
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    let parsedValue = value; // Initialize parsedValue with the raw value
+
+    if (name === "gstPercentage") {
+      parsedValue = value === "" ? null : parseFloat(value);
+    } else if (name === "discountPercentage") {
+      parsedValue = value === "" ? "" : parseFloat(value);
+      if (isNaN(parsedValue) || parsedValue < 0) {
+        parsedValue = 0;
+      } else if (parsedValue > 100) {
+        parsedValue = 100;
+      }
+    } else if (name === "area") {
+      // Update for the "area" field
+      parsedValue = value; // No need to parse for "area"
+    } else {
+      parsedValue = value === "" ? "" : parseFloat(value);
+      if (isNaN(parsedValue)) {
+        parsedValue = "";
+      }
+    }
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: parsedValue,
     }));
   };
 
@@ -119,19 +124,23 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
       console.error("Error submitting form:", error);
     }
   };
+
   const clearForm = () => {
     setFormData({
       area: "",
       quantity: "",
       rate: "",
       gstPercentage: "",
-      discountPercentage: 0,
+      discountPercentage: "",
       amount: 0,
       gstAmount: 0,
       discountAmount: 0,
       total: 0,
     });
-    // setSelectedCustomer(null);
+  };
+
+  const recalculateTotal = () => {
+    calculateValues();
   };
 
   return (
@@ -179,6 +188,7 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
                     required
                   />
                 </div>
+
                 <div className="flex flex-col">
                   <label htmlFor="quantity" className="text-sm font-medium">
                     Quantity
@@ -223,7 +233,7 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
                     required
                   >
                     <option value="">Select GST%</option>
-                    <option value="0">None</option>
+                    <option value="0">0%</option>
                     <option value="5">5%</option>
                     <option value="12">12%</option>
                     <option value="18">18%</option>
@@ -298,6 +308,7 @@ const QuoteForm = ({ selectedCustomer, selectedCategory }) => {
                     id="total"
                     name="total"
                     value={formData.total}
+                    onClick={recalculateTotal}
                     readOnly
                     className="rounded-md py-2 px-3 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
                   />

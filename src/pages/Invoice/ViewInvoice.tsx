@@ -165,10 +165,10 @@ const ViewInvoice = () => {
           <div className="flex flex-col items-center justify-center text-gray-900 text-xl mt-4">
             <img
               src="https://ik.imagekit.io/tealcdn2023/assets/No%20data-cuate.svg"
-              className="w-100"
+              className="w-120"
               alt="No data available"
             />
-            <p>Oops! It seems there are no Quotes available.</p>
+            <p>Oops! It seems there are no Invoice Entries available.</p>
           </div>
         )}
         {!isLoading && Array.isArray(invoices) && invoices.length > 0 && (

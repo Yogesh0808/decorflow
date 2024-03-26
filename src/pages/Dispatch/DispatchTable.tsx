@@ -11,9 +11,10 @@ const DispatchView = () => {
   const [customers, setCustomers] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [showEditModal, setShowEditModal] = useState(false); 
+  const [showEditModal, setShowEditModal] = useState(false);
   const [editedFormData, setEditedFormData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false); // New state
 
   //For Zooming Images ra P*nda
   const [showImageModal, setShowImageModal] = useState(false);
@@ -79,6 +80,7 @@ const DispatchView = () => {
       );
       setFormData(response.data);
       setIsLoading(false);
+      setDataLoaded(true); // Data is loaded successfully
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching form data:", error.message);
@@ -188,7 +190,33 @@ const DispatchView = () => {
         <div className="text-center mt-4">
           <Loader />
         </div>
-      )}{" "}
+      )}
+      {!isLoading && (formData === null || formData.length === 0) && (
+        <div className="text-center mt-8">
+          <div className="text-xl text-center text-neutral-900 dark:text-gray-400 dark:text-slate-100">
+            <div className="flex flex-col items-center justify-center text-gray-900 text-xl mt-4">
+              <img
+                src="https://ik.imagekit.io/tealcdn2023/assets/No%20data-cuate.svg"
+                className="w-100"
+                alt="No data available"
+              />
+              <p>Oops! It seems there are no products available.</p>
+            </div>
+            <span className="text-red-500 font-normal">
+              Don't worry, you can add some now!
+            </span>
+          </div>
+          <div className="mt-10">
+            <a
+              className="mt-4 px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-600"
+              href="/dispatch/entry"
+            >
+              Add Dispatch Entry
+            </a>
+          </div>
+        </div>
+      )}
+
       {!isLoading &&
         formData &&
         formData.map((item) => (
