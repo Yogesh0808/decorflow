@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import mailsvg from "../../images/icon/mail.svg";
+import mappin from "../../images/icon/map-pin.svg";
 
 const getHeaders = () => {
   const username = "abinesh";
@@ -58,13 +59,9 @@ const AddCustomer = () => {
   };
 
   const handleChange = (value) => {
-  const cleanedValue = value.replace(/\D/g, '');
-  // Format the phone number with symbols or dashes
-  const formattedPhoneNumber = cleanedValue.replace(/(\d{2})(\d{4})(\d{4})/, '+$1-$2-$3');
-  
-  setFormData({ ...formData, phone: formattedPhoneNumber });
-  setValid(validatePhoneNumber(formattedPhoneNumber));
-};
+    setFormData({ ...formData, phone: value });
+    setValid(validatePhoneNumber(value));
+  };
 
   const validatePhoneNumber = (phoneNumber) => {
     const phoneNumberPattern = /^\+?[1-9]\d{1,14}$/;
@@ -112,13 +109,13 @@ const AddCustomer = () => {
         <form onSubmit={handleFormSubmit} className="space-y-4">
           <div className="flex space-x-4">
             <div className="flex flex-col w-1/3">
-              <label htmlFor="salutation" className="text-sm font-medium ">
+              <label htmlFor="salutation" className="text-sm font-medium">
                 Salutation
               </label>
               <select
                 id="salutation"
                 name="salutation"
-                className="rounded-md py-2 px-3 dark:border-neutral-500 dark:bg-slate-700"
+                className="rounded-md py-2 px-3 border border-slate-300 dark:border-neutral-500 dark:bg-slate-700"
                 onChange={handleInputChange}
                 value={formData.salutation}
                 required
@@ -135,7 +132,7 @@ const AddCustomer = () => {
                 type="text"
                 name="clientName"
                 id="client-name"
-                className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+                className="rounded-md py-2 px-3 border border-slate-300 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
                 onChange={handleInputChange}
                 value={formData.clientName}
                 required
@@ -150,7 +147,7 @@ const AddCustomer = () => {
               type="text"
               name="purpose"
               id="purpose-of-order"
-              className=" rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+              className="rounded-md py-2 px-3 border-[0.5px] border-slate-300 dark:border-neutral-500 dark:focus:border-red-500 dark:bg-slate-700"
               onChange={handleInputChange}
               value={formData.purpose}
               required
@@ -213,9 +210,26 @@ const AddCustomer = () => {
               country={"in"}
               value={formData.phone}
               onChange={handleChange}
-              inputProps={{
-                required: true,
-                style: { width: "100%", height: "40px", fontSize: "16px" }, // Adjust width, height, and font size as needed
+              inputStyle={{
+                width: "100%",
+                height: "40px",
+                fontSize: "15px",
+                fontWeight: "300",
+                color: "#000",
+                borderRadius: "0.375rem",
+                border: "1px solid #E5E7EB", // Adjust border color as needed
+                backgroundColor: "#fff", // Set background color for light mode
+                boxShadow: "none", // Remove any box shadow
+              }}
+              buttonStyle={{
+                backgroundColor: "#E5E7EB", // Set background color for button in light mode
+                color: "#000", // Set text color for button in light mode
+                borderRadius: "0.375rem", // Adjust button border radius
+              }}
+              dropdownStyle={{
+                borderRadius: "0.375rem", // Adjust dropdown border radius
+                border: "1px solid #E5E7EB", // Adjust dropdown border color
+                backgroundColor: "#fff", // Set background color for dropdown in light mode
               }}
             />
 
@@ -230,11 +244,10 @@ const AddCustomer = () => {
                 type="email"
                 name="emailAddress"
                 id="email"
-                placeholder="demo@gmail.com"
-                className="rounded-md py-2 px-3 pl-10 focus:border-red-500 w-full dark:border-neutral-500 dark:bg-slate-700"
+                className="w-full rounded-md py-2 px-3 border-[0.5px] border-slate-300 dark:border-neutral-500 dark:focus:border-red-500 dark:bg-slate-700"
                 onChange={handleInputChange}
                 value={formData.emailAddress}
-                style={{ paddingLeft: "2.5rem" }} // Adjust padding left to accommodate the image
+                style={{ paddingLeft: "2.5rem" }}
               />
               <img
                 src={mailsvg}
@@ -248,15 +261,23 @@ const AddCustomer = () => {
             <label htmlFor="address" className="text-sm font-medium">
               Address
             </label>
-            <textarea
-              name="address"
-              id="address"
-              rows={3}
-              className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
-              onChange={handleInputChange}
-              value={formData.address}
-              required
-            ></textarea>
+            <div className="relative">
+              <textarea
+                name="address"
+                id="address"
+                rows={3}
+                className="w-full rounded-md py-2 px-3 border-[0.9px] border-slate-300 dark:border-neutral-500 dark:focus:border-red-500 dark:bg-slate-700"
+                onChange={handleInputChange}
+                value={formData.address}
+                style={{ paddingLeft: "2.5rem" }}
+                required
+              ></textarea>
+              <img
+                src={mappin}
+                alt="Mail Icon"
+                className="absolute left-3 top-2.5 h-5 w-5 pointer-events-none"
+              />
+            </div>
           </div>
 
           <div className="flex flex-col">
