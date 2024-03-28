@@ -30,7 +30,7 @@ function ViewCustomers({ filterValue }: any) {
     purpose: "None",
     address: "None",
     phone: "",
-    emailAddress: "None",
+    emailAddress: "Nil",
     isCompanyOrder: false,
     companyName: "None",
     gstNumber: "None",
@@ -327,10 +327,10 @@ function ViewCustomers({ filterValue }: any) {
         <div
           id="toast-success"
           className="lg:top-32 lg:right-10 top-10  flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 rounded-lg shadow
-          fixed right-2 z-99999 translate-y-10 text-gray-500 bg-gradient-to-br from-green-100 via-green-200"
+          fixed right-2 z-99999 translate-y-10 text-gray-500 bg-green-50"
           role="alert"
         >
-          <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-700 bg-green-300 rounded-lg">
+          <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-700 bg-green-200 rounded-lg">
             <svg
               className="w-5 h-5"
               aria-hidden="true"

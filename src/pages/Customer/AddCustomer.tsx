@@ -51,7 +51,7 @@ const AddCustomer = () => {
       .finally(() => setIsDisabled(false));
   };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     e.target.type === "checkbox"
       ? setFormData({ ...formData, [name]: e.target.checked })
@@ -96,10 +96,6 @@ const AddCustomer = () => {
     });
   };
 
-  const handleCloseToast = () => {
-    setShowToast(false);
-  };
-
   return (
     <DefaultLayout>
       <Breadcrumb pageName="NewCustomer" />
@@ -109,13 +105,13 @@ const AddCustomer = () => {
         <form onSubmit={handleFormSubmit} className="space-y-4">
           <div className="flex space-x-4">
             <div className="flex flex-col w-1/3">
-              <label htmlFor="salutation" className="text-sm font-medium">
+              <label htmlFor="salutation" className="text-sm font-medium mb-1">
                 Salutation
               </label>
               <select
                 id="salutation"
                 name="salutation"
-                className="rounded-md py-2 px-3 border border-slate-300 dark:border-neutral-500 dark:bg-slate-700"
+                className="rounded-md py-2 px-3 border border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:border-red-500 focus:ring-1 focus:ring-red-500"
                 onChange={handleInputChange}
                 value={formData.salutation}
                 required
@@ -125,14 +121,14 @@ const AddCustomer = () => {
               </select>
             </div>
             <div className="flex flex-col w-2/3">
-              <label htmlFor="client-name" className="text-sm font-medium">
+              <label htmlFor="client-name" className="text-sm font-medium mb-1">
                 Name
               </label>
               <input
                 type="text"
                 name="clientName"
                 id="client-name"
-                className="rounded-md py-2 px-3 border border-slate-300 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+                className="rounded-md py-2 px-3 border border-slate-300 focus:border-red-500 focus:ring-1 focus:ring-red-500 dark:border-slate-700 dark:bg-slate-900"
                 onChange={handleInputChange}
                 value={formData.clientName}
                 required
@@ -140,70 +136,86 @@ const AddCustomer = () => {
             </div>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="purpose-of-order" className="text-sm font-medium">
+            <label
+              htmlFor="purpose-of-order"
+              className="text-sm font-medium mb-1"
+            >
               Purpose of the Order
             </label>
             <input
               type="text"
               name="purpose"
               id="purpose-of-order"
-              className="rounded-md py-2 px-3 border-[0.5px] border-slate-300 dark:border-neutral-500 dark:focus:border-red-500 dark:bg-slate-700"
+              className="rounded-md py-2 px-3 border border-slate-300 focus:border-red-500 focus:ring-1 focus:ring-red-500 dark:border-slate-700 dark:bg-slate-900"
               onChange={handleInputChange}
               value={formData.purpose}
               required
             />
           </div>
-          <div className="flex flex-col">
-            <label className="text-sm font-medium">Client Type</label>
-            <div className="flex items-center space-x-2">
-              <input
-                type="radio"
-                id="business"
-                name="clientType"
-                value="Interior Designer"
-                onChange={handleInputChange}
-                checked={formData.clientType === "Interior Designer"}
-                required
-              />
-              <label
-                htmlFor="business"
-                className="focus:border-red-700 text-sm"
-              >
-                Interior Designer
-              </label>
-              <input
-                type="radio"
-                id="individual"
-                name="clientType"
-                value="Architect"
-                onChange={handleInputChange}
-                checked={formData.clientType === "Architect"}
-                required
-              />
-              <label
-                htmlFor="individual"
-                className="text-sm focus:border-red-700"
-              >
-                Architect
-              </label>
-              <input
-                type="radio"
-                id="client"
-                name="clientType"
-                value="Client"
-                onChange={handleInputChange}
-                checked={formData.clientType === "Client"}
-                required
-              />
-              <label htmlFor="client" className="focus:border-red-700 text-sm">
-                Client
-              </label>
+          <div className="flex-col items-center space-y-3">
+            <label className="text-sm font-medium mb-1">Client Type</label>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="business"
+                  name="clientType"
+                  value="Interior Designer"
+                  onChange={handleInputChange}
+                  checked={formData.clientType === "Interior Designer"}
+                  required
+                  className="form-radio h-5 w-5 text-red-600 focus:ring-red-500"
+                />
+                <label
+                  htmlFor="business"
+                  className="ml-2 text-sm text-slate-700 dark:text-slate-300"
+                >
+                  Interior Designer
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="individual"
+                  name="clientType"
+                  value="Architect"
+                  onChange={handleInputChange}
+                  checked={formData.clientType === "Architect"}
+                  required
+                  className="form-radio h-5 w-5 text-red-600 focus:ring-red-500"
+                />
+                <label
+                  htmlFor="individual"
+                  className="ml-2 text-sm text-slate-700 dark:text-slate-300"
+                >
+                  Architect
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="client"
+                  name="clientType"
+                  value="Client"
+                  onChange={handleInputChange}
+                  checked={formData.clientType === "Client"}
+                  required
+                  className="form-radio h-5 w-5 text-red-600 focus:ring-red-500"
+                />
+                <label
+                  htmlFor="client"
+                  className="ml-2 text-sm text-slate-700 dark:text-slate-300"
+                >
+                  Client
+                </label>
+              </div>
             </div>
           </div>
 
-          <hr className="my-4" />
+          <hr className="border-slate-300 dark:border-neutral-700" />
+          <h4 className="text-base from-black to-slate-100">Contact Details</h4>
           <div className="flex flex-col">
-            <label htmlFor="phone" className="text-sm font-medium">
+            <label htmlFor="phone" className="text-sm font-medium mb-1">
               Phone
             </label>
             <PhoneInput
@@ -217,26 +229,32 @@ const AddCustomer = () => {
                 fontWeight: "300",
                 color: "#000",
                 borderRadius: "0.375rem",
-                border: "1px solid #E5E7EB", // Adjust border color as needed
-                backgroundColor: "#fff", // Set background color for light mode
-                boxShadow: "none", // Remove any box shadow
+                border: "1px solid #D1D5DB",
+                backgroundColor: "#fff",
+                boxShadow: "none",
+                outline: "none",
+                focus: "border-red-500 ring-1 ring-red-500",
               }}
               buttonStyle={{
-                backgroundColor: "#E5E7EB", // Set background color for button in light mode
-                color: "#000", // Set text color for button in light mode
-                borderRadius: "0.375rem", // Adjust button border radius
+                backgroundColor: "#F3F4F6",
+                color: "#000",
+                borderRadius: "0.375rem",
               }}
               dropdownStyle={{
-                borderRadius: "0.375rem", // Adjust dropdown border radius
-                border: "1px solid #E5E7EB", // Adjust dropdown border color
-                backgroundColor: "#fff", // Set background color for dropdown in light mode
+                borderRadius: "0.375rem",
+                border: "1px solid #D1D5DB",
+                backgroundColor: "#fff",
               }}
             />
 
-            {!valid && <p>Please enter a valid phone number.</p>}
+            {!valid && (
+              <p className="mt-1 text-sm text-red-500">
+                Please enter a valid phone number.
+              </p>
+            )}
           </div>
           <div className="flex flex-col">
-            <label htmlFor="email" className="text-sm font-medium">
+            <label htmlFor="email" className="text-sm font-medium mb-1">
               Email Address
             </label>
             <div className="relative">
@@ -244,7 +262,7 @@ const AddCustomer = () => {
                 type="email"
                 name="emailAddress"
                 id="email"
-                className="w-full rounded-md py-2 px-3 border-[0.5px] border-slate-300 dark:border-neutral-500 dark:focus:border-red-500 dark:bg-slate-700"
+                className="w-full rounded-md py-2 px-3 border border-slate-300 focus:border-red-500 focus:ring-1 focus:ring-red-500 dark:border-slate-700 dark:bg-slate-900"
                 onChange={handleInputChange}
                 value={formData.emailAddress}
                 style={{ paddingLeft: "2.5rem" }}
@@ -258,7 +276,7 @@ const AddCustomer = () => {
           </div>
 
           <div className="flex flex-col">
-            <label htmlFor="address" className="text-sm font-medium">
+            <label htmlFor="address" className="text-sm font-medium mb-1">
               Address
             </label>
             <div className="relative">
@@ -266,7 +284,7 @@ const AddCustomer = () => {
                 name="address"
                 id="address"
                 rows={3}
-                className="w-full rounded-md py-2 px-3 border-[0.9px] border-slate-300 dark:border-neutral-500 dark:focus:border-red-500 dark:bg-slate-700"
+                className="w-full rounded-md py-2 px-3 border border-slate-300 focus:border-red-500 focus:ring-1 focus:ring-red-500 dark:border-slate-700 dark:bg-slate-900"
                 onChange={handleInputChange}
                 value={formData.address}
                 style={{ paddingLeft: "2.5rem" }}
@@ -283,7 +301,10 @@ const AddCustomer = () => {
           <div className="flex flex-col">
             {formData.isCompanyOrder && (
               <>
-                <label htmlFor="company-name" className="text-sm font-medium">
+                <label
+                  htmlFor="company-name"
+                  className="text-sm font-medium mb-1"
+                >
                   Company Name
                 </label>
 
@@ -291,7 +312,7 @@ const AddCustomer = () => {
                   type="text"
                   name="companyName"
                   id="company-name"
-                  className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+                  className="rounded-md py-2 px-3 border border-slate-300 focus:border-red-500 focus:ring-1 focus:ring-red-500 dark:border-slate-700 dark:bg-slate-900"
                   onChange={handleInputChange}
                   value={formData.companyName}
                 />
@@ -302,38 +323,44 @@ const AddCustomer = () => {
           <div className="flex flex-col">
             {formData.isCompanyOrder && (
               <>
-                <label htmlFor="gst-number" className="text-sm font-medium">
+                <label
+                  htmlFor="gst-number"
+                  className="text-sm font-medium mb-1"
+                >
                   GST Number
                 </label>
                 <input
                   type="text"
                   name="gstNumber"
                   id="gst-number"
-                  className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-500 dark:bg-slate-700"
+                  className="rounded-md py-2 px-3 border border-slate-300 focus:border-red-500 focus:ring-1 focus:ring-red-500 dark:border-slate-700 dark:bg-slate-900"
                   onChange={handleInputChange}
                   value={formData.gstNumber}
                 />
               </>
             )}
           </div>
-          <div className="flex items-center mb-5 ">
+          <div className="flex items-center mb-5">
             <input
               type="checkbox"
               id="company-order"
               name="isCompanyOrder"
-              className="rounded border-gray-300 p-2 text-teal-500 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 dark:border-neutral-500 dark:bg-slate-700 dark:focus:ring-neutral-400"
+              className="rounded border-slate-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:focus:ring-neutral-400"
               onChange={handleInputChange}
               checked={formData.isCompanyOrder}
             />
-            <label htmlFor="company-order" className="ml-2 text-sm">
+            <label
+              htmlFor="company-order"
+              className="ml-2 text-sm text-slate-700 dark:text-slate-300"
+            >
               GST Order
             </label>
           </div>
           <button
             type="submit"
             disabled={isDisabled}
-            className={`bg-red-700 text-white py-2.5 px-6 rounded-md hover:bg-red-800 ${
-              isDisabled ? "bg-red-900" : "bg-red-700"
+            className={`bg-red-700 text-white py-2.5 px-6 rounded-md hover:bg-red-800 transition-colors duration-300 ${
+              isDisabled ? "bg-red-900 cursor-not-allowed" : "bg-red-700"
             }`}
           >
             Add Customer
@@ -342,11 +369,11 @@ const AddCustomer = () => {
         {showToast && (
           <div
             id="toast-success"
-            className="lg:top-32 lg:right-10 top-10  flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 rounded-lg shadow
-              fixed right-2 z-99999 translate-y-10 text-gray-500 bg-gradient-to-br from-green-100 via-green-200"
+            className="lg:top-28 lg:right-10 top-10  flex items-center w-full max-w-xs p-2 mb-4 text-gray-500 rounded-lg shadow
+              fixed right-2 z-99999 translate-y-10 text-gray-500 bg-white"
             role="alert"
           >
-            <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg">
+            <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-700 bg-green-200 rounded-lg">
               <svg
                 className="w-5 h-5"
                 aria-hidden="true"

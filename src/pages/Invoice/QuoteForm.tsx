@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const QuoteForm = ({
   selectedCustomer,
@@ -18,8 +20,6 @@ const QuoteForm = ({
     discountAmount: 0,
     total: 0,
   });
-
-  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     calculateValues();
@@ -66,7 +66,7 @@ const QuoteForm = ({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    let parsedValue = value; // Initialize parsedValue with the raw value
+    let parsedValue = value;
 
     if (name === "gstPercentage") {
       parsedValue = value === "" ? null : parseFloat(value);
@@ -78,8 +78,7 @@ const QuoteForm = ({
         parsedValue = 100;
       }
     } else if (name === "area") {
-      // Update for the "area" field
-      parsedValue = value; // No need to parse for "area"
+      parsedValue = value;
     } else {
       parsedValue = value === "" ? "" : parseFloat(value);
       if (isNaN(parsedValue)) {
@@ -97,7 +96,6 @@ const QuoteForm = ({
     e.preventDefault();
     try {
       if (selectedCustomer) {
-        // Destructure form data
         const {
           area,
           quantity,
@@ -110,12 +108,19 @@ const QuoteForm = ({
           total,
         } = formData;
 
-        // Construct the URL with parameters
         const url = `/api/invoice/${selectedCustomer.id}/${selectedCategory}?area=${area}&quantity=${quantity}&rate=${rate}&gstPercentage=${gstPercentage}&amount=${amount}&gstAmount=${gstAmount}&discountPercentage=${discountPercentage}&discountAmount=${discountAmount}&total=${total}`;
         const response = await axios.post(url, {}, getHeaders());
 
         console.log("Form submitted successfully:", response.data);
-        setShowToast(true); // Show toast on successful submission
+        toast.success(`${selectedCategory} Quote has been submitted.`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         clearForm();
       } else {
         console.error("No customer selected");
@@ -155,6 +160,7 @@ const QuoteForm = ({
               )
             }
             className="block w-full mt-4 p-3 border border-slate-400 shadow-lg rounded-xl dark:bg-slate-950 focus:outline-none focus:border-strokedark"
+            aria-label="Select Customer"
           >
             <option value="">Select Customer</option>
             {customers.map((customer) => (
@@ -185,7 +191,9 @@ const QuoteForm = ({
                     value={formData.area}
                     onChange={handleInputChange}
                     className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-800 dark:bg-slate-900"
+                    placeholder="Enter particulars"
                     required
+                    aria-label="Particulars"
                   />
                 </div>
 
@@ -200,7 +208,9 @@ const QuoteForm = ({
                     value={formData.quantity}
                     onChange={handleInputChange}
                     className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-800 dark:bg-slate-900"
+                    placeholder="Enter quantity"
                     required
+                    aria-label="Quantity"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -214,7 +224,9 @@ const QuoteForm = ({
                     value={formData.rate}
                     onChange={handleInputChange}
                     className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-800 dark:bg-slate-900"
+                    placeholder="Enter rate"
                     required
+                    aria-label="Rate"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -231,6 +243,7 @@ const QuoteForm = ({
                     onChange={handleInputChange}
                     className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-800 dark:bg-slate-900"
                     required
+                    aria-label="GST Percentage"
                   >
                     <option value="">Select GST%</option>
                     <option value="0">0%</option>
@@ -254,7 +267,9 @@ const QuoteForm = ({
                     value={formData.discountPercentage}
                     onChange={handleInputChange}
                     className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-800 dark:bg-slate-900"
+                    placeholder="Enter discount percentage"
                     required
+                    aria-label="Discount Percentage"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -268,6 +283,7 @@ const QuoteForm = ({
                     value={formData.amount}
                     readOnly
                     className="rounded-md py-2 px-3 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+                    aria-label="Amount"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -281,6 +297,7 @@ const QuoteForm = ({
                     value={formData.gstAmount}
                     readOnly
                     className="rounded-md py-2 px-3 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+                    aria-label="GST Amount"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -297,6 +314,7 @@ const QuoteForm = ({
                     value={formData.discountAmount}
                     readOnly
                     className="rounded-md py-2 px-3 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+                    aria-label="Discount Amount"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -311,12 +329,14 @@ const QuoteForm = ({
                     onClick={recalculateTotal}
                     readOnly
                     className="rounded-md py-2 px-3 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+                    aria-label="Total"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="bg-red-700 text-white py-2 px-4 rounded-md hover:bg-red-800"
+                  className="bg-red-700 text-white py-2 px-4 rounded-md hover:bg-red-800 transition-colors duration-300"
+                  aria-label="Submit Quote"
                 >
                   Submit
                 </button>
@@ -324,31 +344,7 @@ const QuoteForm = ({
             </div>
           </>
         )}
-        {showToast && (
-          <div
-            id="toast-success"
-            className="absolute top-2 right-2 flex items-center w-full max-w-xs p-2 mb-4 text-slate-500 bg-white rounded-lg shadow"
-            role="alert"
-          >
-            <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg">
-              <svg
-                className="w-5 h-5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fill="#34D399"
-                  d="M10 0C4.477 0 0 4.477 0 10c0 5.523 4.477 10 10 10 5.523 0 10-4.477 10-10C20 4.477 15.523 0 10 0zm3.707 8.207l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414z"
-                />
-              </svg>
-            </div>
-            <div className="ms-2 text-sm text-slate-800 font-normal">
-              {selectedCategory} Quote has been Submitted.
-            </div>
-          </div>
-        )}
+        <ToastContainer />
       </div>
     </div>
   );
