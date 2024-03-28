@@ -84,7 +84,7 @@ const NeworderComponent = ({
     Sofas: "https://cdn-icons-png.flaticon.com/512/5781/5781883.png",
     Blinds: "https://ik.imagekit.io/tealcdn2023/assets/blinds.png",
     Carpets:
-      "https://cdn.iconscout.com/icon/premium/png-256-thumb/carpet-1469898-1243937.png?f=webp",
+      "https://cdn.iconscout.com/icon/premium/png-256-thumb/carpet-1469898-1243937.png",
     Floorings: "https://ik.imagekit.io/tealcdn2023/assets/flooring.png",
     Wallpaper: "https://ik.imagekit.io/tealcdn2023/assets/wallpaper.png",
     Furniture: "https://ik.imagekit.io/tealcdn2023/assets/Decor.png",
@@ -295,7 +295,7 @@ const NeworderComponent = ({
             {selectedCustomer && selectedCustomer.cid}
           </p>
           <div className="flex justify-center items-center lg:h-96 sm:h-screen my-10 bg-gray-100 dark:bg-gray-800">
-            <div className="grid grid-cols-2 gap-3 md:gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            <div className="grid grid-cols-2 gap-4 md:gap-8 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 md:py-1">
               {[
                 "Curtains",
                 "Sofas",
@@ -314,7 +314,7 @@ const NeworderComponent = ({
                   <img
                     src={productImages[product]}
                     alt={product}
-                    className="w-full lg:h-32 sm:h-28 p-4"
+                    className="w-full lg:h-32 sm:h-28 p-4 px-6"
                   />
                   <div className="p-4">
                     <p className="text-center text-blue-800 bg-blue-50 dark:text-white dark:bg-blue-800 rounded-xl p-1.5 py-1 text-xl font-normal">
