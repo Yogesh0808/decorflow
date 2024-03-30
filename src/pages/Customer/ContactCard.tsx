@@ -34,7 +34,7 @@ const ContactCard = () => {
   // Function to handle calling the contact number
   const handleCall = (phoneNumber) => {
     console.log("Calling", phoneNumber);
-    window.open(`tel:${phoneNumber}`);
+    window.location.href = `tel:${phoneNumber}`;
   };
 
   return (
