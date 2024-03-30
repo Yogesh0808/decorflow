@@ -475,7 +475,7 @@ section {
       </body>
       </html>
       `;
-      const serverUrl = "https://cors-1-4v2k.onrender.com/convert";
+      const serverUrl = "https://cors-pdf-git-main-abineshcodes-projects.vercel.app/convert";
 
       const response = await fetch(`${serverUrl}`, {
         method: "POST",
