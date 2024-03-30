@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useParams,
-} from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import axios from "axios";
 
 import Loader from "./common/Loader/index";
@@ -23,6 +17,7 @@ import OrderEntry from "./pages/Dispatch/OrderEntry";
 import NewInvoice from "./pages/Invoice/NewInvoice";
 import ViewInvoice from "./pages/Invoice/ViewInvoice";
 import PrintInvoice from "./pages/Invoice/PrintInvoice";
+import ContactCard from "./pages/Customer/ContactCard";
 
 axios.defaults.baseURL = "https://cors-abineshcodes-projects.vercel.app";
 
@@ -31,12 +26,49 @@ function App() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const startTime = new Date().toISOString();
+    localStorage.setItem("startTime", startTime);
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+    const resolution = `${screenWidth}x${screenHeight}`;
+    localStorage.setItem("screenResolution", resolution);
+
+    const browserInfo = {
+      name: navigator.appName,
+      version: navigator.appVersion,
+      platform: navigator.platform,
+    };
+    localStorage.setItem("browserInfo", JSON.stringify(browserInfo));
+
+    const language = navigator.language;
+    localStorage.setItem("language", language);
+
+    const userAgent = navigator.userAgent;
+    localStorage.setItem("deviceName", userAgent);
+
+    axios
+      .get("https://api.ipify.org/?format=json")
+      .then((response) => {
+        localStorage.setItem("userIP", response.data.ip);
+      })
+      .catch((error) => {
+        console.error("Error fetching IP address:", error);
+      });
+
+    const closeTime = new Date().toISOString();
+    const ip = localStorage.getItem("userIP");
+    const userData = { ip, startTime, closeTime, page: pathname };
+    const storedData = localStorage.getItem("storedData") || "[]";
+    const newData = JSON.stringify([...JSON.parse(storedData), userData]);
+    localStorage.setItem("storedData", newData);
+
+    setTimeout(() => setLoading(false), 500);
+
+    return () => {
+      localStorage.setItem("closeTime", closeTime);
+    };
   }, [pathname]);
 
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 500);
-  }, []);
 
   return loading ? (
     <Loader />
@@ -144,107 +176,24 @@ function App() {
           }
         />
         <Route
+          path="/contact"
+          element={
+            <>
+              <PageTitle title="Contacts | YHD" />
+              <ContactCard />
+            </>
+          }
+        />
+        <Route
           path="/settings"
           element={
             <>
-              <PageTitle title="Settings | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Settings | YHD" />
               <Settings />
             </>
           }
         />
         <Route path="*" element={<NotFound />} />
-      </Routes>
-    </>
-  );
-  return loading ? (
-    <Loader />
-  ) : (
-    <>
-      <Routes>
-        <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<Navigate to="/analytics/dashboard" />} />
-        <Route
-          index
-          path="/analytics/dashboard"
-          element={
-            <>
-              <PageTitle title="Dashboard | YHD" />
-              <Dashboard />
-            </>
-          }
-        />
-        <Route
-          path="/analytics/performance"
-          element={
-            <>
-              <PageTitle title="Performance | YHD" />
-              <Performance />
-            </>
-          }
-        />
-        <Route
-          path="/client/new"
-          element={
-            <>
-              <PageTitle title="New-Customer | YHD" />
-              <AddCustomer />
-            </>
-          }
-        />
-        <Route
-          path="/client/view"
-          element={
-            <>
-              <PageTitle title="View-Customer | YHD" />
-              <ViewCustomer />
-            </>
-          }
-        />
-        <Route
-          path="/order/new"
-          element={
-            <>
-              <PageTitle title="New-Order | YHD" />
-              <Neworder />
-            </>
-          }
-        />
-        <Route
-          path="/order/view"
-          element={
-            <>
-              <PageTitle title="View-Order | YHD" />
-              <Vieworder />
-            </>
-          }
-        />
-        <Route
-          path="/order/print"
-          element={
-            <>
-              <PageTitle title="Printing Preview | YHD" />
-              <Printorder />
-            </>
-          }
-        />
-        <Route
-          path="/dispatch/entry"
-          element={
-            <>
-              <PageTitle title="OrderEntry | YHD" />
-              <OrderEntry />
-            </>
-          }
-        />
-        <Route
-          path="/dispatch/view"
-          element={
-            <>
-              <PageTitle title="OrderEntry | YHD" />
-              <ViewEntry />
-            </>
-          }
-        />
       </Routes>
     </>
   );
