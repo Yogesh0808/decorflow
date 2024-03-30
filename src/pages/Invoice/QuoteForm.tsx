@@ -15,10 +15,11 @@ const QuoteForm = ({
     rate: "",
     gstPercentage: "",
     discountPercentage: "",
+    discountAmount: 0,
     amount: 0,
     gstAmount: 0,
-    discountAmount: 0,
     total: 0,
+    showDiscount: false, // New state to control the display of discount fields
   });
 
   useEffect(() => {
@@ -50,8 +51,12 @@ const QuoteForm = ({
 
     const calculatedAmount = parsedQuantity * parsedRate;
     const calculatedGstAmount = (calculatedAmount * parsedGstPercentage) / 100;
-    const calculatedDiscountAmount =
-      (calculatedAmount * parsedDiscountPercentage) / 100;
+    let calculatedDiscountAmount = 0;
+    if (formData.showDiscount) {
+      calculatedDiscountAmount =
+        (calculatedAmount * parsedDiscountPercentage) / 100;
+    }
+
     const total =
       calculatedAmount + calculatedGstAmount - calculatedDiscountAmount;
 
@@ -65,7 +70,7 @@ const QuoteForm = ({
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
     let parsedValue = value;
 
     if (name === "gstPercentage") {
@@ -79,6 +84,8 @@ const QuoteForm = ({
       }
     } else if (name === "area") {
       parsedValue = value;
+    } else if (name === "showDiscount") {
+      parsedValue = checked;
     } else {
       parsedValue = value === "" ? "" : parseFloat(value);
       if (isNaN(parsedValue)) {
@@ -137,10 +144,11 @@ const QuoteForm = ({
       rate: "",
       gstPercentage: "",
       discountPercentage: "",
+      discountAmount: 0,
       amount: 0,
       gstAmount: 0,
-      discountAmount: 0,
       total: 0,
+      showDiscount: false,
     });
   };
 
@@ -252,26 +260,42 @@ const QuoteForm = ({
                     <option value="18">18%</option>
                   </select>
                 </div>
-                {/* Discount Percentage input */}
-                <div className="flex flex-col">
-                  <label
-                    htmlFor="discountPercentage"
-                    className="text-sm font-medium"
-                  >
-                    Discount %
-                  </label>
+                {/* Checkbox for Discount */}
+                <div className="flex items-center">
                   <input
-                    type="number"
-                    id="discountPercentage"
-                    name="discountPercentage"
-                    value={formData.discountPercentage}
+                    type="checkbox"
+                    id="showDiscount"
+                    name="showDiscount"
+                    checked={formData.showDiscount}
                     onChange={handleInputChange}
-                    className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-800 dark:bg-slate-900"
-                    placeholder="Enter discount percentage"
-                    required
-                    aria-label="Discount Percentage"
+                    className="mr-2"
                   />
+                  <label htmlFor="showDiscount" className="text-sm font-medium">
+                    Discount
+                  </label>
                 </div>
+                {/* Discount Percentage input */}
+                {formData.showDiscount && (
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="discountPercentage"
+                      className="text-sm font-medium"
+                    >
+                      Discount %
+                    </label>
+                    <input
+                      type="number"
+                      id="discountPercentage"
+                      name="discountPercentage"
+                      value={formData.discountPercentage}
+                      onChange={handleInputChange}
+                      className="rounded-md py-2 px-3 focus:border-red-500 dark:border-neutral-800 dark:bg-slate-900"
+                      placeholder="Enter discount percentage"
+                      required
+                      aria-label="Discount Percentage"
+                    />
+                  </div>
+                )}
                 <div className="flex flex-col">
                   <label htmlFor="amount" className="text-sm font-medium">
                     Amount
@@ -300,23 +324,26 @@ const QuoteForm = ({
                     aria-label="GST Amount"
                   />
                 </div>
-                <div className="flex flex-col">
-                  <label
-                    htmlFor="discountAmount"
-                    className="text-sm font-medium"
-                  >
-                    Discount Amount
-                  </label>
-                  <input
-                    type="text"
-                    id="discountAmount"
-                    name="discountAmount"
-                    value={formData.discountAmount}
-                    readOnly
-                    className="rounded-md py-2 px-3 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
-                    aria-label="Discount Amount"
-                  />
-                </div>
+                {/* Discount Amount input */}
+                {formData.showDiscount && (
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="discountAmount"
+                      className="text-sm font-medium"
+                    >
+                      Discount Amount
+                    </label>
+                    <input
+                      type="text"
+                      id="discountAmount"
+                      name="discountAmount"
+                      value={formData.discountAmount}
+                      readOnly
+                      className="rounded-md py-2 px-3 bg-white dark:bg-slate-900 text-black-2 dark:text-white"
+                      aria-label="Discount Amount"
+                    />
+                  </div>
+                )}
                 <div className="flex flex-col">
                   <label htmlFor="total" className="text-sm font-medium">
                     Total
