@@ -47,7 +47,7 @@ const ContactCard = () => {
         {contacts.map((contact, index) => (
           <div
             key={contact.id}
-            className="bg-gradient-to-r from-blue-300 to-pink-200 shadow-xl p-4 mb-4 rounded-lg text-black dark:text-white"
+            className="bg-gradient-to-r from-blue-100 to-pink-100 dark:from-slate-950 dark:to-slate-900 shadow-xl p-4 mb-4 rounded-lg text-black dark:text-slate-100"
           >
             <div className="flex justify-between items-center">
               <div>
@@ -56,7 +56,7 @@ const ContactCard = () => {
               </div>
               <button
                 onClick={() => handleCall(contact.phone)}
-                className="ml-4 px-5 py-2 bg-pink-500 text-pink-100 rounded-full hover:bg-pink-600 focus:outline-none"
+                className="ml-4 px-5 py-2 bg-pink-700 dark:bg-blue-900 drop-shadow-xl text-white dark:text-gray-100 rounded-full hover:bg-pink-600 focus:outline-none"
               >
                 Call
               </button>

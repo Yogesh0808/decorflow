@@ -53,14 +53,22 @@ const AddCustomer = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    e.target.type === "checkbox"
-      ? setFormData({ ...formData, [name]: e.target.checked })
-      : setFormData({ ...formData, [name]: value });
+    if (name === "phone") {
+      setFormData({ ...formData, [name]: value });
+    } else {
+      // Manipulate other fields as usual
+      e.target.type === "checkbox"
+        ? setFormData({ ...formData, [name]: e.target.checked })
+        : setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleChange = (value) => {
-    setFormData({ ...formData, phone: value });
-    setValid(validatePhoneNumber(value));
+    const formattedPhoneNumber =
+      "+" +
+      value.replace(/[^0-9]/g, "").replace(/(\d{4})(\d{5})(\d{5})/, "$1-$2-$3");
+    setFormData({ ...formData, phone: formattedPhoneNumber });
+    setValid(validatePhoneNumber(formattedPhoneNumber));
   };
 
   const validatePhoneNumber = (phoneNumber) => {
