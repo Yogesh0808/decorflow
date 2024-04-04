@@ -58,8 +58,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-gradient-to-tr from-slate-950 to-cyan-950 duration-300 ease-linear dark:bg-stone-900 lg:static lg:translate-x-0 ${
-        sidebarOpen ? "translate-x-0" : "-translate-x-full"
+      className={`fixed left-0 top-0 z-9999 h-screen w-72 flex flex-col overflow-y-hidden bg-gradient-to-tr from-slate-950 to-cyan-950 transition-transform duration-100 ease-linear dark:bg-stone-900 lg:static lg:translate-x-0 ${
+        sidebarOpen
+          ? "translate-x-0 shadow-xl shadow-cyan-950"
+          : "-translate-x-full"
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
@@ -103,7 +105,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
           {/* <----------YHD navs-------> */}
 
-          {/* --------analytice----- */}
+          {/* --------analytics----- */}
           <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2 uppercase">
               Analytics
@@ -526,7 +528,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </ul>
           </div>
         </nav>
-        {/* <!-- Sidebar Menu --> */}
       </div>
     </aside>
   );
